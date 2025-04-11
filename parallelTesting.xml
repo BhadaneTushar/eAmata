@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
+<suite name="Parallel Test Suite" parallel="tests" thread-count="5">
+    <listeners>
+        <listener class-name="utilities.ExtentReportManager"/>
+        <listener class-name="io.qameta.allure.testng.AllureTestNg"/>
+    </listeners>
+
+    <test name="Chrome Tests">
+        <parameter name="browser" value="chrome"/>
+        <classes>
+            <class name="testCases.TC001_SuperAdminLogin"/>
+            <class name="testCases.TC002_AddProviderGroup"/>
+            <class name="testCases.TC003_AddStaff"/>
+            <class name="testCases.TC004_AddLocation"/>
+            <class name="testCases.TC005_AddEamataNurse"/>
+        </classes>
+    </test>
+
+    <test name="Edge Tests">
+        <parameter name="browser" value="edge"/>
+        <classes>
+            <class name="testCases.TC001_SuperAdminLogin"/>
+            <class name="testCases.TC002_AddProviderGroup"/>
+            <class name="testCases.TC003_AddStaff"/>
+            <class name="testCases.TC004_AddLocation"/>
+            <class name="testCases.TC005_AddEamataNurse"/>
+        </classes>
+    </test>
+</suite>

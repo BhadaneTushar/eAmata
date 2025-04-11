@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE suite SYSTEM "https://testng.org/testng-1.0.dtd">
+<suite name="Failed suite [All Test Suite]" guice-stage="DEVELOPMENT">
+  <test thread-count="5" name="C:/Users/TTPL-LNVE15-0186/Desktop/eAmata/eAmata(failed)">
+    <classes>
+      <class name="testCases.TC003_AddStaff">
+        <methods>
+          <include name="AddStaff"/>
+          <include name="initializeDriver"/>
+          <include name="setUp"/>
+        </methods>
+      </class> <!-- testCases.TC003_AddStaff -->
+    </classes>
+  </test> <!-- C:/Users/TTPL-LNVE15-0186/Desktop/eAmata/eAmata(failed) -->
+</suite> <!-- Failed suite [All Test Suite] -->
