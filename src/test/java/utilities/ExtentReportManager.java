@@ -25,12 +25,21 @@ public class ExtentReportManager implements ITestListener {
 
     @Override
     public void onStart(ITestContext testContext) {
-       /* SimpleDateFormat df = new SimpleDateFormat("yyyy.MM.dd.hh.mm.ss");
-        Date dt =new Date();
-        String currentdatetimestamp =df.format(dt);*/
+        /*
+         * SimpleDateFormat df = new SimpleDateFormat("yyyy.MM.dd.hh.mm.ss");
+         * Date dt =new Date();
+         * String currentdatetimestamp =df.format(dt);
+         */
 
         String timestamp = new SimpleDateFormat("yyyy.MM.dd.hh.mm.ss").format(new Date());
         repName = "Test-Report- " + timestamp + ".html";
+
+        // Create reports directory if it doesn't exist
+        File reportsDir = new File(".\\reports");
+        if (!reportsDir.exists()) {
+            reportsDir.mkdirs();
+        }
+
         sparkReporter = new ExtentSparkReporter(".\\reports\\" + repName);
         sparkReporter.config().setDocumentTitle("OMR Automation report");
         sparkReporter.config().setReportName("OMR functional Testing");
@@ -39,7 +48,7 @@ public class ExtentReportManager implements ITestListener {
         extent = new ExtentReports();
         extent.attachReporter(sparkReporter);
 
-        //we will take this values form the xml file same for browser
+        // we will take this values form the xml file same for browser
         String os = testContext.getCurrentXmlTest().getParameter("os");
 
         List<String> includedGroups = testContext.getCurrentXmlTest().getIncludedGroups();
@@ -76,13 +85,13 @@ public class ExtentReportManager implements ITestListener {
         test.log(Status.INFO, result.getThrowable().getMessage());
     }
 
-    public void onFinish(ITestContext testContext){
+    public void onFinish(ITestContext testContext) {
         extent.flush();
 
-        //Automatically open the report
-        String pathOfExtentReport =System.getProperty("user.dir")+"\\reports\\" + repName;
+        // Automatically open the report
+        String pathOfExtentReport = System.getProperty("user.dir") + "\\reports\\" + repName;
         File extentReport = new File(pathOfExtentReport);
-        try{
+        try {
             Desktop.getDesktop().browse(extentReport.toURI());
         } catch (IOException e) {
             e.printStackTrace();

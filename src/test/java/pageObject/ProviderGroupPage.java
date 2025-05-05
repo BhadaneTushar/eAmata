@@ -34,7 +34,7 @@ public class ProviderGroupPage extends BasePage {
     @FindBy(xpath = "//input[@name='npiNumber' or @placeholder='Enter NPI Number']")
     private WebElement providerGroupNpiNumberInputField;
 
-    @FindBy(xpath = "//input[@name='subDomain' or @placeholder='Enter Sub Domain']")
+    @FindBy(xpath = "//input[@placeholder='Enter Sub Domain']")
     private WebElement providerGroupSubDomainInputField;
 
     @FindBy(xpath = "//button[@type='submit' or contains(@class, 'submit')]")
@@ -61,7 +61,7 @@ public class ProviderGroupPage extends BasePage {
     @FindBy(xpath = "//label[contains(text(), 'Must be 10 digits') or contains(text(), 'Invalid NPI')]")
     private WebElement invalidNPI;
 
-    @FindBy(xpath = "//label[contains(text(), 'Subdomain')]")
+    @FindBy(xpath = "//label[contains(text(),'Subdomain must only contain lowercase letters, num')]")
     private WebElement invalidSubdomain;
 
     @FindBy(xpath = "//label[contains(text(), 'Line 1') and contains(text(), 'required')]")

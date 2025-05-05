@@ -260,8 +260,8 @@ public class TC002_AddProviderGroup extends BaseClass {
                                 providerGroupName, email, phoneNumber, npiNumber, "invalid@subdomain",
                                 addressLine1, addressLine2, city, zipCode, state);
 
-                String expectedError = "Invalid subdomain format";
-                String actualError = providerGroupPage.getSubdomainError();
+        String expectedError = "Subdomain must only contain lowercase letters, numbers, and hyphens, and must not start or end with a hyphen.";
+        String actualError = providerGroupPage.getInvalidSubdomain();
 
                 Assert.assertEquals(actualError, expectedError,
                                 "Validation failed! Expected: '" + expectedError + "', but got: '" + actualError + "'");

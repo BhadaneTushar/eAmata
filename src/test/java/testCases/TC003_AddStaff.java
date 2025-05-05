@@ -46,64 +46,24 @@ public class TC003_AddStaff extends BaseClass {
      * @throws RuntimeException if setup fails
      */
     @BeforeMethod
-    @Description("Setup WebDriver, initialize Page Objects, and generate test data")
-    @Parameters("browser")
-    public void initializeDriver(@Optional("chrome") String browser) {
-        try {
-            LoggerUtils.info("Setting up test environment for staff creation");
-            super.initializeDriver(browser);
-
-            // Login as Super Admin
-            SuperAdminLogin loginPage = new SuperAdminLogin();
-            loginPage.login(properties.getProperty("Username"), properties.getProperty("Password"));
-
-            // Initialize page objects and generate test data
-            staffPage = new StaffPage(getDriver());
-            TestDataGenerator data = new TestDataGenerator();
-
-            // Generate test data
-            firstName = data.generateRandomFirstName();
-            lastName = data.generateRandomLastName();
-            email = data.generateEmail("staff");
-            phoneNumber = data.generatePhoneNumber();
-            role = properties.getProperty("StaffRole");
-            gender = properties.getProperty("Gender");
-            addressLine1 = data.generateAddressLine1();
-            addressLine2 = data.generateAddressLine2();
-            state = properties.getProperty("State");
-            city = data.generateCity();
-            zipCode = data.generateZipCode();
-
-            LoggerUtils.debug("Test setup completed successfully");
-        } catch (Exception e) {
-            LoggerUtils.error("Failed to setup test environment: " + e.getMessage());
-            throw new RuntimeException("Failed to setup test environment", e);
-        }
+    public void setup() {
+        super.setUp();
+        TestDataGenerator data = new TestDataGenerator();
+        addStaff = new StaffPage(getDriver());
+        firstName = data.generateRandomFirstName();
+        lastName = data.generateRandomLastName();
+        email = data.generateEmail("staff");
+        phoneNumber = data.generatePhoneNumber();
+        role = properties.getProperty("StaffRole");
+        gender = properties.getProperty("Gender");
+        addressLine1 = data.generateAddressLine1();
+        addressLine2 = data.generateAddressLine2();
+        state = properties.getProperty("State");
+        city = data.generateCity();
+        zipCode = data.generateZipCode();
     }
 
-    /**
-     * Cleans up after each test method.
-     * Closes the browser and performs any necessary cleanup.
-     */
-    @AfterMethod
-    @Description("Cleanup after each test method")
-    public void cleanup() {
-        try {
-            LoggerUtils.info("Cleaning up test environment");
-            super.tearDown();
-            LoggerUtils.info("Cleanup completed successfully");
-        } catch (Exception e) {
-            LoggerUtils.error("Failed to cleanup: " + e.getMessage());
-            throw new RuntimeException("Failed to cleanup", e);
-        }
-    }
-
-    /**
-     * Tests successful staff creation with valid details.
-     * 
-     * @throws RuntimeException if test fails
-     */
-    @Test(priority = 1, groups = { "smoke", "regression" })
+    @Test(priority = 1, groups = {"smoke", "regression"})
     @Description("Verify SuperAdmin can successfully add a staff member")
     @Severity(SeverityLevel.CRITICAL)
     public void testAddStaffWithValidDetails() {

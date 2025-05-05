@@ -35,49 +35,17 @@ public class TC001_SuperAdminLogin extends BaseClass {
      * @throws RuntimeException if setup fails
      */
     @BeforeMethod
-    @Description("Setup WebDriver, initialize Page Objects, and fetch credentials from properties file")
-    @Parameters("browser")
-    public void initializeDriver(@Optional("chrome") String browser) {
-        try {
-            LoggerUtils.info("Setting up test environment for Super Admin login");
-            super.initializeDriver(browser);
-            loginPage = new SuperAdminLogin();
-            logoutPage = new Logout();
-            validUsername = properties.getProperty("Username");
-            validPassword = properties.getProperty("Password");
+    @Description("Setup WebDriver, initialize Page Objects, and fetch credentials from properties file.")
+    public void setUp() {
 
-            Assert.assertNotNull(validUsername, "Username is not set in the properties file");
-            Assert.assertNotNull(validPassword, "Password is not set in the properties file");
-            LoggerUtils.debug("Test setup completed successfully");
-        } catch (Exception e) {
-            LoggerUtils.error("Failed to setup test environment: " + e.getMessage());
-            throw new RuntimeException("Failed to setup test environment", e);
-        }
+        loginPage = new SuperAdminLogin();
+        validUsername = properties.getProperty("Username");
+        validPassword = properties.getProperty("Password");
+        Assert.assertNotNull(validUsername, "Username is not set in the properties file.");
+        Assert.assertNotNull(validPassword, "Password is not set in the properties file.");
     }
 
-    /**
-     * Cleans up after each test method.
-     * Performs logout and closes the browser.
-     */
-    @AfterMethod
-    @Description("Cleanup after each test method")
-    public void cleanup() {
-        try {
-            LoggerUtils.info("Cleaning up test environment");
-            /*logoutPage.logout();
-            LoggerUtils.info("Logout completed successfully");*/
-        } catch (Exception e) {
-            LoggerUtils.error("Failed to cleanup: " + e.getMessage());
-            throw new RuntimeException("Failed to cleanup", e);
-        }
-    }
-
-    /**
-     * Tests successful login with valid credentials.
-     * 
-     * @throws RuntimeException if test fails
-     */
-    @Test(priority = 1, groups = { "smoke", "regression" })
+    @Test(priority = 1, groups = {"smoke", "regression"})
     @Description("Verify SuperAdmin can log in with valid credentials")
     @Severity(SeverityLevel.CRITICAL)
     public void testSuperAdminLoginWithValidCredentials() {

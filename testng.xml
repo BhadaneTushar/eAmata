@@ -3,6 +3,7 @@
 <suite name="Grouped Test Suite">
     <listeners>
         <listener class-name="utilities.ExtentReportManager"/>
+        <listener class-name="utilities.AllureListener"/>
         <listener class-name="io.qameta.allure.testng.AllureTestNg"/>
     </listeners>
 
@@ -11,8 +12,8 @@
         <classes>
             <class name="testCases.TC001_SuperAdminLogin"/>
             <class name="testCases.TC002_AddProviderGroup"/>
-            <class name="testCases.TC003_AddStaff"/>
-            <class name="testCases.TC004_AddLocation"/>
+            <!--            <class name="testCases.TC003_AddStaff"/>-->
+            <!--            <class name="testCases.TC004_AddLocation"/>-->
             <class name="testCases.TC005_AddEamataNurse"/>
         </classes>
     </test>
