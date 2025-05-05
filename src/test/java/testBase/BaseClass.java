@@ -47,7 +47,7 @@ public class BaseClass {
     // Take browser from config file as per user requirement
     @BeforeMethod
     @Parameters("browser")
-    public void initializeDriver(@Optional("edge") String browser) {
+    public void initializeDriver(@Optional("chrome") String browser) {
         WebDriver driver;
         switch (browser.toLowerCase()) {
             case "chrome":
