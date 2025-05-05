@@ -26,7 +26,7 @@ jobs:
       - name: Install Chrome WebDriver
         uses: nanasess/setup-chromedriver@v2
         with:
-          chromedriver-version: 'latest'
+          chromedriver-version: "latest"
 
       - name: Start Chrome Driver
         run: |
@@ -39,8 +39,8 @@ jobs:
         run: mvn test
         env:
           BROWSER: chrome
-          CHROME_DRIVER_PATH: "C:\Program Files\Google\Chrome\Application\chrome.exe"
-          SELENIUM_DRIVER_PATH: "C:\chromedriver.exe"
+          CHROME_DRIVER_PATH: 'C:\Program Files\Google\Chrome\Application\chrome.exe'
+          SELENIUM_DRIVER_PATH: 'C:\chromedriver.exe'
 
       - name: Generate Allure Report
         run: mvn allure:report
