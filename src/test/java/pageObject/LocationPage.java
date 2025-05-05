@@ -1,5 +1,6 @@
 package pageObject;
 
+import io.qameta.allure.Step;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -7,7 +8,12 @@ import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 import testBase.BaseClass;
 import utilities.Address;
+import utilities.LoggerUtils;
 
+/**
+ * Page Object for the Location page.
+ * Contains all elements and actions related to location management.
+ */
 public class LocationPage extends BasePage {
 
     private static final String STATE_LIST_XPATH = "//ul[@role='listbox']/li";
@@ -57,49 +63,153 @@ public class LocationPage extends BasePage {
     public LocationPage(WebDriver driver) {
         super();
         PageFactory.initElements(driver, this);
+        LoggerUtils.debug("Initialized LocationPage");
     }
 
-    public void addLocation(String locationName, String phoneNumber, String email, String addressLine1, String addressLine2, String city, String zipCode, String state) {
-        waitForProgressBarToAppear();
-        clickButton(waitForElementToBeVisible(providerGroupLinkButton));
-        waitForProgressBarToAppear();
-        ((JavascriptExecutor) BaseClass.getDriver()).executeScript("arguments[0].click();", locationTabButton);
-        ((JavascriptExecutor) BaseClass.getDriver()).executeScript("arguments[0].click();", addLocationButton);
+    /**
+     * Adds a new location with the provided details.
+     * 
+     * @param locationName The name of the location
+     * @param phoneNumber  The phone number of the location
+     * @param email        The email of the location
+     * @param addressLine1 The first line of the address
+     * @param addressLine2 The second line of the address
+     * @param city         The city of the location
+     * @param zipCode      The ZIP code of the location
+     * @param state        The state of the location
+     * @throws RuntimeException if adding location fails
+     */
+    @Step("Adding new location")
+    public void addLocation(String locationName, String phoneNumber, String email, String addressLine1,
+            String addressLine2, String city, String zipCode, String state) {
+        try {
+            waitForProgressBarToAppear();
+            clickButton(waitForElementToBeVisible(providerGroupLinkButton));
+            waitForProgressBarToAppear();
+            ((JavascriptExecutor) BaseClass.getDriver()).executeScript("arguments[0].click();", locationTabButton);
+            ((JavascriptExecutor) BaseClass.getDriver()).executeScript("arguments[0].click();", addLocationButton);
 
-        setInputField(locationNameInputField, locationName);
-        setInputField(locationPhoneNumberInputField, phoneNumber);
-        setInputField(locationEmailInputField, email);
-        new Address(getDriver()).enterAddressDetails(addressLine1, addressLine2, city, zipCode, state);
-        ((JavascriptExecutor) BaseClass.getDriver()).executeScript("arguments[0].click();", saveLocationButton);
+            setInputField(locationNameInputField, locationName);
+            setInputField(locationPhoneNumberInputField, phoneNumber);
+            setInputField(locationEmailInputField, email);
+            new Address(getDriver()).enterAddressDetails(addressLine1, addressLine2, city, zipCode, state);
+            ((JavascriptExecutor) BaseClass.getDriver()).executeScript("arguments[0].click();", saveLocationButton);
+            LoggerUtils.info("Successfully added location");
+        } catch (Exception e) {
+            LoggerUtils.error("Failed to add location: " + e.getMessage());
+            throw new RuntimeException("Failed to add location", e);
+        }
     }
 
-    public String verificationMessage(){
-        return locationCreationSuccessMessage.getText();
+    /**
+     * Gets the verification message after location creation.
+     * 
+     * @return The verification message
+     * @throws RuntimeException if getting verification message fails
+     */
+    @Step("Getting verification message")
+    public String verificationMessage() {
+        try {
+            return locationCreationSuccessMessage.getText();
+        } catch (Exception e) {
+            LoggerUtils.error("Failed to get verification message: " + e.getMessage());
+            throw new RuntimeException("Failed to get verification message", e);
+        }
     }
 
-    // Validation message methods
-
+    /**
+     * Gets the error message for location name.
+     * 
+     * @return The error message
+     * @throws RuntimeException if getting error message fails
+     */
+    @Step("Getting location name error message")
     public String getLocationNameError() {
-        return locationNameError.getText();
+        try {
+            return locationNameError.getText();
+        } catch (Exception e) {
+            LoggerUtils.error("Failed to get location name error message: " + e.getMessage());
+            throw new RuntimeException("Failed to get location name error message", e);
+        }
     }
 
+    /**
+     * Gets the error message for phone number.
+     * 
+     * @return The error message
+     * @throws RuntimeException if getting error message fails
+     */
+    @Step("Getting phone number error message")
     public String getPhoneNumberError() {
-        return phoneNumberError.getText();
+        try {
+            return phoneNumberError.getText();
+        } catch (Exception e) {
+            LoggerUtils.error("Failed to get phone number error message: " + e.getMessage());
+            throw new RuntimeException("Failed to get phone number error message", e);
+        }
     }
 
+    /**
+     * Gets the error message for invalid phone number.
+     * 
+     * @return The error message
+     * @throws RuntimeException if getting error message fails
+     */
+    @Step("Getting invalid phone number error message")
     public String getInvalidPhoneNumberError() {
-        return invalidPhoneNumberError.getText();
+        try {
+            return invalidPhoneNumberError.getText();
+        } catch (Exception e) {
+            LoggerUtils.error("Failed to get invalid phone number error message: " + e.getMessage());
+            throw new RuntimeException("Failed to get invalid phone number error message", e);
+        }
     }
 
+    /**
+     * Gets the error message for empty email.
+     * 
+     * @return The error message
+     * @throws RuntimeException if getting error message fails
+     */
+    @Step("Getting empty email error message")
     public String getEmptyEmailError() {
-        return emptyEmailError.getText();
+        try {
+            return emptyEmailError.getText();
+        } catch (Exception e) {
+            LoggerUtils.error("Failed to get empty email error message: " + e.getMessage());
+            throw new RuntimeException("Failed to get empty email error message", e);
+        }
     }
 
+    /**
+     * Gets the error message for invalid email.
+     * 
+     * @return The error message
+     * @throws RuntimeException if getting error message fails
+     */
+    @Step("Getting invalid email error message")
     public String getInvalidEmailError() {
-        return invalidEmailError.getText();
+        try {
+            return invalidEmailError.getText();
+        } catch (Exception e) {
+            LoggerUtils.error("Failed to get invalid email error message: " + e.getMessage());
+            throw new RuntimeException("Failed to get invalid email error message", e);
+        }
     }
 
-    public String getZipCodeError(){
-        return emptyZipCode.getText();
+    /**
+     * Gets the error message for empty ZIP code.
+     * 
+     * @return The error message
+     * @throws RuntimeException if getting error message fails
+     */
+    @Step("Getting empty ZIP code error message")
+    public String getZipCodeError() {
+        try {
+            return emptyZipCode.getText();
+        } catch (Exception e) {
+            LoggerUtils.error("Failed to get empty ZIP code error message: " + e.getMessage());
+            throw new RuntimeException("Failed to get empty ZIP code error message", e);
+        }
     }
 }

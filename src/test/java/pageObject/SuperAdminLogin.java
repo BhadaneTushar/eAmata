@@ -3,7 +3,12 @@ package pageObject;
 import io.qameta.allure.Step;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
+import utilities.LoggerUtils;
 
+/**
+ * Page Object for the Super Admin Login page.
+ * Contains all elements and actions related to the login functionality.
+ */
 public class SuperAdminLogin extends BasePage {
 
     @FindBy(xpath = "//input[@placeholder='Enter Your Email']")
@@ -18,7 +23,7 @@ public class SuperAdminLogin extends BasePage {
     @FindBy(xpath = "//span[contains(@class, 'MuiTypography-bodySmall') and normalize-space()='Provider Groups']")
     private WebElement verificationText;
 
-    //ToDO Need to Update xpath
+    // ToDO Need to Update xpath
     @FindBy(xpath = "//span[text()='Invalid email address']")
     private WebElement invalidUsernameText;
 
@@ -27,27 +32,82 @@ public class SuperAdminLogin extends BasePage {
 
     public SuperAdminLogin() {
         super();
+        LoggerUtils.debug("Initialized SuperAdminLogin page");
     }
 
-    @Step("Logging in with username: {0} and password: {1}")
+    /**
+     * Performs login with the provided credentials.
+     * 
+     * @param username The username to login with
+     * @param password The password to login with
+     * @throws RuntimeException if login fails
+     */
+    @Step("Logging in with username: {0}")
     public void login(String username, String password) {
-        setInputField(txtUsername, username);
-        setInputField(txtPassword, password);
-        clickButton(loginButton);
+        try {
+            LoggerUtils.info("Attempting login with username: " + username);
+            setInputField(txtUsername, username);
+            setInputField(txtPassword, password);
+            clickButton(loginButton);
+            waitForProgressBarToAppear();
+            LoggerUtils.info("Successfully logged in");
+        } catch (Exception e) {
+            LoggerUtils.error("Failed to login: " + e.getMessage());
+            throw new RuntimeException("Failed to login", e);
+        }
     }
 
+    /**
+     * Gets the verification text after successful login.
+     * 
+     * @return The verification text
+     * @throws RuntimeException if getting verification text fails
+     */
     @Step("Verifying login success message")
     public String getVerificationText() {
-        return waitForElementToBeVisible(verificationText).getText();
+        try {
+            String text = waitForElementToBeVisible(verificationText).getText();
+            LoggerUtils.debug("Verification text found: " + text);
+            return text;
+        } catch (Exception e) {
+            LoggerUtils.error("Failed to get verification text: " + e.getMessage());
+            throw new RuntimeException("Failed to get verification text", e);
+        }
     }
 
+    /**
+     * Gets the error message for invalid username.
+     * 
+     * @return The error message
+     * @throws RuntimeException if getting error message fails
+     */
     @Step("Checking error message for invalid username")
     public String getInvalidUsernameErrorMessage() {
-        return waitForElementToBeVisible(invalidUsernameText).getText();
+        try {
+            String error = waitForElementToBeVisible(invalidUsernameText).getText();
+            LoggerUtils.debug("Invalid username error message: " + error);
+            return error;
+        } catch (Exception e) {
+            LoggerUtils.error("Failed to get invalid username error message: " + e.getMessage());
+            throw new RuntimeException("Failed to get invalid username error message", e);
+        }
     }
 
+    /**
+     * Gets the error message for invalid password.
+     * 
+     * @return The error message
+     * @throws RuntimeException if getting error message fails
+     */
     @Step("Checking error message for invalid password")
     public String getInvalidPasswordErrorMessage() {
-        return waitForElementToBeVisible(invalidPasswordText).getText();
+        try {
+            String error = waitForElementToBeVisible(invalidPasswordText).getText();
+            LoggerUtils.debug("Invalid password error message: " + error);
+            return error;
+        } catch (Exception e) {
+            LoggerUtils.error("Failed to get invalid password error message: " + e.getMessage());
+            throw new RuntimeException("Failed to get invalid password error message", e);
+        }
     }
 }
