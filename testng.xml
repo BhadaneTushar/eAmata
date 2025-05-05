@@ -10,11 +10,11 @@
     <test name="Chrome Tests">
         <parameter name="browser" value="chrome"/>
         <classes>
-            <class name="testCases.TC001_SuperAdminLogin"/>
-            <!-- <class name="testCases.TC002_AddProviderGroup"/>
-            <class name="testCases.TC003_AddStaff"/>
-            <class name="testCases.TC004_AddLocation"/>
-            <class name="testCases.TC005_AddEamataNurse"/> -->
+<!--            <class name="testCases.TC001_SuperAdminLogin"/>-->
+<!--            <class name="testCases.TC002_AddProviderGroup"/>-->
+<!--            <class name="testCases.TC003_AddStaff"/>-->
+<!--            <class name="testCases.TC004_AddLocation"/>-->
+            <class name="testCases.TC005_AddEamataNurse"/>
         </classes>
     </test>
 </suite>
