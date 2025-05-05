@@ -10,9 +10,11 @@ import utilities.Address;
 
 public class StaffPage extends BasePage {
 
+    // Constants
     private static final String GENDER_LIST_XPATH = "//ul[@role='listbox']/li";
-    public static final String ROLE_LIST_XPATH = "//ul[@role='listbox']/li";
+    private static final String ROLE_LIST_XPATH = "//ul[@role='listbox']/li";
 
+    // Navigation Elements
     @FindBy(xpath = "//tbody/tr[1]/td[1]/div[1]/a[1]")
     private WebElement providerGroupLink;
 
@@ -22,95 +24,126 @@ public class StaffPage extends BasePage {
     @FindBy(xpath = "//span[text()='Add Staff']")
     private WebElement addStaffButton;
 
+    // Input Fields
     @FindBy(xpath = "//input[@placeholder='Enter First Name']")
-    private WebElement firstNameInput;
+    private WebElement firstNameInputField;
 
     @FindBy(xpath = "//input[@placeholder='Enter Last Name']")
-    private WebElement lastNameInput;
+    private WebElement lastNameInputField;
 
     @FindBy(xpath = "//input[@placeholder='Enter Email']")
-    private WebElement emailInput;
+    private WebElement emailInputField;
 
     @FindBy(xpath = "//input[@placeholder='Enter Phone Number']")
-    private WebElement phoneNumberInput;
+    private WebElement phoneNumberInputField;
 
+    // Dropdown Elements
     @FindBy(xpath = "//button[@role='combobox']/span[text()='Select Staff Role']")
-    private WebElement roleDropdown;
+    private WebElement roleDropdownButton;
 
     @FindBy(xpath = "//button[@role='combobox']/span[text()='Select Gender']")
-    private WebElement genderDropdown;
+    private WebElement genderDropdownButton;
 
+    // Action Buttons
     @FindBy(xpath = "//div[div[p[text()='Add Staff']]]//button[text()='Add Staff']")
     private WebElement saveButton;
 
+    // Success Messages
     @FindBy(xpath = "//tbody/tr[1]/td[1]/div[1]/a[1]")
-    private WebElement verifyStaff;
+    private WebElement staffVerificationText;
 
+    // Validation Messages
     @FindBy(xpath = "//label[text()='First Name is required']")
-    private WebElement firstNameError;
+    private WebElement firstNameRequiredError;
 
     @FindBy(xpath = "//label[text()='Last Name is required']")
-    private WebElement lastNameError;
+    private WebElement lastNameRequiredError;
 
     @FindBy(xpath = "//label[text()='Invalid phone number. It must be 10 digits.']")
-    private WebElement phoneNumberError;
+    private WebElement invalidPhoneNumberError;
 
     @FindBy(xpath = "//label[normalize-space()='Phone is required']")
-    private WebElement emptyphone;
+    private WebElement phoneRequiredError;
 
     @FindBy(xpath = "//label[text()='Email is required']")
-    private WebElement emptyGmail;
+    private WebElement emailRequiredError;
 
     public StaffPage(WebDriver driver) {
         super();
         PageFactory.initElements(driver, this);
     }
 
-    private void fillStaffInformation(String firstName, String lastName, String email, String phoneNumber, String role, String gender) {
-        setInputField(firstNameInput, firstName);
-        setInputField(lastNameInput, lastName);
-        setInputField(emailInput, email);
-        setInputField(phoneNumberInput, phoneNumber);
-        selectDropdownByVisibleText(roleDropdown, role, ROLE_LIST_XPATH);
-        selectDropdownByVisibleText(genderDropdown, gender, GENDER_LIST_XPATH);
-    }
-
-    public void addStaff(String firstName, String lastName, String email, String phoneNumber, String role, String gender, String addressLine1, String addressLine2, String city, String zipCode, String state) {
+    // Navigation Methods
+    public void navigateToProviderGroup() {
         waitForProgressBarToAppear();
         clickButton(waitForElementToBeVisible(providerGroupLink));
+    }
+
+    public void navigateToStaffTab() {
         waitForProgressBarToAppear();
         ((JavascriptExecutor) BaseClass.getDriver()).executeScript("arguments[0].click();", staffTabButton);
+    }
+
+    public void clickAddStaff() {
         waitForProgressBarToAppear();
         clickButton(waitForElementToBeClickable(addStaffButton));
+    }
+
+    // Input Field Methods
+    private void fillStaffInformation(String firstName, String lastName, String email, String phoneNumber, String role,
+            String gender) {
+        setInputField(firstNameInputField, firstName);
+        setInputField(lastNameInputField, lastName);
+        setInputField(emailInputField, email);
+        setInputField(phoneNumberInputField, phoneNumber);
+        selectDropdownByVisibleText(roleDropdownButton, role, ROLE_LIST_XPATH);
+        selectDropdownByVisibleText(genderDropdownButton, gender, GENDER_LIST_XPATH);
+    }
+
+    // Combined Action Methods
+    public void addStaff(String firstName, String lastName, String email, String phoneNumber, String role,
+            String gender, String addressLine1, String addressLine2, String city, String zipCode, String state) {
+        navigateToProviderGroup();
+        navigateToStaffTab();
+        clickAddStaff();
         fillStaffInformation(firstName, lastName, email, phoneNumber, role, gender);
         new Address(getDriver()).enterAddressDetails(addressLine1, addressLine2, city, zipCode, state);
+        saveStaff();
+    }
+
+    // Form Submission Methods
+    public void saveStaff() {
         clickButton(waitForElementToBeVisible(saveButton));
     }
 
-    public String verifySuccessMessage() {
+    // Success Message Methods
+    public String getStaffVerificationText() {
         waitForProgressBarToAppear();
-        return waitForElementToBeVisible(verifyStaff).getText();
+        return waitForElementToBeVisible(staffVerificationText).getText();
     }
 
-    public String getFirstNameError() {
-        return waitForElementToBeVisible(firstNameError).getText();
+    // Validation Message Methods
+    public String getFirstNameRequiredError() {
+        return waitForElementToBeVisible(firstNameRequiredError).getText();
     }
 
-    public String getLastNameError() {
-        return waitForElementToBeVisible(lastNameError).getText();
+    public String getLastNameRequiredError() {
+        return waitForElementToBeVisible(lastNameRequiredError).getText();
     }
 
-    public String getPhoneNumberError() {
-        return waitForElementToBeVisible(phoneNumberError).getText();
+    public String getInvalidPhoneNumberError() {
+        return waitForElementToBeVisible(invalidPhoneNumberError).getText();
     }
 
-    public String getEmptyPhoneError() {
-        return waitForElementToBeVisible(emptyphone).getText();
-    }
-    public String getEmptyGmailError() {
-        return waitForElementToBeVisible(emptyGmail).getText();
+    public String getPhoneRequiredError() {
+        return waitForElementToBeVisible(phoneRequiredError).getText();
     }
 
+    public String getEmailRequiredError() {
+        return waitForElementToBeVisible(emailRequiredError).getText();
+    }
+
+    // Status Management Methods
     public void editStaff() {
         // Future implementation
     }
@@ -119,7 +152,7 @@ public class StaffPage extends BasePage {
         // Future implementation
     }
 
-    public void activeInactiveStaff() {
+    public void toggleStaffStatus() {
         // Future implementation
     }
 }

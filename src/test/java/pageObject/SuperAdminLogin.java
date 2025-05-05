@@ -6,48 +6,71 @@ import org.openqa.selenium.support.FindBy;
 
 public class SuperAdminLogin extends BasePage {
 
+    // Input Fields
     @FindBy(xpath = "//input[@placeholder='Enter Your Email']")
-    private WebElement txtUsername;
+    private WebElement emailInputField;
 
     @FindBy(xpath = "//input[@placeholder='Enter your Password']")
-    private WebElement txtPassword;
+    private WebElement passwordInputField;
 
+    // Action Buttons
     @FindBy(xpath = "//button[text()='Login']")
     private WebElement loginButton;
 
+    // Success Messages
     @FindBy(xpath = "//span[contains(@class, 'MuiTypography-bodySmall') and normalize-space()='Provider Groups']")
-    private WebElement verificationText;
+    private WebElement providerGroupsText;
 
-    //ToDO Need to Update xpath
+    // Validation Messages
     @FindBy(xpath = "//span[text()='Invalid email address']")
-    private WebElement invalidUsernameText;
+    private WebElement invalidEmailErrorMessage;
 
     @FindBy(xpath = "//span[contains(text(),'Password must be 8+ characters, with at least one ')]")
-    private WebElement invalidPasswordText;
+    private WebElement invalidPasswordErrorMessage;
 
     public SuperAdminLogin() {
         super();
     }
 
-    @Step("Logging in with username: {0} and password: {1}")
-    public void login(String username, String password) {
-        setInputField(txtUsername, username);
-        setInputField(txtPassword, password);
+    // Input Field Methods
+    @Step("Entering email: {0}")
+    public void enterEmail(String email) {
+        setInputField(emailInputField, email);
+    }
+
+    @Step("Entering password: {0}")
+    public void enterPassword(String password) {
+        setInputField(passwordInputField, password);
+    }
+
+    // Button Methods
+    @Step("Clicking login button")
+    public void clickLoginButton() {
         clickButton(loginButton);
     }
 
-    @Step("Verifying login success message")
-    public String getVerificationText() {
-        return waitForElementToBeVisible(verificationText).getText();
+    // Combined Action Methods
+    @Step("Logging in with email: {0} and password: {1}")
+    public void login(String email, String password) {
+        enterEmail(email);
+        enterPassword(password);
+        clickLoginButton();
     }
 
-    @Step("Checking error message for invalid username")
-    public String getInvalidUsernameErrorMessage() {
-        return waitForElementToBeVisible(invalidUsernameText).getText();
+    // Success Message Methods
+    @Step("Verifying login success message")
+    public String getProviderGroupsText() {
+        return waitForElementToBeVisible(providerGroupsText).getText();
+    }
+
+    // Validation Message Methods
+    @Step("Checking error message for invalid email")
+    public String getInvalidEmailErrorMessage() {
+        return waitForElementToBeVisible(invalidEmailErrorMessage).getText();
     }
 
     @Step("Checking error message for invalid password")
     public String getInvalidPasswordErrorMessage() {
-        return waitForElementToBeVisible(invalidPasswordText).getText();
+        return waitForElementToBeVisible(invalidPasswordErrorMessage).getText();
     }
 }

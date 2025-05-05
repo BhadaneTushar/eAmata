@@ -7,6 +7,7 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.edge.EdgeDriver;
+import org.openqa.selenium.edge.EdgeOptions;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.firefox.FirefoxOptions;
 import org.openqa.selenium.safari.SafariDriver;
@@ -46,29 +47,38 @@ public class BaseClass {
 
     // Take browser from config file as per user requirement
     @BeforeMethod
-    @Parameters("browser")
-    public void initializeDriver(@Optional("chrome") String browser) {
+    public void initializeDriver() {
         WebDriver driver;
-        switch (browser.toLowerCase()) {
+        String browser = properties.getProperty("browser", "chrome").toLowerCase();
+        switch (browser) {
             case "chrome":
                 WebDriverManager.chromedriver().setup();
                 ChromeOptions chromeOpts = new ChromeOptions();
                 System.out.println("ChromeDriver path: " + WebDriverManager.chromedriver().getDownloadedDriverPath());
-                chromeOpts.addArguments(properties.getProperty("Headless"));
+                if (Boolean.parseBoolean(properties.getProperty("Headless"))) {
+                    chromeOpts.addArguments("--headless=new");
+                }
                 driver = new ChromeDriver(chromeOpts);
                 break;
             case "firefox":
                 WebDriverManager.firefoxdriver().setup();
                 FirefoxOptions firefoxOpts = new FirefoxOptions();
-                System.out.println("ChromeDriver path: " + WebDriverManager.firefoxdriver().getDownloadedDriverPath());
-                // firefoxOpts.addArguments(properties.getProperty("Headless"));
-                driver = new FirefoxDriver(new FirefoxOptions());
+                System.out.println("FirefoxDriver path: " + WebDriverManager.firefoxdriver().getDownloadedDriverPath());
+                if (Boolean.parseBoolean(properties.getProperty("Headless"))) {
+                    firefoxOpts.addArguments("--headless");
+                }
+                driver = new FirefoxDriver(firefoxOpts);
                 break;
             case "edge":
                 WebDriverManager.edgedriver().setup();
-                driver = new EdgeDriver();
+                EdgeOptions edgeOpts = new EdgeOptions();
+                if (Boolean.parseBoolean(properties.getProperty("Headless"))) {
+                    edgeOpts.addArguments("--headless=new");
+                }
+                driver = new EdgeDriver(edgeOpts);
                 break;
             case "safari":
+                // Safari doesn't support headless mode
                 driver = new SafariDriver();
                 break;
             default:
@@ -78,7 +88,6 @@ public class BaseClass {
         getDriver().manage().window().maximize();
         getDriver().manage().timeouts().implicitlyWait(Duration.ofSeconds(10));
         getDriver().get(properties.getProperty("url"));
-
     }
 
     @BeforeMethod(dependsOnMethods = "initializeDriver")

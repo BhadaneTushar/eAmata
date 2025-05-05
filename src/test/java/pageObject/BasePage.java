@@ -50,7 +50,6 @@ public class BasePage {
         }
     }
 
-
     public void selectDropdownByVisibleText(WebElement dropdownElement, String visibleText, String listItemsXPath) {
         dropdownElement.click();
         List<WebElement> dropdownItems = getDriver().findElements(By.xpath(listItemsXPath));
@@ -126,7 +125,7 @@ public class BasePage {
                 .until(ExpectedConditions.alertIsPresent()).accept();
     }
 
-    //Drag and Drop
+    // Drag and Drop
     public void dragAndDrop(WebElement source, WebElement target) {
         new Actions(getDriver()).dragAndDrop(source, target).build().perform();
     }
@@ -138,7 +137,6 @@ public class BasePage {
     public void scrollToElement(WebElement element) {
         ((JavascriptExecutor) getDriver()).executeScript(
                 "arguments[0].scrollIntoView({behavior: 'smooth', block: 'center'});",
-                element
-        );
+                element);
     }
 }

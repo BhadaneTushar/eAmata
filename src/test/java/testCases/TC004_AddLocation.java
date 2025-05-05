@@ -1,81 +1,105 @@
 package testCases;
 
 import io.qameta.allure.Description;
+import io.qameta.allure.Severity;
+import io.qameta.allure.SeverityLevel;
 import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 import pageObject.LocationPage;
 import testBase.BaseClass;
-import utilities.TestDataGenerator;
+import utilities.ErrorMessages;
 
 public class TC004_AddLocation extends BaseClass {
 
-    private LocationPage addLocationPage;
-    private String locationName;
-    private String phoneNumber;
-    private String email;
-    private String addressLine1;
-    private String addressLine2;
-    private String state;
-    private String city;
-    private String zipCode;
+    private LocationPage locationPage;
+    private String validName;
+    private String validPhone;
+    private String validEmail;
+    private String validAddressLine1;
+    private String validAddressLine2;
+    private String validCity;
+    private String validZipCode;
+    private String validState;
 
     @BeforeMethod
+    @Description("Setup WebDriver, initialize Page Objects, and fetch test data from properties file.")
     public void setUp() {
-        super.setUp();
-        TestDataGenerator data = new TestDataGenerator();
-        addLocationPage = new LocationPage(getDriver());
-        locationName = data.generateCity();
-        phoneNumber = data.generatePhoneNumber();
-        email = data.generateRandomEmail();
-        addressLine1 = data.generateAddressLine1();
-        addressLine2 = data.generateAddressLine2();
-        state = properties.getProperty("State");
-        city = data.generateCity();
-        zipCode = data.generateZipCode();
+        locationPage = new LocationPage(getDriver());
+        validName = properties.getProperty("LocationName");
+        validPhone = properties.getProperty("LocationPhone");
+        validEmail = properties.getProperty("LocationEmail");
+        validAddressLine1 = properties.getProperty("LocationAddressLine1");
+        validAddressLine2 = properties.getProperty("LocationAddressLine2");
+        validCity = properties.getProperty("LocationCity");
+        validZipCode = properties.getProperty("LocationZipCode");
+        validState = properties.getProperty("LocationState");
+        Assert.assertNotNull(validName, "Location Name is not set in the properties file.");
+        Assert.assertNotNull(validPhone, "Location Phone is not set in the properties file.");
+        Assert.assertNotNull(validEmail, "Location Email is not set in the properties file.");
+        Assert.assertNotNull(validAddressLine1, "Location Address Line 1 is not set in the properties file.");
+        Assert.assertNotNull(validCity, "Location City is not set in the properties file.");
+        Assert.assertNotNull(validZipCode, "Location Zip Code is not set in the properties file.");
+        Assert.assertNotNull(validState, "Location State is not set in the properties file.");
     }
 
-    @Test(priority = 1, groups = {"smoke", "regression"})
-    @Description("Verify SuperAdmin can successfully add a location")
-    public void addLocationWithValidDetails() {
-        addLocationPage.addLocation(locationName, phoneNumber, email, addressLine1, addressLine2, city, zipCode, state);
-        String expectedMessage = "Location added successfully!";
-        String actualMessage = addLocationPage.verificationMessage();
-        Assert.assertEquals(actualMessage, expectedMessage, "The location was not added successfully.");
+    @Test(priority = 1, groups = { "smoke", "regression" })
+    @Severity(SeverityLevel.CRITICAL)
+    @Description("Verify adding a new location with valid data")
+    public void testAddLocation() {
+        locationPage.addLocation(validName, validPhone, validEmail, validAddressLine1, validAddressLine2,
+                validCity, validZipCode, validState);
+        Assert.assertEquals(locationPage.getSuccessMessage(), "Location added successfully!",
+                "Location was not added successfully.");
     }
 
-    @Test(priority = 2, groups = {"regression"})
-    @Description("Verify error message when location name is empty")
-    public void addLocationWithEmptyName() {
-        addLocationPage.addLocation("", phoneNumber, email, addressLine1, addressLine2, city, zipCode, state);
-        Assert.assertEquals(addLocationPage.getLocationNameError(), "Name is mandatory");
+    @Test(priority = 2, groups = { "regression" })
+    @Severity(SeverityLevel.NORMAL)
+    @Description("Verify validation when name is empty")
+    public void testEmptyNameValidation() {
+        locationPage.addLocation("", validPhone, validEmail, validAddressLine1, validAddressLine2,
+                validCity, validZipCode, validState);
+        Assert.assertEquals(locationPage.getNameRequiredError(), ErrorMessages.LOCATION_NAME_REQUIRED,
+                "Name required error message does not match.");
     }
 
-    @Test(priority = 3, groups = {"regression"})
-    @Description("Verify error message when phone number is empty")
-    public void addLocationWithEmptyPhoneNumber() {
-        addLocationPage.addLocation(locationName, "", email, addressLine1, addressLine2, city, zipCode, state);
-        Assert.assertEquals(addLocationPage.getPhoneNumberError(), "Invalid phone number. Please use +91, +1, or +61 followed by 10 to 11 digits, allowing hyphens.");
+    @Test(priority = 3, groups = { "regression" })
+    @Severity(SeverityLevel.NORMAL)
+    @Description("Verify validation when phone number is invalid")
+    public void testInvalidPhoneValidation() {
+        locationPage.addLocation(validName, "123", validEmail, validAddressLine1, validAddressLine2,
+                validCity, validZipCode, validState);
+        Assert.assertEquals(locationPage.getInvalidPhoneNumberError(), ErrorMessages.LOCATION_PHONE_INVALID,
+                "Invalid phone error message does not match.");
     }
 
-    @Test(priority = 4, groups = {"regression"})
-    @Description("Verify error message when email is empty")
-    public void addLocationWithEmptyEmail() {
-        addLocationPage.addLocation(locationName, phoneNumber, "", addressLine1, addressLine2, city, zipCode, state);
-        Assert.assertEquals(addLocationPage.getEmptyEmailError(), "Email id is mandatory");
+    @Test(priority = 4, groups = { "regression" })
+    @Severity(SeverityLevel.NORMAL)
+    @Description("Verify validation when email is empty")
+    public void testEmptyEmailValidation() {
+        locationPage.addLocation(validName, validPhone, "", validAddressLine1, validAddressLine2,
+                validCity, validZipCode, validState);
+        Assert.assertEquals(locationPage.getEmailRequiredError(), ErrorMessages.LOCATION_EMAIL_REQUIRED,
+                "Email required error message does not match.");
     }
 
-    @Test(priority = 5, groups = {"regression"})
-    @Description("Verify error message when email format is invalid")
-    public void addLocationWithInvalidEmail() {
-        addLocationPage.addLocation(locationName, phoneNumber, "invalid-email", addressLine1, addressLine2, city, zipCode, state);
-        Assert.assertEquals(addLocationPage.getInvalidEmailError(), "Invalid email format");
+    @Test(priority = 5, groups = { "regression" })
+    @Severity(SeverityLevel.NORMAL)
+    @Description("Verify validation when email is invalid")
+    public void testInvalidEmailValidation() {
+        locationPage.addLocation(validName, validPhone, "invalid-email", validAddressLine1, validAddressLine2,
+                validCity, validZipCode, validState);
+        Assert.assertEquals(locationPage.getInvalidEmailFormatError(), ErrorMessages.LOCATION_EMAIL_INVALID,
+                "Invalid email error message does not match.");
     }
 
-    @Test(priority = 6, groups = {"regression"})
-    @Description("Verify error message when ZIP code is empty")
-    public void addLocationWithEmptyZipCode() {
-        addLocationPage.addLocation(locationName, phoneNumber, email, addressLine1, addressLine2, city, "", state);
-        Assert.assertEquals(addLocationPage.getZipCodeError(), "Zip code is required");
+    @Test(priority = 6, groups = { "regression" })
+    @Severity(SeverityLevel.NORMAL)
+    @Description("Verify validation when zip code is empty")
+    public void testEmptyZipCodeValidation() {
+        locationPage.addLocation(validName, validPhone, validEmail, validAddressLine1, validAddressLine2,
+                validCity, "", validState);
+        Assert.assertEquals(locationPage.getZipCodeRequiredError(), ErrorMessages.ZIP_CODE_REQUIRED,
+                "Zip code required error message does not match.");
     }
 }
