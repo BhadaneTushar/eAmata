@@ -3,6 +3,7 @@
 <suite name="Grouped Test Suite">
     <listeners>
         <listener class-name="utilities.ExtentReportManager"/>
+        <listener class-name="utilities.AllureListener"/>
         <listener class-name="io.qameta.allure.testng.AllureTestNg"/>
     </listeners>
 

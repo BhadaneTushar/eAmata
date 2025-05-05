@@ -33,7 +33,6 @@ public class BaseClass {
         return threadLocalDriver.get();
     }
 
-
     // Load configuration file Before run tests
     @BeforeSuite
     public void loadConfig() {
@@ -45,7 +44,7 @@ public class BaseClass {
         }
     }
 
-    //Take browser from config file as per user requirement
+    // Take browser from config file as per user requirement
     @BeforeMethod
     @Parameters("browser")
     public void initializeDriver(@Optional("edge") String browser) {
@@ -58,15 +57,15 @@ public class BaseClass {
                 chromeOpts.addArguments("--no-sandbox"); // Sometimes needed in specific environments
                 chromeOpts.addArguments("--remote-debugging-port=9222");
                 System.out.println("ChromeDriver path: " + WebDriverManager.chromedriver().getDownloadedDriverPath());
-                //chromeOpts.addArguments(properties.getProperty("Headless"));
-               // chromeOpts.addArguments(properties.getProperty("Resolution"));
+                chromeOpts.addArguments(properties.getProperty("Headless"));
+                // chromeOpts.addArguments(properties.getProperty("Resolution"));
                 driver = new ChromeDriver(chromeOpts);
                 break;
             case "firefox":
                 WebDriverManager.firefoxdriver().setup();
                 FirefoxOptions firefoxOpts = new FirefoxOptions();
                 System.out.println("ChromeDriver path: " + WebDriverManager.firefoxdriver().getDownloadedDriverPath());
-                //firefoxOpts.addArguments(properties.getProperty("Headless"));
+                // firefoxOpts.addArguments(properties.getProperty("Headless"));
                 driver = new FirefoxDriver(new FirefoxOptions());
                 break;
             case "edge":
@@ -86,7 +85,7 @@ public class BaseClass {
 
     }
 
-    // @BeforeMethod(dependsOnMethods = "initializeDriver")
+    @BeforeMethod(dependsOnMethods = "initializeDriver")
     public void setUp() {
         SuperAdminLogin loginPage = new SuperAdminLogin();
         String validUsername = properties.getProperty("Username");
@@ -108,6 +107,13 @@ public class BaseClass {
     public String captureScreen(String testName) throws IOException {
         String timestamp = new SimpleDateFormat("yyyy.MM.dd.hh.mm.ss").format(new Date());
         String screenshotPath = System.getProperty("user.dir") + "/screenshots/" + testName + "_" + timestamp + ".png";
+
+        // Create screenshots directory if it doesn't exist
+        File screenshotsDir = new File(System.getProperty("user.dir") + "/screenshots");
+        if (!screenshotsDir.exists()) {
+            screenshotsDir.mkdirs();
+        }
+
         TakesScreenshot takesScreenshot = (TakesScreenshot) getDriver();
         File soureFile = takesScreenshot.getScreenshotAs(OutputType.FILE);
         File targetFile = new File(screenshotPath);

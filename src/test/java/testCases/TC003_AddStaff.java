@@ -26,9 +26,8 @@ public class TC003_AddStaff extends BaseClass {
 
     @BeforeMethod
     public void setup() {
-        SuperAdminLogin loginPage = new SuperAdminLogin();
+        super.setUp();
         TestDataGenerator data = new TestDataGenerator();
-        loginPage.login("superadminqa@eamata.com", "Eamata@123");
         addStaff = new StaffPage(getDriver());
         firstName = data.generateRandomFirstName();
         lastName = data.generateRandomLastName();

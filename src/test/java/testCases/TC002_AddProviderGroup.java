@@ -178,7 +178,7 @@ public class TC002_AddProviderGroup extends BaseClass {
         providerGroupPage.addProviderGroup(providerGroupName, email, phoneNumber, npiNumber, "ABC",
                 addressLine1, addressLine2, city, zipCode, state);
 
-        String expectedError = "Subdomain should only contain lowercase letters, numbers, and hyphens, and must not start or end with a hyphen.";
+        String expectedError = "Subdomain must only contain lowercase letters, numbers, and hyphens, and must not start or end with a hyphen.";
         String actualError = providerGroupPage.getInvalidSubdomain();
 
         Assert.assertEquals(actualError, expectedError,

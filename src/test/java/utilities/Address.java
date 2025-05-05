@@ -9,16 +9,16 @@ import pageObject.BasePage;
 public class Address extends BasePage {
 
     // WebElements for address input fields
-    @FindBy(xpath = "//input[@placeholder='Enter Address Line 1']")
+    @FindBy(xpath = "//input[@placeholder='Enter Line 1']")
     private WebElement addressLine1Input;
 
-    @FindBy(xpath = "//input[@placeholder='Enter Address Line 2']")
+    @FindBy(xpath = "//input[@placeholder='Enter Line 2']")
     private WebElement addressLine2Input;
 
-    @FindBy(xpath = "//input[@placeholder='Enter Address City']")
+    @FindBy(xpath = "//input[@placeholder='Enter City']")
     private WebElement cityInput;
 
-    @FindBy(xpath = "//input[@placeholder='Enter Address Zipcode']")
+    @FindBy(xpath = "//input[@placeholder='Enter Zip Code']")
     private WebElement zipCodeInput;
 
     @FindBy(xpath = "//input[@placeholder='Select State']")

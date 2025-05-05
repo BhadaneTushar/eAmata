@@ -20,7 +20,6 @@ public class TC001_SuperAdminLogin extends BaseClass {
     public void setUp() {
 
         loginPage = new SuperAdminLogin();
-        logoutPage = new Logout();
         validUsername = properties.getProperty("Username");
         validPassword = properties.getProperty("Password");
         Assert.assertNotNull(validUsername, "Username is not set in the properties file.");
