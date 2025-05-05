@@ -46,11 +46,12 @@ jobs:
 
       - name: Check Test Results
         if: always()
+        shell: pwsh
         run: |
-          if [ -f "test-output/testng-results.xml" ]; then
-            echo "Test results found"
+          if (Test-Path "test-output/testng-results.xml") {
+            Write-Host "Test results found"
             exit 0
-          else
-            echo "No test results found"
+          } else {
+            Write-Host "No test results found"
             exit 1
-          fi
+          }
