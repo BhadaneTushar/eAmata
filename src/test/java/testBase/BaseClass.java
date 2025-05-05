@@ -73,13 +73,6 @@ public class BaseClass {
             case "chrome":
                 WebDriverManager.chromedriver().setup();
                 ChromeOptions chromeOpts = new ChromeOptions();
-                chromeOpts.addArguments("--disable-gpu");
-                chromeOpts.addArguments("--no-sandbox");
-                chromeOpts.addArguments("--disable-dev-shm-usage");
-                chromeOpts.addArguments("--remote-allow-origins=*");
-                chromeOpts.addArguments("--disable-extensions");
-                chromeOpts.addArguments("--disable-popup-blocking");
-                chromeOpts.addArguments("--start-maximized");
                 System.out.println("ChromeDriver path: " + WebDriverManager.chromedriver().getDownloadedDriverPath());
                 chromeOpts.addArguments(properties.getProperty("Headless"));
                 driver = new ChromeDriver(chromeOpts);

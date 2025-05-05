@@ -47,7 +47,6 @@ public class TC003_AddStaff extends BaseClass {
      */
     @BeforeMethod
     public void setup() {
-        super.setUp();
         TestDataGenerator data = new TestDataGenerator();
         addStaff = new StaffPage(getDriver());
         firstName = data.generateRandomFirstName();
