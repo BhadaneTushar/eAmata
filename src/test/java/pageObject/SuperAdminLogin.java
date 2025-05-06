@@ -3,7 +3,12 @@ package pageObject;
 import io.qameta.allure.Step;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
+import utilities.LoggerUtils;
 
+/**
+ * Page Object for the Super Admin Login page.
+ * Contains all elements and actions related to the login functionality.
+ */
 public class SuperAdminLogin extends BasePage {
 
     // Input Fields
@@ -30,6 +35,7 @@ public class SuperAdminLogin extends BasePage {
 
     public SuperAdminLogin() {
         super();
+        LoggerUtils.debug("Initialized SuperAdminLogin page");
     }
 
     // Input Field Methods
@@ -69,6 +75,12 @@ public class SuperAdminLogin extends BasePage {
         return waitForElementToBeVisible(invalidEmailErrorMessage).getText();
     }
 
+    /**
+     * Gets the error message for invalid password.
+     * 
+     * @return The error message
+     * @throws RuntimeException if getting error message fails
+     */
     @Step("Checking error message for invalid password")
     public String getInvalidPasswordErrorMessage() {
         return waitForElementToBeVisible(invalidPasswordErrorMessage).getText();

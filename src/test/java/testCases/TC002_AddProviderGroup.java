@@ -5,12 +5,19 @@ import io.qameta.allure.Severity;
 import io.qameta.allure.SeverityLevel;
 import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
+import org.testng.annotations.AfterMethod;
+import org.testng.annotations.Parameters;
 import org.testng.annotations.Test;
+import org.testng.annotations.Optional;
 import pageObject.ProviderGroupPage;
 import testBase.BaseClass;
 import utilities.ErrorMessages;
 import utilities.TestDataGenerator;
 
+/**
+ * Test class for Provider Group creation functionality.
+ * Contains test cases for valid and invalid provider group creation scenarios.
+ */
 public class TC002_AddProviderGroup extends BaseClass {
 
         private ProviderGroupPage providerGroupPage;

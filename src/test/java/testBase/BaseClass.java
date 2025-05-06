@@ -1,6 +1,7 @@
 package testBase;
 
 import io.github.bonigarcia.wdm.WebDriverManager;
+import io.qameta.allure.Step;
 import org.openqa.selenium.OutputType;
 import org.openqa.selenium.TakesScreenshot;
 import org.openqa.selenium.WebDriver;
@@ -14,6 +15,7 @@ import org.openqa.selenium.safari.SafariDriver;
 import org.testng.Assert;
 import org.testng.annotations.*;
 import pageObject.SuperAdminLogin;
+import utilities.LoggerUtils;
 
 import java.io.File;
 import java.io.FileReader;
@@ -25,23 +27,41 @@ import java.time.Duration;
 import java.util.Date;
 import java.util.Properties;
 
+/**
+ * Base class for all test classes.
+ * Handles WebDriver initialization, configuration loading, and common test
+ * setup.
+ */
 public class BaseClass {
+    private static final String CONFIG_FILE_PATH = "./src/test/resources/config.properties";
+    private static final String SCREENSHOTS_DIR = "screenshots";
+    private static final Duration IMPLICIT_WAIT = Duration.ofSeconds(10);
 
-    public static Properties properties;
-    private static ThreadLocal<WebDriver> threadLocalDriver = new ThreadLocal<>();
+    protected static Properties properties;
+    private static final ThreadLocal<WebDriver> threadLocalDriver = new ThreadLocal<>();
 
+    /**
+     * Gets the WebDriver instance for the current thread.
+     * 
+     * @return WebDriver instance
+     */
     public static WebDriver getDriver() {
         return threadLocalDriver.get();
     }
 
     // Load configuration file Before run tests
     @BeforeSuite
+    @Step("Loading configuration")
     public void loadConfig() {
-        properties = new Properties();
-        try (FileReader file = new FileReader("./src/test/resources/config.properties")) {
-            properties.load(file);
+        try {
+            properties = new Properties();
+            try (FileReader file = new FileReader(CONFIG_FILE_PATH)) {
+                properties.load(file);
+                LoggerUtils.info("Configuration loaded successfully");
+            }
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            LoggerUtils.error("Failed to load configuration file: " + e.getMessage());
+            throw new RuntimeException("Failed to load configuration file", e);
         }
     }
 
@@ -101,10 +121,17 @@ public class BaseClass {
     }
 
     @AfterMethod
+    @Step("Cleaning up WebDriver resources")
     public void tearDown() {
-        if (getDriver() != null) {
-            getDriver().quit();
-            threadLocalDriver.remove();
+        try {
+            if (getDriver() != null) {
+                getDriver().quit();
+                threadLocalDriver.remove();
+                LoggerUtils.info("WebDriver resources cleaned up");
+            }
+        } catch (Exception e) {
+            LoggerUtils.error("Failed to clean up WebDriver resources: " + e.getMessage());
+            throw new RuntimeException("Failed to clean up WebDriver resources", e);
         }
     }
 

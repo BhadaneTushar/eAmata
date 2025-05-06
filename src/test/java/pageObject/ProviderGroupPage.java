@@ -1,18 +1,25 @@
 package pageObject;
 
+import io.qameta.allure.Step;
+import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 import testBase.BaseClass;
 import utilities.Address;
+import utilities.LoggerUtils;
 
+/**
+ * Page Object for the Provider Group management page.
+ * Contains all elements and actions related to provider group operations.
+ */
 public class ProviderGroupPage extends BasePage {
 
     // Navigation Elements
     @FindBy(xpath = "//span[text()='New Provider Group']")
     private WebElement newProviderGroupButton;
 
-    @FindBy(xpath = "//input[@value='manualEntry']")
+    @FindBy(xpath = "//input[@type='radio' and @value='manualEntry']")
     private WebElement manualEntryRadioButton;
 
     @FindBy(xpath = "(//button[@type='button' and @aria-label='edit'])[1]")
@@ -73,9 +80,10 @@ public class ProviderGroupPage extends BasePage {
     @FindBy(xpath = "//label[text()='Sub domain field is required']")
     private WebElement subDomainRequiredError;
 
-    public ProviderGroupPage() {
+    public ProviderGroupPage(WebDriver driver) {
         super();
-        PageFactory.initElements(getDriver(), this);
+        PageFactory.initElements(driver, this);
+        LoggerUtils.debug("Initialized ProviderGroupPage");
     }
 
     // Navigation Methods
@@ -169,10 +177,17 @@ public class ProviderGroupPage extends BasePage {
 
     // Status Management Methods
     public void archiveProviderGroup() {
+        LoggerUtils.info("Archiving provider group");
         // Implementation for archiving a provider group
     }
 
+    /**
+     * Toggles the status of a provider group (active/inactive).
+     * Implementation pending.
+     */
+    @Step("Toggling provider group status")
     public void toggleProviderGroupStatus() {
+        LoggerUtils.info("Toggling provider group status");
         // Implementation for activating/deactivating a provider group
     }
 }

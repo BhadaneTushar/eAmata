@@ -1,5 +1,6 @@
 package pageObject;
 
+import io.qameta.allure.Step;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -7,7 +8,12 @@ import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 import testBase.BaseClass;
 import utilities.Address;
+import utilities.LoggerUtils;
 
+/**
+ * Page Object for the Location page.
+ * Contains all elements and actions related to location management.
+ */
 public class LocationPage extends BasePage {
 
     // Constants
@@ -82,6 +88,7 @@ public class LocationPage extends BasePage {
     public LocationPage(WebDriver driver) {
         super();
         PageFactory.initElements(driver, this);
+        LoggerUtils.debug("Initialized LocationPage");
     }
 
     // Navigation Methods
@@ -137,8 +144,20 @@ public class LocationPage extends BasePage {
         return nameRequiredError.getText();
     }
 
+    /**
+     * Gets the error message for invalid phone number.
+     * 
+     * @return The error message
+     * @throws RuntimeException if getting error message fails
+     */
+    @Step("Getting invalid phone number error message")
     public String getInvalidPhoneNumberError() {
-        return invalidPhoneNumberError.getText();
+        try {
+            return invalidPhoneNumberError.getText();
+        } catch (Exception e) {
+            LoggerUtils.error("Failed to get invalid phone number error message: " + e.getMessage());
+            throw new RuntimeException("Failed to get invalid phone number error message", e);
+        }
     }
 
     public String getInvalidPhoneNumberFormatError() {

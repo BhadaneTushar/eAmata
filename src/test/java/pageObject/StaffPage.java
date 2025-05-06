@@ -1,5 +1,6 @@
 package pageObject;
 
+import io.qameta.allure.Step;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -7,7 +8,12 @@ import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 import testBase.BaseClass;
 import utilities.Address;
+import utilities.LoggerUtils;
 
+/**
+ * Page Object for the Staff page.
+ * Contains all elements and actions related to staff management.
+ */
 public class StaffPage extends BasePage {
 
     // Constants
@@ -71,6 +77,7 @@ public class StaffPage extends BasePage {
     public StaffPage(WebDriver driver) {
         super();
         PageFactory.initElements(driver, this);
+        LoggerUtils.debug("Initialized StaffPage");
     }
 
     // Navigation Methods
@@ -145,11 +152,29 @@ public class StaffPage extends BasePage {
 
     // Status Management Methods
     public void editStaff() {
-        // Future implementation
+        try {
+            // Future implementation
+            LoggerUtils.info("Staff edit functionality not yet implemented");
+        } catch (Exception e) {
+            LoggerUtils.error("Failed to edit staff: " + e.getMessage());
+            throw new RuntimeException("Failed to edit staff", e);
+        }
     }
 
+    /**
+     * Archives staff.
+     * 
+     * @throws RuntimeException if archiving staff fails
+     */
+    @Step("Archiving staff")
     public void archiveStaff() {
-        // Future implementation
+        try {
+            // Future implementation
+            LoggerUtils.info("Staff archive functionality not yet implemented");
+        } catch (Exception e) {
+            LoggerUtils.error("Failed to archive staff: " + e.getMessage());
+            throw new RuntimeException("Failed to archive staff", e);
+        }
     }
 
     public void toggleStaffStatus() {

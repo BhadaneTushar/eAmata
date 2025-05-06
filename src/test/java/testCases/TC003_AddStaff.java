@@ -4,13 +4,24 @@ import io.qameta.allure.Description;
 import io.qameta.allure.Severity;
 import io.qameta.allure.SeverityLevel;
 import org.testng.Assert;
-import org.testng.annotations.BeforeMethod;
-import org.testng.annotations.Test;
+import org.testng.annotations.*;
 import pageObject.StaffPage;
 import testBase.BaseClass;
 import utilities.ErrorMessages;
 import utilities.TestDataGenerator;
 
+/**
+ * Test class for Staff creation functionality.
+ * Contains test cases for valid and invalid staff creation scenarios.
+ * 
+ * Test Cases:
+ * 1. Add staff with valid details
+ * 2. Add staff with empty first name
+ * 3. Add staff with empty last name
+ * 4. Add staff with empty email
+ * 5. Add staff with empty phone number
+ * 6. Add staff with invalid phone number
+ */
 public class TC003_AddStaff extends BaseClass {
 
     private StaffPage staffPage;
@@ -27,6 +38,13 @@ public class TC003_AddStaff extends BaseClass {
     private String validZipCode;
     private String validState;
 
+    /**
+     * Sets up the test environment before each test method.
+     * Initializes page objects and generates test data.
+     * 
+     * @param browser The browser to use for testing
+     * @throws RuntimeException if setup fails
+     */
     @BeforeMethod
     @Description("Setup WebDriver, initialize Page Objects, and generate test data.")
     public void setUp() {

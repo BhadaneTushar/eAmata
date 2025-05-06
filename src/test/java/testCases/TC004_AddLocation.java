@@ -4,13 +4,24 @@ import io.qameta.allure.Description;
 import io.qameta.allure.Severity;
 import io.qameta.allure.SeverityLevel;
 import org.testng.Assert;
-import org.testng.annotations.BeforeMethod;
-import org.testng.annotations.Test;
+import org.testng.annotations.*;
 import pageObject.LocationPage;
 import testBase.BaseClass;
 import utilities.ErrorMessages;
 import utilities.TestDataGenerator;
 
+/**
+ * Test class for Location creation functionality.
+ * Contains test cases for valid and invalid location creation scenarios.
+ * 
+ * Test Cases:
+ * 1. Add location with valid details
+ * 2. Add location with empty name
+ * 3. Add location with empty phone number
+ * 4. Add location with empty email
+ * 5. Add location with invalid email
+ * 6. Add location with empty ZIP code
+ */
 public class TC004_AddLocation extends BaseClass {
 
     private LocationPage locationPage;
@@ -24,6 +35,13 @@ public class TC004_AddLocation extends BaseClass {
     private String validZipCode;
     private String validState;
 
+    /**
+     * Sets up the test environment before each test method.
+     * Initializes page objects and generates test data.
+     * 
+     * @param browser The browser to use for testing
+     * @throws RuntimeException if setup fails
+     */
     @BeforeMethod
     @Description("Setup WebDriver, initialize Page Objects, and generate test data.")
     public void setUp() {
