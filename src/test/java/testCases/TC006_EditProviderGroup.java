@@ -8,38 +8,39 @@ import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 import pageObject.ProviderGroupPage;
 import testBase.BaseClass;
+import utilities.LoginUtils;
 import utilities.TestDataGenerator;
 
 public class TC006_EditProviderGroup extends BaseClass {
-
     private ProviderGroupPage providerGroupPage;
-    private String newProviderGroupName;
+    private String updatedName;
 
     @BeforeMethod
+    @Description("Setup test prerequisites")
     public void setUp() {
-        super.setUp();
-        TestDataGenerator data = new TestDataGenerator();
+        LoginUtils.loginAsSuperAdmin();
         providerGroupPage = new ProviderGroupPage(getDriver());
-        newProviderGroupName = data.generateCompanyName();
+        TestDataGenerator dataGenerator = new TestDataGenerator();
+
+        // Generate updated test data
+        updatedName = dataGenerator.generateCompanyName();
     }
 
     @Test(priority = 1, groups = { "smoke", "regression" })
     @Severity(SeverityLevel.CRITICAL)
-    @Description("Verify SuperAdmin can successfully edit a provider group")
-    public void editProviderGroupWithValidDetails() {
-        providerGroupPage.editProviderGroup(newProviderGroupName);
-        String actualMessage = providerGroupPage.getSuccessMessage();
-        String expectedMessage = "Provider group updated successfully!";
-        Assert.assertEquals(actualMessage, expectedMessage, "Provider group update failed");
+    @Description("Verify editing a provider group with valid data")
+    public void editProviderGroup() {
+        providerGroupPage.editProviderGroup(updatedName);
+        Assert.assertEquals(providerGroupPage.getSuccessMessage(), "Provider group updated successfully!",
+                "Provider group was not updated successfully");
     }
 
     @Test(priority = 2, groups = { "regression" })
     @Severity(SeverityLevel.NORMAL)
-    @Description("Verify error message when provider group name is empty")
-    public void editProviderGroupWithEmptyName() {
+    @Description("Verify validation when updating provider group with empty name")
+    public void testEmptyNameValidation() {
         providerGroupPage.editProviderGroup("");
-        String actualError = providerGroupPage.getNameRequiredError();
-        String expectedError = "Name is required";
-        Assert.assertEquals(actualError, expectedError, "Empty name validation failed");
+        Assert.assertEquals(providerGroupPage.getNameRequiredError(), "Name is required",
+                "Name required error message does not match");
     }
 }

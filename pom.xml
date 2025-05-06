@@ -116,10 +116,10 @@
                 <version>3.2.5</version>
                 <configuration>
                     <suiteXmlFiles>
-                        <suiteXmlFile>testng.xml</suiteXmlFile> <!-- Path to your TestNG XML -->
+                        <suiteXmlFile>parallelTests.xml</suiteXmlFile>
                     </suiteXmlFiles>
                     <parallel>methods</parallel>
-                    <threadCount>3</threadCount>
+                    <threadCount>5</threadCount>
                     <systemPropertyVariables>
                         <allure.results.directory>allure-results</allure.results.directory>
                     </systemPropertyVariables>
