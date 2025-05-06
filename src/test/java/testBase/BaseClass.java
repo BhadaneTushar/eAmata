@@ -27,11 +27,6 @@ import java.time.Duration;
 import java.util.Date;
 import java.util.Properties;
 
-/**
- * Base class for all test classes.
- * Handles WebDriver initialization, configuration loading, and common test
- * setup.
- */
 public class BaseClass {
     private static final String CONFIG_FILE_PATH = "./src/test/resources/config.properties";
     private static final String SCREENSHOTS_DIR = "screenshots";
@@ -40,11 +35,6 @@ public class BaseClass {
     protected static Properties properties;
     private static final ThreadLocal<WebDriver> threadLocalDriver = new ThreadLocal<>();
 
-    /**
-     * Gets the WebDriver instance for the current thread.
-     * 
-     * @return WebDriver instance
-     */
     public static WebDriver getDriver() {
         return threadLocalDriver.get();
     }

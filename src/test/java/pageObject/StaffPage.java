@@ -10,10 +10,6 @@ import testBase.BaseClass;
 import utilities.Address;
 import utilities.LoggerUtils;
 
-/**
- * Page Object for the Staff page.
- * Contains all elements and actions related to staff management.
- */
 public class StaffPage extends BasePage {
 
     // Constants
@@ -55,7 +51,7 @@ public class StaffPage extends BasePage {
     private WebElement saveButton;
 
     // Success Messages
-    @FindBy(xpath = "//tbody/tr[1]/td[1]/div[1]/a[1]")
+    @FindBy(xpath = "//span[text()='User added successfully!']")
     private WebElement staffVerificationText;
 
     // Validation Messages
@@ -125,7 +121,6 @@ public class StaffPage extends BasePage {
 
     // Success Message Methods
     public String getStaffVerificationText() {
-        waitForProgressBarToAppear();
         return waitForElementToBeVisible(staffVerificationText).getText();
     }
 
@@ -161,11 +156,6 @@ public class StaffPage extends BasePage {
         }
     }
 
-    /**
-     * Archives staff.
-     * 
-     * @throws RuntimeException if archiving staff fails
-     */
     @Step("Archiving staff")
     public void archiveStaff() {
         try {

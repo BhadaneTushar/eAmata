@@ -4,115 +4,154 @@ import io.qameta.allure.Description;
 import io.qameta.allure.Severity;
 import io.qameta.allure.SeverityLevel;
 import org.testng.Assert;
-import org.testng.annotations.*;
+import org.testng.annotations.BeforeMethod;
+import org.testng.annotations.Test;
 import pageObject.StaffPage;
 import testBase.BaseClass;
-import utilities.ErrorMessages;
 import utilities.TestDataGenerator;
 
-/**
- * Test class for Staff creation functionality.
- * Contains test cases for valid and invalid staff creation scenarios.
- * 
- * Test Cases:
- * 1. Add staff with valid details
- * 2. Add staff with empty first name
- * 3. Add staff with empty last name
- * 4. Add staff with empty email
- * 5. Add staff with empty phone number
- * 6. Add staff with invalid phone number
- */
+
 public class TC003_AddStaff extends BaseClass {
 
     private StaffPage staffPage;
-    private TestDataGenerator dataGenerator;
-    private String validFirstName;
-    private String validLastName;
-    private String validEmail;
-    private String validPhone;
-    private String validRole;
-    private String validGender;
-    private String validAddressLine1;
-    private String validAddressLine2;
-    private String validCity;
-    private String validZipCode;
-    private String validState;
+    private String firstName;
+    private String lastName;
+    private String email;
+    private String phoneNumber;
+    private String role;
+    private String gender;
+    private String addressLine1;
+    private String addressLine2;
+    private String state;
+    private String city;
+    private String zipCode;
 
-    /**
-     * Sets up the test environment before each test method.
-     * Initializes page objects and generates test data.
-     * 
-     * @param browser The browser to use for testing
-     * @throws RuntimeException if setup fails
-     */
+
     @BeforeMethod
-    @Description("Setup WebDriver, initialize Page Objects, and generate test data.")
-    public void setUp() {
-        super.setUp();
+    public void setup() {
+        TestDataGenerator data = new TestDataGenerator();
         staffPage = new StaffPage(getDriver());
-        dataGenerator = new TestDataGenerator();
-
-        validFirstName = dataGenerator.generateRandomFirstName();
-        validLastName = dataGenerator.generateRandomLastName();
-        validEmail = dataGenerator.generateRandomEmail();
-        validPhone = dataGenerator.generatePhoneNumber();
-        validRole = properties.getProperty("Role");
-        validGender = properties.getProperty("Gender");
-        validAddressLine1 = dataGenerator.generateAddressLine1();
-        validAddressLine2 = dataGenerator.generateAddressLine2();
-        validCity = dataGenerator.generateCity();
-        validZipCode = dataGenerator.generateZipCode();
-        validState = properties.getProperty("State");
+        firstName = data.generateRandomFirstName();
+        lastName = data.generateRandomLastName();
+        email = data.generateEmail("staff");
+        phoneNumber = data.generatePhoneNumber();
+        role = properties.getProperty("StaffRole");
+        gender = properties.getProperty("Gender");
+        addressLine1 = data.generateAddressLine1();
+        addressLine2 = data.generateAddressLine2();
+        state = properties.getProperty("State");
+        city = data.generateCity();
+        zipCode = data.generateZipCode();
     }
 
     @Test(priority = 1, groups = {"smoke", "regression"})
+    @Description("Verify SuperAdmin can successfully add a staff member")
     @Severity(SeverityLevel.CRITICAL)
-    @Description("Verify adding a new staff member with valid data")
-    public void testAddStaff() {
-        staffPage.addStaff(validFirstName, validLastName, validEmail, validPhone, validRole, validGender,
-                validAddressLine1, validAddressLine2, validCity, validZipCode, validState);
-        String expectedText = validFirstName + " " + validLastName;
-        Assert.assertEquals(staffPage.getStaffVerificationText(), expectedText,
-                "Staff was not added successfully.");
+    public void testAddStaffWithValidDetails() {
+
+        staffPage.addStaff(firstName, lastName, email, phoneNumber, role, gender,
+                addressLine1, addressLine2, city, zipCode, state);
+
+        String expectedMessage = "User added successfully!";
+        //User added successfully!
+        String actualMessage = staffPage.getStaffVerificationText();
+        Assert.assertEquals(actualMessage, expectedMessage,
+                "Staff creation failed: Expected: '" + expectedMessage +
+                        "', Actual: '" + actualMessage + "'");
+
     }
+
 
     @Test(priority = 2, groups = {"regression"})
+    @Description("Verify error message when first name is empty")
     @Severity(SeverityLevel.NORMAL)
-    @Description("Verify validation when first name is empty")
-    public void testEmptyFirstNameValidation() {
-        staffPage.addStaff("", validLastName, validEmail, validPhone, validRole, validGender,
-                validAddressLine1, validAddressLine2, validCity, validZipCode, validState);
-        Assert.assertEquals(staffPage.getFirstNameRequiredError(), ErrorMessages.FIRST_NAME_REQUIRED,
-                "First name required error message does not match.");
+    public void testAddStaffWithEmptyFirstName() {
+
+        staffPage.addStaff("", lastName, email, phoneNumber, role, gender,
+                addressLine1, addressLine2, city, zipCode, state);
+
+        String expectedError = "First Name is required";
+        String actualError = staffPage.getFirstNameRequiredError();
+
+        Assert.assertEquals(actualError, expectedError,
+                "Validation failed! Expected: '" + expectedError +
+                        "', Actual: '" + actualError + "'");
+
+
     }
+
 
     @Test(priority = 3, groups = {"regression"})
+    @Description("Verify error message when last name is empty")
     @Severity(SeverityLevel.NORMAL)
-    @Description("Verify validation when last name is empty")
-    public void testEmptyLastNameValidation() {
-        staffPage.addStaff(validFirstName, "", validEmail, validPhone, validRole, validGender,
-                validAddressLine1, validAddressLine2, validCity, validZipCode, validState);
-        Assert.assertEquals(staffPage.getLastNameRequiredError(), ErrorMessages.LAST_NAME_REQUIRED,
-                "Last name required error message does not match.");
+    public void testAddStaffWithEmptyLastName() {
+
+        staffPage.addStaff(firstName, "", email, phoneNumber, role, gender,
+                addressLine1, addressLine2, city, zipCode, state);
+
+        String expectedError = "Last Name is required";
+        String actualError = staffPage.getLastNameRequiredError();
+
+        Assert.assertEquals(actualError, expectedError,
+                "Validation failed! Expected: '" + expectedError +
+                        "', Actual: '" + actualError + "'");
+
     }
+
 
     @Test(priority = 4, groups = {"regression"})
+    @Description("Verify error message when email is empty")
     @Severity(SeverityLevel.NORMAL)
-    @Description("Verify validation when email is empty")
-    public void testEmptyEmailValidation() {
-        staffPage.addStaff(validFirstName, validLastName, "", validPhone, validRole, validGender,
-                validAddressLine1, validAddressLine2, validCity, validZipCode, validState);
-        Assert.assertEquals(staffPage.getEmailRequiredError(), ErrorMessages.EMAIL_REQUIRED,
-                "Email required error message does not match.");
+    public void testAddStaffWithEmptyEmail() {
+
+        staffPage.addStaff(firstName, lastName, "", phoneNumber, role, gender,
+                addressLine1, addressLine2, city, zipCode, state);
+
+        String expectedError = "Email is required";
+        String actualError = staffPage.getEmailRequiredError();
+
+        Assert.assertEquals(actualError, expectedError,
+                "Validation failed! Expected: '" + expectedError +
+                        "', Actual: '" + actualError + "'");
+
+
     }
 
+
     @Test(priority = 5, groups = {"regression"})
+    @Description("Verify error message when phone number is empty")
     @Severity(SeverityLevel.NORMAL)
-    @Description("Verify validation when phone number is invalid")
-    public void testInvalidPhoneValidation() {
-        staffPage.addStaff(validFirstName, validLastName, validEmail, "123", validRole, validGender,
-                validAddressLine1, validAddressLine2, validCity, validZipCode, validState);
-        Assert.assertEquals(staffPage.getInvalidPhoneNumberError(), ErrorMessages.PHONE_INVALID,
-                "Invalid phone error message does not match.");
+    public void testAddStaffWithEmptyPhoneNumber() {
+
+
+        staffPage.addStaff(firstName, lastName, email, "", role, gender,
+                addressLine1, addressLine2, city, zipCode, state);
+
+        String expectedError = "Phone is required";
+        String actualError = staffPage.getPhoneRequiredError();
+
+        Assert.assertEquals(actualError, expectedError,
+                "Validation failed! Expected: '" + expectedError +
+                        "', Actual: '" + actualError + "'");
+
+
+    }
+
+
+    @Test(priority = 6, groups = {"regression"})
+    @Description("Verify error message when phone number is invalid")
+    @Severity(SeverityLevel.NORMAL)
+    public void testAddStaffWithInvalidPhoneNumber() {
+
+        staffPage.addStaff(firstName, lastName, email, "12345", role, gender,
+                addressLine1, addressLine2, city, zipCode, state);
+
+        String expectedError = "Invalid phone number. It must be 10 digits.";
+        String actualError = staffPage.getInvalidPhoneNumberError();
+
+        Assert.assertEquals(actualError, expectedError,
+                "Validation failed! Expected: '" + expectedError +
+                        "', Actual: '" + actualError + "'");
+
     }
 }
