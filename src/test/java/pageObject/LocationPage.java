@@ -42,7 +42,7 @@ public class LocationPage extends BasePage {
     @FindBy(xpath = "//input[@placeholder='Enter City']")
     private WebElement cityInputField;
 
-    @FindBy(xpath = "//input[@placeholder='Enter ZipCode']")
+    @FindBy(xpath = "//input[@placeholder='Enter Zip Code']")
     private WebElement zipCodeInputField;
 
     // Dropdown Elements

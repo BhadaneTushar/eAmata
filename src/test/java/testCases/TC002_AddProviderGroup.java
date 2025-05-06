@@ -9,10 +9,12 @@ import org.testng.annotations.Test;
 import pageObject.ProviderGroupPage;
 import testBase.BaseClass;
 import utilities.ErrorMessages;
+import utilities.TestDataGenerator;
 
 public class TC002_AddProviderGroup extends BaseClass {
 
         private ProviderGroupPage providerGroupPage;
+        private TestDataGenerator dataGenerator;
         private String validName;
         private String validEmail;
         private String validPhone;
@@ -25,29 +27,22 @@ public class TC002_AddProviderGroup extends BaseClass {
         private String validState;
 
         @BeforeMethod
-        @Description("Setup WebDriver, initialize Page Objects, and fetch test data from properties file.")
+        @Description("Setup WebDriver, initialize Page Objects, and generate test data.")
         public void setUp() {
+                super.setUp();
                 providerGroupPage = new ProviderGroupPage();
-                validName = properties.getProperty("ProviderGroupName");
-                validEmail = properties.getProperty("ProviderGroupEmail");
-                validPhone = properties.getProperty("ProviderGroupPhone");
-                validNPI = properties.getProperty("ProviderGroupNPI");
-                validSubdomain = properties.getProperty("ProviderGroupSubdomain");
-                validAddressLine1 = properties.getProperty("ProviderGroupAddressLine1");
-                validAddressLine2 = properties.getProperty("ProviderGroupAddressLine2");
-                validCity = properties.getProperty("ProviderGroupCity");
-                validZipCode = properties.getProperty("ProviderGroupZipCode");
-                validState = properties.getProperty("ProviderGroupState");
-                Assert.assertNotNull(validName, "Provider Group Name is not set in the properties file.");
-                Assert.assertNotNull(validEmail, "Provider Group Email is not set in the properties file.");
-                Assert.assertNotNull(validPhone, "Provider Group Phone is not set in the properties file.");
-                Assert.assertNotNull(validNPI, "Provider Group NPI is not set in the properties file.");
-                Assert.assertNotNull(validSubdomain, "Provider Group Subdomain is not set in the properties file.");
-                Assert.assertNotNull(validAddressLine1,
-                                "Provider Group Address Line 1 is not set in the properties file.");
-                Assert.assertNotNull(validCity, "Provider Group City is not set in the properties file.");
-                Assert.assertNotNull(validZipCode, "Provider Group Zip Code is not set in the properties file.");
-                Assert.assertNotNull(validState, "Provider Group State is not set in the properties file.");
+                dataGenerator = new TestDataGenerator();
+
+                validName = dataGenerator.generateCompanyName();
+                validEmail = dataGenerator.generateRandomEmail();
+                validPhone = dataGenerator.generatePhoneNumber();
+                validNPI = dataGenerator.generateRandomNPI();
+                validSubdomain = dataGenerator.generateRandomSubDomain();
+                validAddressLine1 = dataGenerator.generateAddressLine1();
+                validAddressLine2 = dataGenerator.generateAddressLine2();
+                validCity = dataGenerator.generateCity();
+                validZipCode = dataGenerator.generateZipCode();
+                validState = properties.getProperty("State"); // Using a fixed state for consistency
         }
 
         @Test(priority = 1, groups = { "smoke", "regression" })

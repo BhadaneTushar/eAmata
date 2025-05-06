@@ -9,10 +9,12 @@ import org.testng.annotations.Test;
 import pageObject.StaffPage;
 import testBase.BaseClass;
 import utilities.ErrorMessages;
+import utilities.TestDataGenerator;
 
 public class TC003_AddStaff extends BaseClass {
 
     private StaffPage staffPage;
+    private TestDataGenerator dataGenerator;
     private String validFirstName;
     private String validLastName;
     private String validEmail;
@@ -26,33 +28,26 @@ public class TC003_AddStaff extends BaseClass {
     private String validState;
 
     @BeforeMethod
-    @Description("Setup WebDriver, initialize Page Objects, and fetch test data from properties file.")
+    @Description("Setup WebDriver, initialize Page Objects, and generate test data.")
     public void setUp() {
+        super.setUp();
         staffPage = new StaffPage(getDriver());
-        validFirstName = properties.getProperty("StaffFirstName");
-        validLastName = properties.getProperty("StaffLastName");
-        validEmail = properties.getProperty("StaffEmail");
-        validPhone = properties.getProperty("StaffPhone");
-        validRole = properties.getProperty("StaffRole");
-        validGender = properties.getProperty("StaffGender");
-        validAddressLine1 = properties.getProperty("StaffAddressLine1");
-        validAddressLine2 = properties.getProperty("StaffAddressLine2");
-        validCity = properties.getProperty("StaffCity");
-        validZipCode = properties.getProperty("StaffZipCode");
-        validState = properties.getProperty("StaffState");
-        Assert.assertNotNull(validFirstName, "Staff First Name is not set in the properties file.");
-        Assert.assertNotNull(validLastName, "Staff Last Name is not set in the properties file.");
-        Assert.assertNotNull(validEmail, "Staff Email is not set in the properties file.");
-        Assert.assertNotNull(validPhone, "Staff Phone is not set in the properties file.");
-        Assert.assertNotNull(validRole, "Staff Role is not set in the properties file.");
-        Assert.assertNotNull(validGender, "Staff Gender is not set in the properties file.");
-        Assert.assertNotNull(validAddressLine1, "Staff Address Line 1 is not set in the properties file.");
-        Assert.assertNotNull(validCity, "Staff City is not set in the properties file.");
-        Assert.assertNotNull(validZipCode, "Staff Zip Code is not set in the properties file.");
-        Assert.assertNotNull(validState, "Staff State is not set in the properties file.");
+        dataGenerator = new TestDataGenerator();
+
+        validFirstName = dataGenerator.generateRandomFirstName();
+        validLastName = dataGenerator.generateRandomLastName();
+        validEmail = dataGenerator.generateRandomEmail();
+        validPhone = dataGenerator.generatePhoneNumber();
+        validRole = properties.getProperty("Role");
+        validGender = properties.getProperty("Gender");
+        validAddressLine1 = dataGenerator.generateAddressLine1();
+        validAddressLine2 = dataGenerator.generateAddressLine2();
+        validCity = dataGenerator.generateCity();
+        validZipCode = dataGenerator.generateZipCode();
+        validState = properties.getProperty("State");
     }
 
-    @Test(priority = 1, groups = { "smoke", "regression" })
+    @Test(priority = 1, groups = {"smoke", "regression"})
     @Severity(SeverityLevel.CRITICAL)
     @Description("Verify adding a new staff member with valid data")
     public void testAddStaff() {
@@ -63,7 +58,7 @@ public class TC003_AddStaff extends BaseClass {
                 "Staff was not added successfully.");
     }
 
-    @Test(priority = 2, groups = { "regression" })
+    @Test(priority = 2, groups = {"regression"})
     @Severity(SeverityLevel.NORMAL)
     @Description("Verify validation when first name is empty")
     public void testEmptyFirstNameValidation() {
@@ -73,7 +68,7 @@ public class TC003_AddStaff extends BaseClass {
                 "First name required error message does not match.");
     }
 
-    @Test(priority = 3, groups = { "regression" })
+    @Test(priority = 3, groups = {"regression"})
     @Severity(SeverityLevel.NORMAL)
     @Description("Verify validation when last name is empty")
     public void testEmptyLastNameValidation() {
@@ -83,7 +78,7 @@ public class TC003_AddStaff extends BaseClass {
                 "Last name required error message does not match.");
     }
 
-    @Test(priority = 4, groups = { "regression" })
+    @Test(priority = 4, groups = {"regression"})
     @Severity(SeverityLevel.NORMAL)
     @Description("Verify validation when email is empty")
     public void testEmptyEmailValidation() {
@@ -93,7 +88,7 @@ public class TC003_AddStaff extends BaseClass {
                 "Email required error message does not match.");
     }
 
-    @Test(priority = 5, groups = { "regression" })
+    @Test(priority = 5, groups = {"regression"})
     @Severity(SeverityLevel.NORMAL)
     @Description("Verify validation when phone number is invalid")
     public void testInvalidPhoneValidation() {

@@ -9,10 +9,12 @@ import org.testng.annotations.Test;
 import pageObject.LocationPage;
 import testBase.BaseClass;
 import utilities.ErrorMessages;
+import utilities.TestDataGenerator;
 
 public class TC004_AddLocation extends BaseClass {
 
     private LocationPage locationPage;
+    private TestDataGenerator dataGenerator;
     private String validName;
     private String validPhone;
     private String validEmail;
@@ -23,27 +25,23 @@ public class TC004_AddLocation extends BaseClass {
     private String validState;
 
     @BeforeMethod
-    @Description("Setup WebDriver, initialize Page Objects, and fetch test data from properties file.")
+    @Description("Setup WebDriver, initialize Page Objects, and generate test data.")
     public void setUp() {
+        super.setUp();
         locationPage = new LocationPage(getDriver());
-        validName = properties.getProperty("LocationName");
-        validPhone = properties.getProperty("LocationPhone");
-        validEmail = properties.getProperty("LocationEmail");
-        validAddressLine1 = properties.getProperty("LocationAddressLine1");
-        validAddressLine2 = properties.getProperty("LocationAddressLine2");
-        validCity = properties.getProperty("LocationCity");
-        validZipCode = properties.getProperty("LocationZipCode");
-        validState = properties.getProperty("LocationState");
-        Assert.assertNotNull(validName, "Location Name is not set in the properties file.");
-        Assert.assertNotNull(validPhone, "Location Phone is not set in the properties file.");
-        Assert.assertNotNull(validEmail, "Location Email is not set in the properties file.");
-        Assert.assertNotNull(validAddressLine1, "Location Address Line 1 is not set in the properties file.");
-        Assert.assertNotNull(validCity, "Location City is not set in the properties file.");
-        Assert.assertNotNull(validZipCode, "Location Zip Code is not set in the properties file.");
-        Assert.assertNotNull(validState, "Location State is not set in the properties file.");
+        dataGenerator = new TestDataGenerator();
+
+        validName = dataGenerator.generateCompanyName();
+        validPhone = dataGenerator.generatePhoneNumber();
+        validEmail = dataGenerator.generateRandomEmail();
+        validAddressLine1 = dataGenerator.generateAddressLine1();
+        validAddressLine2 = dataGenerator.generateAddressLine2();
+        validCity = dataGenerator.generateCity();
+        validZipCode = dataGenerator.generateZipCode();
+        validState = properties.getProperty("State");
     }
 
-    @Test(priority = 1, groups = { "smoke", "regression" })
+    @Test(priority = 1, groups = {"smoke", "regression"})
     @Severity(SeverityLevel.CRITICAL)
     @Description("Verify adding a new location with valid data")
     public void testAddLocation() {
@@ -53,7 +51,7 @@ public class TC004_AddLocation extends BaseClass {
                 "Location was not added successfully.");
     }
 
-    @Test(priority = 2, groups = { "regression" })
+    @Test(priority = 2, groups = {"regression"})
     @Severity(SeverityLevel.NORMAL)
     @Description("Verify validation when name is empty")
     public void testEmptyNameValidation() {
@@ -63,7 +61,7 @@ public class TC004_AddLocation extends BaseClass {
                 "Name required error message does not match.");
     }
 
-    @Test(priority = 3, groups = { "regression" })
+    @Test(priority = 3, groups = {"regression"})
     @Severity(SeverityLevel.NORMAL)
     @Description("Verify validation when phone number is invalid")
     public void testInvalidPhoneValidation() {
@@ -73,7 +71,7 @@ public class TC004_AddLocation extends BaseClass {
                 "Invalid phone error message does not match.");
     }
 
-    @Test(priority = 4, groups = { "regression" })
+    @Test(priority = 4, groups = {"regression"})
     @Severity(SeverityLevel.NORMAL)
     @Description("Verify validation when email is empty")
     public void testEmptyEmailValidation() {
@@ -83,7 +81,7 @@ public class TC004_AddLocation extends BaseClass {
                 "Email required error message does not match.");
     }
 
-    @Test(priority = 5, groups = { "regression" })
+    @Test(priority = 5, groups = {"regression"})
     @Severity(SeverityLevel.NORMAL)
     @Description("Verify validation when email is invalid")
     public void testInvalidEmailValidation() {
@@ -93,7 +91,7 @@ public class TC004_AddLocation extends BaseClass {
                 "Invalid email error message does not match.");
     }
 
-    @Test(priority = 6, groups = { "regression" })
+    @Test(priority = 6, groups = {"regression"})
     @Severity(SeverityLevel.NORMAL)
     @Description("Verify validation when zip code is empty")
     public void testEmptyZipCodeValidation() {
