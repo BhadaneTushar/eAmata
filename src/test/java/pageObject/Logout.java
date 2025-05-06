@@ -5,10 +5,6 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import utilities.LoggerUtils;
 
-/**
- * Page Object for the Logout functionality.
- * Contains all elements and actions related to user logout.
- */
 public class Logout extends BasePage {
 
     @FindBy(xpath = "//div[@class='MuiAvatar-root MuiAvatar-circular MuiAvatar-colorDefault css-mln75l']//*[name()='svg']")
@@ -28,11 +24,6 @@ public class Logout extends BasePage {
         LoggerUtils.debug("Initialized Logout page");
     }
 
-    /**
-     * Performs logout operation.
-     * 
-     * @throws RuntimeException if logout fails
-     */
     @Step("Logging out of the application")
     public void logout() {
         try {
@@ -46,12 +37,6 @@ public class Logout extends BasePage {
         }
     }
 
-    /**
-     * Verifies logout by checking Login button visibility.
-     * 
-     * @return true if logout is successful
-     * @throws RuntimeException if verification fails
-     */
     @Step("Verifying logout by checking Login button visibility")
     public boolean verifyLogout() {
         try {

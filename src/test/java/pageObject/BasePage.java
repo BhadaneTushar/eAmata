@@ -14,10 +14,7 @@ import java.io.File;
 import java.time.Duration;
 import java.util.List;
 
-/**
- * Base class for all page objects.
- * Provides common web element interactions and wait mechanisms.
- */
+
 public class BasePage {
     private static final String PROGRESS_BAR_XPATH = "//div[span[@role='progressbar']]";
     private static final Duration DEFAULT_TIMEOUT = Duration.ofSeconds(30);
@@ -26,25 +23,12 @@ public class BasePage {
 
     public BasePage() {
         PageFactory.initElements(BaseClass.getDriver(), this);
-        LoggerUtils.debug("Initialized page object: " + this.getClass().getSimpleName());
     }
 
-    /**
-     * Gets the WebDriver instance.
-     * 
-     * @return WebDriver instance
-     */
     protected WebDriver getDriver() {
         return BaseClass.getDriver();
     }
 
-    /**
-     * Waits for an element to be clickable.
-     * 
-     * @param element The element to wait for
-     * @return The clickable element
-     * @throws RuntimeException if element is not clickable within timeout
-     */
     @Step("Waiting for element to be clickable")
     protected WebElement waitForElementToBeClickable(WebElement element) {
         try {
@@ -57,13 +41,6 @@ public class BasePage {
         }
     }
 
-    /**
-     * Waits for an element to be visible.
-     * 
-     * @param element The element to wait for
-     * @return The visible element
-     * @throws RuntimeException if element is not visible within timeout
-     */
     @Step("Waiting for element to be visible")
     protected WebElement waitForElementToBeVisible(WebElement element) {
         try {
@@ -76,13 +53,6 @@ public class BasePage {
         }
     }
 
-    /**
-     * Sets the value of an input field after clearing it.
-     * 
-     * @param element The input field element
-     * @param value   The value to set
-     * @throws RuntimeException if setting input field fails
-     */
     @Step("Setting input field value: {1}")
     protected void setInputField(WebElement element, String value) {
         try {
@@ -96,12 +66,6 @@ public class BasePage {
         }
     }
 
-    /**
-     * Clicks an element, using JavaScript if regular click fails.
-     * 
-     * @param element The element to click
-     * @throws RuntimeException if clicking element fails
-     */
     @Step("Clicking element")
     protected void clickButton(WebElement element) {
         try {
@@ -119,14 +83,6 @@ public class BasePage {
         }
     }
 
-    /**
-     * Selects an option from a dropdown by visible text.
-     * 
-     * @param dropdownElement The dropdown element
-     * @param visibleText     The text to select
-     * @param listItemsXPath  XPath for dropdown items
-     * @throws RuntimeException if option not found
-     */
     @Step("Selecting dropdown option: {1}")
     protected void selectDropdownByVisibleText(WebElement dropdownElement, String visibleText, String listItemsXPath) {
         try {
@@ -146,8 +102,7 @@ public class BasePage {
         }
     }
 
-
-    @Step("Waiting for progress bar")
+    @Step("Waiting for progress bar to disappear")
     protected void waitForProgressBarToAppear() {
             FluentWait<WebDriver> wait = new FluentWait<>(getDriver())
                     .withTimeout(PROGRESS_BAR_TIMEOUT)
@@ -168,12 +123,6 @@ public class BasePage {
             return progressBar.isDisplayed();
     }
 
-    /**
-     * Checks if an element is displayed.
-     * 
-     * @param element The element to check
-     * @return true if element is displayed
-     */
     @Step("Checking if element is displayed")
     protected boolean isElementDisplayed(WebElement element) {
         try {
@@ -184,15 +133,6 @@ public class BasePage {
         }
     }
 
-    /**
-     * Waits for an element using FluentWait.
-     * 
-     * @param locator The element locator
-     * @param timeout The timeout duration
-     * @param polling The polling interval
-     * @return The found element
-     * @throws RuntimeException if element not found within timeout
-     */
     @Step("Using fluent wait for element")
     protected WebElement fluentWait(By locator, Duration timeout, Duration polling) {
         try {
@@ -208,13 +148,6 @@ public class BasePage {
         }
     }
 
-    /**
-     * Uploads a file to an input element.
-     * 
-     * @param element  The file input element
-     * @param filePath The path to the file
-     * @throws RuntimeException if file upload fails
-     */
     @Step("Uploading file: {1}")
     protected void uploadFile(WebElement element, String filePath) {
         try {
@@ -226,11 +159,6 @@ public class BasePage {
         }
     }
 
-    /**
-     * Switches to a new window/tab.
-     * 
-     * @throws RuntimeException if switching to new window fails
-     */
     @Step("Switching to new window")
     protected void switchToNewWindow() {
         try {
@@ -250,11 +178,6 @@ public class BasePage {
         }
     }
 
-    /**
-     * Accepts an alert dialog.
-     * 
-     * @throws RuntimeException if accepting alert fails
-     */
     @Step("Accepting alert")
     protected void acceptAlert() {
         try {

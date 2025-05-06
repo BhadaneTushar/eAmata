@@ -126,7 +126,6 @@ public class eAmataNursePage extends BasePage {
 
     @Step("Entering license details")
     public void enterLicenseDetails(String licenseNumber, String licensedState, String expiryDate) {
-
             setInputField(licensedNumberField, licenseNumber);
             WebElement stateList = licensedStateDropdown;
             stateList.click();

@@ -9,10 +9,6 @@ import testBase.BaseClass;
 import utilities.Address;
 import utilities.LoggerUtils;
 
-/**
- * Page Object for the Provider Group management page.
- * Contains all elements and actions related to provider group operations.
- */
 public class ProviderGroupPage extends BasePage {
 
     // Navigation Elements
@@ -181,10 +177,6 @@ public class ProviderGroupPage extends BasePage {
         // Implementation for archiving a provider group
     }
 
-    /**
-     * Toggles the status of a provider group (active/inactive).
-     * Implementation pending.
-     */
     @Step("Toggling provider group status")
     public void toggleProviderGroupStatus() {
         LoggerUtils.info("Toggling provider group status");

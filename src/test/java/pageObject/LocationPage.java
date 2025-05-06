@@ -10,10 +10,6 @@ import testBase.BaseClass;
 import utilities.Address;
 import utilities.LoggerUtils;
 
-/**
- * Page Object for the Location page.
- * Contains all elements and actions related to location management.
- */
 public class LocationPage extends BasePage {
 
     // Constants
@@ -144,12 +140,6 @@ public class LocationPage extends BasePage {
         return nameRequiredError.getText();
     }
 
-    /**
-     * Gets the error message for invalid phone number.
-     * 
-     * @return The error message
-     * @throws RuntimeException if getting error message fails
-     */
     @Step("Getting invalid phone number error message")
     public String getInvalidPhoneNumberError() {
         try {
