@@ -10,29 +10,14 @@ import pageObject.SuperAdminLogin;
 import testBase.BaseClass;
 import utilities.ErrorMessages;
 
-/**
- * Test class for Super Admin login functionality.
- * Contains test cases for valid and invalid login scenarios.
- * 
- * Test Cases:
- * 1. Login with valid credentials
- * 2. Login with invalid username
- * 3. Login with invalid password
- * 4. Login with empty username
- * 5. Login with empty password
- */
+
 public class TC001_SuperAdminLogin extends BaseClass {
 
     private SuperAdminLogin loginPage;
     private String validUsername;
     private String validPassword;
 
-    /**
-     * Sets up the test environment before each test method.
-     * Initializes page objects and retrieves credentials from properties.
-     * 
-     * @throws RuntimeException if setup fails
-     */
+
     @BeforeMethod
     @Description("Setup WebDriver, initialize Page Objects, and fetch credentials from properties file.")
     public void setUp() {

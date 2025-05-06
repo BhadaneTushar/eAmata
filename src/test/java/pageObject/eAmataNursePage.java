@@ -9,10 +9,7 @@ import testBase.BaseClass;
 import utilities.DatePicker;
 import utilities.LoggerUtils;
 
-/**
- * Page Object for the eAmata Nurse page.
- * Contains all elements and actions related to nurse management.
- */
+
 public class eAmataNursePage extends BasePage {
 
     private static final String GENDER_LIST_XPATH = "//ul[@role='listbox']/li";
@@ -95,39 +92,19 @@ public class eAmataNursePage extends BasePage {
         LoggerUtils.debug("Initialized eAmataNursePage");
     }
 
-    /**
-     * Navigates to the Add Nurse form.
-     * 
-     * @throws RuntimeException if navigation fails
-     */
+
     @Step("Navigating to Add Nurse form")
     public void navigateToAddNurseForm() {
-        try {
-            waitForProgressBarToAppear();
+           // waitForProgressBarToAppear();
             clickButton(settingsLink);
-            waitForProgressBarToAppear();
+           // waitForProgressBarToAppear();
             clickButton(adminUsersTab);
-            waitForProgressBarToAppear();
+          //  waitForProgressBarToAppear();
             clickButton(nurseButton);
             clickButton(addNurseButton);
-            LoggerUtils.info("Successfully navigated to Add Nurse form");
-        } catch (Exception e) {
-            LoggerUtils.error("Failed to navigate to Add Nurse form: " + e.getMessage());
-            throw new RuntimeException("Failed to navigate to Add Nurse form", e);
-        }
+
     }
 
-    /**
-     * Enters nurse details.
-     * 
-     * @param firstName   The nurse's first name
-     * @param lastName    The nurse's last name
-     * @param email       The nurse's email
-     * @param phoneNumber The nurse's phone number
-     * @param NPI         The nurse's NPI number
-     * @param gender      The nurse's gender
-     * @throws RuntimeException if entering details fails
-     */
     @Step("Entering nurse details")
     public void enterNurseDetails(String firstName, String lastName, String email, String phoneNumber, String NPI,
             String gender) {
@@ -146,17 +123,10 @@ public class eAmataNursePage extends BasePage {
         }
     }
 
-    /**
-     * Enters license details.
-     * 
-     * @param licenseNumber The license number
-     * @param licensedState The licensed state
-     * @param expiryDate    The license expiry date
-     * @throws RuntimeException if entering license details fails
-     */
+
     @Step("Entering license details")
     public void enterLicenseDetails(String licenseNumber, String licensedState, String expiryDate) {
-        try {
+
             setInputField(licensedNumberField, licenseNumber);
             WebElement stateList = licensedStateDropdown;
             stateList.click();
@@ -164,17 +134,10 @@ public class eAmataNursePage extends BasePage {
             waitForElementToBeVisible(stateName).click();
             new DatePicker(BaseClass.getDriver(), expiryDate);
             LoggerUtils.info("Successfully entered license details");
-        } catch (Exception e) {
-            LoggerUtils.error("Failed to enter license details: " + e.getMessage());
-            throw new RuntimeException("Failed to enter license details", e);
-        }
+
     }
 
-    /**
-     * Saves the nurse details.
-     * 
-     * @throws RuntimeException if saving fails
-     */
+
     @Step("Saving nurse details")
     public void saveNurse() {
         try {
@@ -186,12 +149,7 @@ public class eAmataNursePage extends BasePage {
         }
     }
 
-    /**
-     * Verifies nurse creation.
-     * 
-     * @return The verification message
-     * @throws RuntimeException if verification fails
-     */
+
     @Step("Verifying nurse creation")
     public String verifyNurseCreation() {
         try {
@@ -202,12 +160,7 @@ public class eAmataNursePage extends BasePage {
         }
     }
 
-    /**
-     * Gets the first name error message.
-     * 
-     * @return The error message text
-     * @throws RuntimeException if getting error message fails
-     */
+
     @Step("Getting first name error message")
     public String getFirstNameError() {
         try {
@@ -218,12 +171,7 @@ public class eAmataNursePage extends BasePage {
         }
     }
 
-    /**
-     * Gets the last name error message.
-     * 
-     * @return The error message text
-     * @throws RuntimeException if getting error message fails
-     */
+
     @Step("Getting last name error message")
     public String getLastNameError() {
         try {
@@ -234,12 +182,7 @@ public class eAmataNursePage extends BasePage {
         }
     }
 
-    /**
-     * Gets the email error message.
-     * 
-     * @return The error message text
-     * @throws RuntimeException if getting error message fails
-     */
+
     @Step("Getting email error message")
     public String getEmailError() {
         try {
@@ -250,12 +193,7 @@ public class eAmataNursePage extends BasePage {
         }
     }
 
-    /**
-     * Gets the phone number error message.
-     * 
-     * @return The error message text
-     * @throws RuntimeException if getting error message fails
-     */
+
     @Step("Getting phone number error message")
     public String getPhoneNumberError() {
         try {
@@ -266,12 +204,7 @@ public class eAmataNursePage extends BasePage {
         }
     }
 
-    /**
-     * Gets the NPI error message.
-     * 
-     * @return The error message text
-     * @throws RuntimeException if getting error message fails
-     */
+
     @Step("Getting NPI error message")
     public String getNPIError() {
         try {
@@ -282,12 +215,7 @@ public class eAmataNursePage extends BasePage {
         }
     }
 
-    /**
-     * Gets the license error message.
-     * 
-     * @return The error message text
-     * @throws RuntimeException if getting error message fails
-     */
+
     @Step("Getting license error message")
     public String getLicenseError() {
         try {

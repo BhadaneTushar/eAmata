@@ -35,13 +35,7 @@ public class TC004_AddLocation extends BaseClass {
     private String validZipCode;
     private String validState;
 
-    /**
-     * Sets up the test environment before each test method.
-     * Initializes page objects and generates test data.
-     * 
-     * @param browser The browser to use for testing
-     * @throws RuntimeException if setup fails
-     */
+
     @BeforeMethod
     @Description("Setup WebDriver, initialize Page Objects, and generate test data.")
     public void setUp() {

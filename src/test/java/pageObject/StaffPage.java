@@ -55,7 +55,7 @@ public class StaffPage extends BasePage {
     private WebElement saveButton;
 
     // Success Messages
-    @FindBy(xpath = "//tbody/tr[1]/td[1]/div[1]/a[1]")
+    @FindBy(xpath = "//span[text()='User added successfully!']")
     private WebElement staffVerificationText;
 
     // Validation Messages
@@ -125,7 +125,6 @@ public class StaffPage extends BasePage {
 
     // Success Message Methods
     public String getStaffVerificationText() {
-        waitForProgressBarToAppear();
         return waitForElementToBeVisible(staffVerificationText).getText();
     }
 

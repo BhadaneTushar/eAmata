@@ -146,54 +146,26 @@ public class BasePage {
         }
     }
 
-    /**
-     * Waits for a progress bar to appear and disappear.
-     * 
-     * @throws RuntimeException if waiting for progress bar fails
-     */
+
     @Step("Waiting for progress bar")
     protected void waitForProgressBarToAppear() {
-        try {
-            LoggerUtils.debug("Waiting for progress bar");
             FluentWait<WebDriver> wait = new FluentWait<>(getDriver())
                     .withTimeout(PROGRESS_BAR_TIMEOUT)
                     .pollingEvery(POLLING_INTERVAL)
                     .ignoring(NoSuchElementException.class, StaleElementReferenceException.class);
 
-            // Wait for progress bar to appear
-            wait.until(d -> {
-                try {
-                    WebElement progressBar = d.findElement(By.xpath(PROGRESS_BAR_XPATH));
-                    return progressBar.isDisplayed();
-                } catch (NoSuchElementException e) {
-                    return false;
-                }
-            });
-
             // Wait for progress bar to disappear
             wait.until(d -> {
-                try {
-                    WebElement progressBar = d.findElement(By.xpath(PROGRESS_BAR_XPATH));
-                    return !progressBar.isDisplayed();
-                } catch (NoSuchElementException e) {
-                    return true;
-                }
+                    return isProgressBarDisplayed();
             });
 
             LoggerUtils.debug("Progress bar operation completed");
-        } catch (Exception e) {
-            LoggerUtils.error("Failed to handle progress bar: " + e.getMessage());
-            throw new RuntimeException("Failed to handle progress bar", e);
-        }
+
     }
 
     public boolean isProgressBarDisplayed() {
-        try {
             WebElement progressBar = getDriver().findElement(By.xpath(PROGRESS_BAR_XPATH));
             return progressBar.isDisplayed();
-        } catch (NoSuchElementException e) {
-            return false;
-        }
     }
 
     /**
