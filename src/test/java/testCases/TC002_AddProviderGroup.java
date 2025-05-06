@@ -9,13 +9,12 @@ import org.testng.annotations.Test;
 import pageObject.ProviderGroupPage;
 import testBase.BaseClass;
 import utilities.ErrorMessages;
+import utilities.LoginUtils;
 import utilities.TestDataGenerator;
-
 
 public class TC002_AddProviderGroup extends BaseClass {
 
         private ProviderGroupPage providerGroupPage;
-        private TestDataGenerator dataGenerator;
         private String validName;
         private String validEmail;
         private String validPhone;
@@ -30,9 +29,9 @@ public class TC002_AddProviderGroup extends BaseClass {
         @BeforeMethod
         @Description("Setup WebDriver, initialize Page Objects, and generate test data.")
         public void setUp() {
-                super.setUp();
+                LoginUtils.loginAsSuperAdmin();
                 providerGroupPage = new ProviderGroupPage(getDriver());
-                dataGenerator = new TestDataGenerator();
+                TestDataGenerator dataGenerator = new TestDataGenerator();
 
                 validName = dataGenerator.generateCompanyName();
                 validEmail = dataGenerator.generateRandomEmail();

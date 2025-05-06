@@ -13,7 +13,6 @@ import utilities.LoggerUtils;
 public class eAmataNursePage extends BasePage {
 
     private static final String GENDER_LIST_XPATH = "//ul[@role='listbox']/li";
-    private static final String STATE_LIST_XPATH = "//ul[@role='listbox']/li";
 
     // Locators
     @FindBy(xpath = "//span[text()='Settings']")
