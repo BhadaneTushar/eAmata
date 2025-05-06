@@ -61,7 +61,6 @@ public class TC005_AddEamataNurse extends BaseClass {
         validGender = properties.getProperty("Gender"); // Using a fixed gender for consistency
         validLicenseNumber = dataGenerator.generatePhoneNumber().substring(0, 6); // Generate RN license number
         validState = properties.getProperty("State"); // Using a fixed state for consistency
-        // Generate expiry date 1 year from now
         validExpiryDate = properties.getProperty("LicenseExpiryDate");
     }
 

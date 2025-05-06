@@ -19,7 +19,7 @@ public class TC006_EditProviderGroup extends BaseClass {
     public void setUp() {
         super.setUp();
         TestDataGenerator data = new TestDataGenerator();
-        providerGroupPage = new ProviderGroupPage();
+        providerGroupPage = new ProviderGroupPage(getDriver());
         newProviderGroupName = data.generateCompanyName();
     }
 

@@ -37,7 +37,7 @@ public class TC002_AddProviderGroup extends BaseClass {
         @Description("Setup WebDriver, initialize Page Objects, and generate test data.")
         public void setUp() {
                 super.setUp();
-                providerGroupPage = new ProviderGroupPage();
+                providerGroupPage = new ProviderGroupPage(getDriver());
                 dataGenerator = new TestDataGenerator();
 
                 validName = dataGenerator.generateCompanyName();
