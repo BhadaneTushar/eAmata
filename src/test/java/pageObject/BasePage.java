@@ -187,16 +187,11 @@ public class BasePage {
         }
     }
 
-    /**
-     * Checks if progress bar is displayed.
-     * 
-     * @return true if progress bar is displayed
-     */
-    protected boolean isProgressBarDisplayed() {
+    public boolean isProgressBarDisplayed() {
         try {
             WebElement progressBar = getDriver().findElement(By.xpath(PROGRESS_BAR_XPATH));
             return progressBar.isDisplayed();
-        } catch (NoSuchElementException | StaleElementReferenceException e) {
+        } catch (NoSuchElementException e) {
             return false;
         }
     }
@@ -300,57 +295,18 @@ public class BasePage {
         }
     }
 
-    /**
-     * Performs drag and drop operation.
-     * 
-     * @param source The source element
-     * @param target The target element
-     * @throws RuntimeException if drag and drop fails
-     */
-    @Step("Performing drag and drop")
-    protected void dragAndDrop(WebElement source, WebElement target) {
-        try {
-            LoggerUtils.debug("Performing drag and drop");
-            new Actions(getDriver()).dragAndDrop(source, target).build().perform();
-        } catch (Exception e) {
-            LoggerUtils.error("Failed to perform drag and drop: " + e.getMessage());
-            throw new RuntimeException("Failed to perform drag and drop", e);
-        }
+    // Drag and Drop
+    public void dragAndDrop(WebElement source, WebElement target) {
+        new Actions(getDriver()).dragAndDrop(source, target).build().perform();
     }
 
-    /**
-     * Hovers over an element.
-     * 
-     * @param element The element to hover over
-     * @throws RuntimeException if hovering fails
-     */
-    @Step("Hovering over element")
-    protected void hoverOverElement(WebElement element) {
-        try {
-            LoggerUtils.debug("Hovering over element");
-            new Actions(getDriver()).moveToElement(element).build().perform();
-        } catch (Exception e) {
-            LoggerUtils.error("Failed to hover over element: " + e.getMessage());
-            throw new RuntimeException("Failed to hover over element", e);
-        }
+    public void hoverOverElement(WebElement element) {
+        new Actions(getDriver()).moveToElement(element).build().perform();
     }
 
-    /**
-     * Scrolls to an element.
-     * 
-     * @param element The element to scroll to
-     * @throws RuntimeException if scrolling fails
-     */
-    @Step("Scrolling to element")
-    protected void scrollToElement(WebElement element) {
-        try {
-            LoggerUtils.debug("Scrolling to element");
-            ((JavascriptExecutor) getDriver()).executeScript(
-                    "arguments[0].scrollIntoView({behavior: 'smooth', block: 'center'});",
-                    element);
-        } catch (Exception e) {
-            LoggerUtils.error("Failed to scroll to element: " + e.getMessage());
-            throw new RuntimeException("Failed to scroll to element", e);
-        }
+    public void scrollToElement(WebElement element) {
+        ((JavascriptExecutor) getDriver()).executeScript(
+                "arguments[0].scrollIntoView({behavior: 'smooth', block: 'center'});",
+                element);
     }
 }

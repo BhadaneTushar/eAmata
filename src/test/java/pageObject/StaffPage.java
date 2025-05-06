@@ -16,9 +16,11 @@ import utilities.LoggerUtils;
  */
 public class StaffPage extends BasePage {
 
+    // Constants
     private static final String GENDER_LIST_XPATH = "//ul[@role='listbox']/li";
-    public static final String ROLE_LIST_XPATH = "//ul[@role='listbox']/li";
+    private static final String ROLE_LIST_XPATH = "//ul[@role='listbox']/li";
 
+    // Navigation Elements
     @FindBy(xpath = "//tbody/tr[1]/td[1]/div[1]/a[1]")
     private WebElement providerGroupLink;
 
@@ -28,44 +30,49 @@ public class StaffPage extends BasePage {
     @FindBy(xpath = "//span[text()='Add Staff']")
     private WebElement addStaffButton;
 
+    // Input Fields
     @FindBy(xpath = "//input[@placeholder='Enter First Name']")
-    private WebElement firstNameInput;
+    private WebElement firstNameInputField;
 
     @FindBy(xpath = "//input[@placeholder='Enter Last Name']")
-    private WebElement lastNameInput;
+    private WebElement lastNameInputField;
 
     @FindBy(xpath = "//input[@placeholder='Enter Email']")
-    private WebElement emailInput;
+    private WebElement emailInputField;
 
     @FindBy(xpath = "//input[@placeholder='Enter Phone Number']")
-    private WebElement phoneNumberInput;
+    private WebElement phoneNumberInputField;
 
+    // Dropdown Elements
     @FindBy(xpath = "//button[@role='combobox']/span[text()='Select Staff Role']")
-    private WebElement roleDropdown;
+    private WebElement roleDropdownButton;
 
     @FindBy(xpath = "//button[@role='combobox']/span[text()='Select Gender']")
-    private WebElement genderDropdown;
+    private WebElement genderDropdownButton;
 
+    // Action Buttons
     @FindBy(xpath = "//div[div[p[text()='Add Staff']]]//button[text()='Add Staff']")
     private WebElement saveButton;
 
+    // Success Messages
     @FindBy(xpath = "//tbody/tr[1]/td[1]/div[1]/a[1]")
-    private WebElement verifyStaff;
+    private WebElement staffVerificationText;
 
+    // Validation Messages
     @FindBy(xpath = "//label[text()='First Name is required']")
-    private WebElement firstNameError;
+    private WebElement firstNameRequiredError;
 
     @FindBy(xpath = "//label[text()='Last Name is required']")
-    private WebElement lastNameError;
+    private WebElement lastNameRequiredError;
 
     @FindBy(xpath = "//label[text()='Invalid phone number. It must be 10 digits.']")
-    private WebElement phoneNumberError;
+    private WebElement invalidPhoneNumberError;
 
     @FindBy(xpath = "//label[normalize-space()='Phone is required']")
-    private WebElement emptyphone;
+    private WebElement phoneRequiredError;
 
     @FindBy(xpath = "//label[text()='Email is required']")
-    private WebElement emptyGmail;
+    private WebElement emailRequiredError;
 
     public StaffPage(WebDriver driver) {
         super();
@@ -73,173 +80,77 @@ public class StaffPage extends BasePage {
         LoggerUtils.debug("Initialized StaffPage");
     }
 
-    /**
-     * Fills staff information.
-     * 
-     * @param firstName   The staff's first name
-     * @param lastName    The staff's last name
-     * @param email       The staff's email
-     * @param phoneNumber The staff's phone number
-     * @param role        The staff's role
-     * @param gender      The staff's gender
-     * @throws RuntimeException if filling staff information fails
-     */
-    @Step("Filling staff information")
+    // Navigation Methods
+    public void navigateToProviderGroup() {
+        waitForProgressBarToAppear();
+        clickButton(waitForElementToBeVisible(providerGroupLink));
+    }
+
+    public void navigateToStaffTab() {
+        waitForProgressBarToAppear();
+        ((JavascriptExecutor) BaseClass.getDriver()).executeScript("arguments[0].click();", staffTabButton);
+    }
+
+    public void clickAddStaff() {
+        waitForProgressBarToAppear();
+        clickButton(waitForElementToBeClickable(addStaffButton));
+    }
+
+    // Input Field Methods
     private void fillStaffInformation(String firstName, String lastName, String email, String phoneNumber, String role,
             String gender) {
-        try {
-            setInputField(firstNameInput, firstName);
-            setInputField(lastNameInput, lastName);
-            setInputField(emailInput, email);
-            setInputField(phoneNumberInput, phoneNumber);
-            selectDropdownByVisibleText(roleDropdown, role, ROLE_LIST_XPATH);
-            selectDropdownByVisibleText(genderDropdown, gender, GENDER_LIST_XPATH);
-            LoggerUtils.info("Successfully filled staff information");
-        } catch (Exception e) {
-            LoggerUtils.error("Failed to fill staff information: " + e.getMessage());
-            throw new RuntimeException("Failed to fill staff information", e);
-        }
+        setInputField(firstNameInputField, firstName);
+        setInputField(lastNameInputField, lastName);
+        setInputField(emailInputField, email);
+        setInputField(phoneNumberInputField, phoneNumber);
+        selectDropdownByVisibleText(roleDropdownButton, role, ROLE_LIST_XPATH);
+        selectDropdownByVisibleText(genderDropdownButton, gender, GENDER_LIST_XPATH);
     }
 
-    /**
-     * Adds a new staff member.
-     * 
-     * @param firstName    The staff's first name
-     * @param lastName     The staff's last name
-     * @param email        The staff's email
-     * @param phoneNumber  The staff's phone number
-     * @param role         The staff's role
-     * @param gender       The staff's gender
-     * @param addressLine1 The first line of the address
-     * @param addressLine2 The second line of the address
-     * @param city         The city
-     * @param zipCode      The ZIP code
-     * @param state        The state
-     * @throws RuntimeException if adding staff fails
-     */
-    @Step("Adding new staff member")
+    // Combined Action Methods
     public void addStaff(String firstName, String lastName, String email, String phoneNumber, String role,
             String gender, String addressLine1, String addressLine2, String city, String zipCode, String state) {
-        try {
-            waitForProgressBarToAppear();
-            clickButton(waitForElementToBeVisible(providerGroupLink));
-            waitForProgressBarToAppear();
-            ((JavascriptExecutor) BaseClass.getDriver()).executeScript("arguments[0].click();", staffTabButton);
-            waitForProgressBarToAppear();
-            clickButton(waitForElementToBeClickable(addStaffButton));
-            fillStaffInformation(firstName, lastName, email, phoneNumber, role, gender);
-            new Address(getDriver()).enterAddressDetails(addressLine1, addressLine2, city, zipCode, state);
-            clickButton(waitForElementToBeVisible(saveButton));
-            LoggerUtils.info("Successfully added staff member");
-        } catch (Exception e) {
-            LoggerUtils.error("Failed to add staff member: " + e.getMessage());
-            throw new RuntimeException("Failed to add staff member", e);
-        }
+        navigateToProviderGroup();
+        navigateToStaffTab();
+        clickAddStaff();
+        fillStaffInformation(firstName, lastName, email, phoneNumber, role, gender);
+        new Address(getDriver()).enterAddressDetails(addressLine1, addressLine2, city, zipCode, state);
+        saveStaff();
     }
 
-    /**
-     * Verifies staff creation.
-     * 
-     * @return The verification message
-     * @throws RuntimeException if verification fails
-     */
-    @Step("Verifying staff creation")
-    public String verifySuccessMessage() {
-        try {
-            waitForProgressBarToAppear();
-            return waitForElementToBeVisible(verifyStaff).getText();
-        } catch (Exception e) {
-            LoggerUtils.error("Failed to verify staff creation: " + e.getMessage());
-            throw new RuntimeException("Failed to verify staff creation", e);
-        }
+    // Form Submission Methods
+    public void saveStaff() {
+        clickButton(waitForElementToBeVisible(saveButton));
     }
 
-    /**
-     * Gets the error message for first name.
-     * 
-     * @return The error message
-     * @throws RuntimeException if getting error message fails
-     */
-    @Step("Getting first name error message")
-    public String getFirstNameError() {
-        try {
-            return waitForElementToBeVisible(firstNameError).getText();
-        } catch (Exception e) {
-            LoggerUtils.error("Failed to get first name error message: " + e.getMessage());
-            throw new RuntimeException("Failed to get first name error message", e);
-        }
+    // Success Message Methods
+    public String getStaffVerificationText() {
+        waitForProgressBarToAppear();
+        return waitForElementToBeVisible(staffVerificationText).getText();
     }
 
-    /**
-     * Gets the error message for last name.
-     * 
-     * @return The error message
-     * @throws RuntimeException if getting error message fails
-     */
-    @Step("Getting last name error message")
-    public String getLastNameError() {
-        try {
-            return waitForElementToBeVisible(lastNameError).getText();
-        } catch (Exception e) {
-            LoggerUtils.error("Failed to get last name error message: " + e.getMessage());
-            throw new RuntimeException("Failed to get last name error message", e);
-        }
+    // Validation Message Methods
+    public String getFirstNameRequiredError() {
+        return waitForElementToBeVisible(firstNameRequiredError).getText();
     }
 
-    /**
-     * Gets the error message for phone number.
-     * 
-     * @return The error message
-     * @throws RuntimeException if getting error message fails
-     */
-    @Step("Getting phone number error message")
-    public String getPhoneNumberError() {
-        try {
-            return waitForElementToBeVisible(phoneNumberError).getText();
-        } catch (Exception e) {
-            LoggerUtils.error("Failed to get phone number error message: " + e.getMessage());
-            throw new RuntimeException("Failed to get phone number error message", e);
-        }
+    public String getLastNameRequiredError() {
+        return waitForElementToBeVisible(lastNameRequiredError).getText();
     }
 
-    /**
-     * Gets the error message for empty phone.
-     * 
-     * @return The error message
-     * @throws RuntimeException if getting error message fails
-     */
-    @Step("Getting empty phone error message")
-    public String getEmptyPhoneError() {
-        try {
-            return waitForElementToBeVisible(emptyphone).getText();
-        } catch (Exception e) {
-            LoggerUtils.error("Failed to get empty phone error message: " + e.getMessage());
-            throw new RuntimeException("Failed to get empty phone error message", e);
-        }
+    public String getInvalidPhoneNumberError() {
+        return waitForElementToBeVisible(invalidPhoneNumberError).getText();
     }
 
-    /**
-     * Gets the error message for empty email.
-     * 
-     * @return The error message
-     * @throws RuntimeException if getting error message fails
-     */
-    @Step("Getting empty email error message")
-    public String getEmptyGmailError() {
-        try {
-            return waitForElementToBeVisible(emptyGmail).getText();
-        } catch (Exception e) {
-            LoggerUtils.error("Failed to get empty email error message: " + e.getMessage());
-            throw new RuntimeException("Failed to get empty email error message", e);
-        }
+    public String getPhoneRequiredError() {
+        return waitForElementToBeVisible(phoneRequiredError).getText();
     }
 
-    /**
-     * Edits staff details.
-     * 
-     * @throws RuntimeException if editing staff fails
-     */
-    @Step("Editing staff details")
+    public String getEmailRequiredError() {
+        return waitForElementToBeVisible(emailRequiredError).getText();
+    }
+
+    // Status Management Methods
     public void editStaff() {
         try {
             // Future implementation
@@ -266,19 +177,7 @@ public class StaffPage extends BasePage {
         }
     }
 
-    /**
-     * Activates or deactivates staff.
-     * 
-     * @throws RuntimeException if activating/deactivating staff fails
-     */
-    @Step("Activating/deactivating staff")
-    public void activeInactiveStaff() {
-        try {
-            // Future implementation
-            LoggerUtils.info("Staff activation/deactivation functionality not yet implemented");
-        } catch (Exception e) {
-            LoggerUtils.error("Failed to activate/deactivate staff: " + e.getMessage());
-            throw new RuntimeException("Failed to activate/deactivate staff", e);
-        }
+    public void toggleStaffStatus() {
+        // Future implementation
     }
 }

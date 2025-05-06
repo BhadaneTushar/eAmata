@@ -16,10 +16,12 @@ import utilities.LoggerUtils;
  */
 public class LocationPage extends BasePage {
 
+    // Constants
     private static final String STATE_LIST_XPATH = "//ul[@role='listbox']/li";
 
+    // Navigation Elements
     @FindBy(xpath = "//tbody/tr[1]/td[1]/div[1]/a[1]")
-    private WebElement providerGroupLinkButton;
+    private WebElement providerGroupLink;
 
     @FindBy(xpath = "//button[text()='Locations']")
     private WebElement locationTabButton;
@@ -27,38 +29,61 @@ public class LocationPage extends BasePage {
     @FindBy(xpath = "//span[text()='Add Location']")
     private WebElement addLocationButton;
 
+    // Input Fields
     @FindBy(xpath = "//input[@placeholder='Enter Name']")
-    private WebElement locationNameInputField;
+    private WebElement nameInputField;
 
     @FindBy(xpath = "//input[@placeholder='Enter Phone Number']")
-    private WebElement locationPhoneNumberInputField;
+    private WebElement phoneNumberInputField;
 
     @FindBy(xpath = "//input[@placeholder='Enter Email']")
-    private WebElement locationEmailInputField;
+    private WebElement emailInputField;
 
+    @FindBy(xpath = "//input[@placeholder='Enter Address Line 1']")
+    private WebElement addressLine1InputField;
+
+    @FindBy(xpath = "//input[@placeholder='Enter Address Line 2']")
+    private WebElement addressLine2InputField;
+
+    @FindBy(xpath = "//input[@placeholder='Enter City']")
+    private WebElement cityInputField;
+
+    @FindBy(xpath = "//input[@placeholder='Enter Zip Code']")
+    private WebElement zipCodeInputField;
+
+    // Dropdown Elements
+    @FindBy(xpath = "//input[@placeholder='Select State']")
+    private WebElement stateDropdownButton;
+
+    @FindBy(xpath = "//li[text()='Arizona']")
+    private WebElement stateName;
+
+    // Action Buttons
     @FindBy(xpath = "(//span[text()='Add Location'])[2]")
-    private WebElement saveLocationButton;
+    private WebElement saveButton;
 
+    // Success Messages
     @FindBy(xpath = "//span[text()='Location added successfully!']")
-    private WebElement locationCreationSuccessMessage;
+    private WebElement successMessage;
 
+    // Validation Messages
     @FindBy(xpath = "//span[text()='Name is mandatory']")
-    private WebElement locationNameError;
+    private WebElement nameRequiredError;
 
     @FindBy(xpath = "//span[contains(text(),'Invalid phone number. Please use +91, +1, or +61 f')]")
-    private WebElement phoneNumberError;
-
-    @FindBy(xpath = "//span[text()='Invalid phone number']")
     private WebElement invalidPhoneNumberError;
 
+    @FindBy(xpath = "//span[text()='Invalid phone number']")
+    private WebElement invalidPhoneNumberFormatError;
+
     @FindBy(xpath = "//span[text()='Email id is mandatory']")
-    private WebElement emptyEmailError;
+    private WebElement emailRequiredError;
 
     @FindBy(xpath = "//span[text()='Invalid email format']")
-    private WebElement invalidEmailError;
+    private WebElement invalidEmailFormatError;
 
     @FindBy(xpath = "//label[text()='Zip code is required']")
-    private WebElement emptyZipCode;
+    private WebElement zipCodeRequiredError;
 
     public LocationPage(WebDriver driver) {
         super();
@@ -66,87 +91,57 @@ public class LocationPage extends BasePage {
         LoggerUtils.debug("Initialized LocationPage");
     }
 
-    /**
-     * Adds a new location with the provided details.
-     * 
-     * @param locationName The name of the location
-     * @param phoneNumber  The phone number of the location
-     * @param email        The email of the location
-     * @param addressLine1 The first line of the address
-     * @param addressLine2 The second line of the address
-     * @param city         The city of the location
-     * @param zipCode      The ZIP code of the location
-     * @param state        The state of the location
-     * @throws RuntimeException if adding location fails
-     */
-    @Step("Adding new location")
-    public void addLocation(String locationName, String phoneNumber, String email, String addressLine1,
-            String addressLine2, String city, String zipCode, String state) {
-        try {
-            waitForProgressBarToAppear();
-            clickButton(waitForElementToBeVisible(providerGroupLinkButton));
-            waitForProgressBarToAppear();
-            ((JavascriptExecutor) BaseClass.getDriver()).executeScript("arguments[0].click();", locationTabButton);
-            ((JavascriptExecutor) BaseClass.getDriver()).executeScript("arguments[0].click();", addLocationButton);
-
-            setInputField(locationNameInputField, locationName);
-            setInputField(locationPhoneNumberInputField, phoneNumber);
-            setInputField(locationEmailInputField, email);
-            new Address(getDriver()).enterAddressDetails(addressLine1, addressLine2, city, zipCode, state);
-            ((JavascriptExecutor) BaseClass.getDriver()).executeScript("arguments[0].click();", saveLocationButton);
-            LoggerUtils.info("Successfully added location");
-        } catch (Exception e) {
-            LoggerUtils.error("Failed to add location: " + e.getMessage());
-            throw new RuntimeException("Failed to add location", e);
-        }
+    // Navigation Methods
+    public void navigateToProviderGroup() {
+        waitForProgressBarToAppear();
+        clickButton(waitForElementToBeVisible(providerGroupLink));
     }
 
-    /**
-     * Gets the verification message after location creation.
-     * 
-     * @return The verification message
-     * @throws RuntimeException if getting verification message fails
-     */
-    @Step("Getting verification message")
-    public String verificationMessage() {
-        try {
-            return locationCreationSuccessMessage.getText();
-        } catch (Exception e) {
-            LoggerUtils.error("Failed to get verification message: " + e.getMessage());
-            throw new RuntimeException("Failed to get verification message", e);
-        }
+    public void navigateToLocationTab() {
+        waitForProgressBarToAppear();
+        ((JavascriptExecutor) BaseClass.getDriver()).executeScript("arguments[0].click();", locationTabButton);
     }
 
-    /**
-     * Gets the error message for location name.
-     * 
-     * @return The error message
-     * @throws RuntimeException if getting error message fails
-     */
-    @Step("Getting location name error message")
-    public String getLocationNameError() {
-        try {
-            return locationNameError.getText();
-        } catch (Exception e) {
-            LoggerUtils.error("Failed to get location name error message: " + e.getMessage());
-            throw new RuntimeException("Failed to get location name error message", e);
-        }
+    public void clickAddLocation() {
+        ((JavascriptExecutor) BaseClass.getDriver()).executeScript("arguments[0].click();", addLocationButton);
     }
 
-    /**
-     * Gets the error message for phone number.
-     * 
-     * @return The error message
-     * @throws RuntimeException if getting error message fails
-     */
-    @Step("Getting phone number error message")
-    public String getPhoneNumberError() {
-        try {
-            return phoneNumberError.getText();
-        } catch (Exception e) {
-            LoggerUtils.error("Failed to get phone number error message: " + e.getMessage());
-            throw new RuntimeException("Failed to get phone number error message", e);
-        }
+    // Input Field Methods
+    private void fillLocationDetails(String name, String phoneNumber, String email,
+            String addressLine1, String addressLine2, String city, String zipCode, String state) {
+        setInputField(nameInputField, name);
+        setInputField(phoneNumberInputField, phoneNumber);
+        setInputField(emailInputField, email);
+        setInputField(addressLine1InputField, addressLine1);
+        setInputField(addressLine2InputField, addressLine2);
+        setInputField(cityInputField, city);
+        setInputField(zipCodeInputField, zipCode);
+        selectDropdownByVisibleText(stateDropdownButton, state, STATE_LIST_XPATH);
+    }
+
+    // Combined Action Methods
+    public void addLocation(String name, String phoneNumber, String email,
+            String addressLine1, String addressLine2, String city, String zipCode, String state) {
+        navigateToProviderGroup();
+        navigateToLocationTab();
+        clickAddLocation();
+        fillLocationDetails(name, phoneNumber, email, addressLine1, addressLine2, city, zipCode, state);
+        saveLocation();
+    }
+
+    // Form Submission Methods
+    public void saveLocation() {
+        ((JavascriptExecutor) BaseClass.getDriver()).executeScript("arguments[0].click();", saveButton);
+    }
+
+    // Success Message Methods
+    public String getSuccessMessage() {
+        return successMessage.getText();
+    }
+
+    // Validation Message Methods
+    public String getNameRequiredError() {
+        return nameRequiredError.getText();
     }
 
     /**
@@ -165,51 +160,19 @@ public class LocationPage extends BasePage {
         }
     }
 
-    /**
-     * Gets the error message for empty email.
-     * 
-     * @return The error message
-     * @throws RuntimeException if getting error message fails
-     */
-    @Step("Getting empty email error message")
-    public String getEmptyEmailError() {
-        try {
-            return emptyEmailError.getText();
-        } catch (Exception e) {
-            LoggerUtils.error("Failed to get empty email error message: " + e.getMessage());
-            throw new RuntimeException("Failed to get empty email error message", e);
-        }
+    public String getInvalidPhoneNumberFormatError() {
+        return invalidPhoneNumberFormatError.getText();
     }
 
-    /**
-     * Gets the error message for invalid email.
-     * 
-     * @return The error message
-     * @throws RuntimeException if getting error message fails
-     */
-    @Step("Getting invalid email error message")
-    public String getInvalidEmailError() {
-        try {
-            return invalidEmailError.getText();
-        } catch (Exception e) {
-            LoggerUtils.error("Failed to get invalid email error message: " + e.getMessage());
-            throw new RuntimeException("Failed to get invalid email error message", e);
-        }
+    public String getEmailRequiredError() {
+        return emailRequiredError.getText();
     }
 
-    /**
-     * Gets the error message for empty ZIP code.
-     * 
-     * @return The error message
-     * @throws RuntimeException if getting error message fails
-     */
-    @Step("Getting empty ZIP code error message")
-    public String getZipCodeError() {
-        try {
-            return emptyZipCode.getText();
-        } catch (Exception e) {
-            LoggerUtils.error("Failed to get empty ZIP code error message: " + e.getMessage());
-            throw new RuntimeException("Failed to get empty ZIP code error message", e);
-        }
+    public String getInvalidEmailFormatError() {
+        return invalidEmailFormatError.getText();
+    }
+
+    public String getZipCodeRequiredError() {
+        return zipCodeRequiredError.getText();
     }
 }
