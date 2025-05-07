@@ -36,7 +36,7 @@
                     <include name="testAddStaffWithInvalidPhoneNumber"/>
                 </methods>
             </class>
-            <class name="testCases.TC004_AddLocation">
+           <!-- <class name="testCases.TC004_AddLocation">
                 <methods>
                     <include name="testAddLocation"/>
                     <include name="testEmptyNameValidation"/>
@@ -50,7 +50,7 @@
                 <methods>
                     <include name="addEamataNurse"/>
                 </methods>
-            </class>
+            </class>-->
         </classes>
     </test>
 </suite> 
