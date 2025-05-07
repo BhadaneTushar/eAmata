@@ -119,7 +119,7 @@
                         <suiteXmlFile>parallelTests.xml</suiteXmlFile>
                     </suiteXmlFiles>
                     <parallel>methods</parallel>
-                    <threadCount>5</threadCount>
+                    <threadCount>3</threadCount>
                     <systemPropertyVariables>
                         <allure.results.directory>allure-results</allure.results.directory>
                     </systemPropertyVariables>

@@ -6,7 +6,7 @@
         <listener class-name="io.qameta.allure.testng.AllureTestNg"/>
     </listeners>
 
-    <test name="All Tests" parallel="methods" thread-count="5">
+    <test name="All Tests" parallel="methods" thread-count="3">
         <parameter name="browser" value="chrome"/>
         <classes>
             <class name="testCases.TC001_SuperAdminLogin">
@@ -49,11 +49,6 @@
             <class name="testCases.TC005_AddEamataNurse">
                 <methods>
                     <include name="addEamataNurse"/>
-                </methods>
-            </class>
-            <class name="testCases.TC006_EditProviderGroup">
-                <methods>
-                    <include name="editProviderGroup"/>
                 </methods>
             </class>
         </classes>

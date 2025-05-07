@@ -94,11 +94,11 @@ public class eAmataNursePage extends BasePage {
 
     @Step("Navigating to Add Nurse form")
     public void navigateToAddNurseForm() {
-           // waitForProgressBarToAppear();
+           waitForProgressBarToAppear();
             clickButton(settingsLink);
-           // waitForProgressBarToAppear();
+           waitForProgressBarToAppear();
             clickButton(adminUsersTab);
-          //  waitForProgressBarToAppear();
+           waitForProgressBarToAppear();
             clickButton(nurseButton);
             clickButton(addNurseButton);
 
