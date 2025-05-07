@@ -27,7 +27,6 @@ public class BasePage {
 
     @Step("Waiting for UI to load")
     protected void  waitForUILoad() {
-        LoggerUtils.debug("Waiting for UI to load");
         try {
             Thread.sleep(UI_LOAD_WAIT.toMillis());
         } catch (InterruptedException e) {

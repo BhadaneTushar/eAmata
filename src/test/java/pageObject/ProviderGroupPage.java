@@ -85,13 +85,26 @@ public class ProviderGroupPage extends BasePage {
     // Navigation Methods
     public void clickNewProviderGroup() {
         waitForProgressBarToAppear();
+        waitForUILoad();
         clickButton(waitForElementToBeClickable(newProviderGroupButton));
+
     }
 
     public void selectManualEntry() {
         if (!manualEntryRadioButton.isSelected()) {
             clickButton(waitForElementToBeClickable(manualEntryRadioButton));
+            waitForUILoad();
         }
+    }
+
+    // Add new method for clicking provider group name with proper waits
+    @Step("Clicking provider group name with proper wait")
+    public void clickProviderGroupName(WebElement providerGroupElement) {
+        LoggerUtils.debug("Clicking provider group name");
+        waitForProgressBarToAppear();
+        waitForUILoad();
+        clickButton(waitForElementToBeClickable(providerGroupElement));
+        waitForProgressBarToAppear(); // Wait for any loading operations to complete
     }
 
     // Input Field Methods

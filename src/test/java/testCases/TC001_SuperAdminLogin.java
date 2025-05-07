@@ -9,7 +9,6 @@ import org.testng.annotations.Test;
 import pageObject.SuperAdminLogin;
 import testBase.BaseClass;
 import utilities.ErrorMessages;
-import utilities.LoginUtils;
 
 public class TC001_SuperAdminLogin extends BaseClass {
 

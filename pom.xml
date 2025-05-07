@@ -116,13 +116,8 @@
                 <version>3.2.5</version>
                 <configuration>
                     <suiteXmlFiles>
-                        <suiteXmlFile>parallelTests.xml</suiteXmlFile>
+                        <suiteXmlFile>testng.xml</suiteXmlFile>
                     </suiteXmlFiles>
-                    <parallel>methods</parallel>
-                    <threadCount>3</threadCount>
-                    <systemPropertyVariables>
-                        <allure.results.directory>allure-results</allure.results.directory>
-                    </systemPropertyVariables>
                 </configuration>
             </plugin>
 
