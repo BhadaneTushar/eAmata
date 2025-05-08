@@ -1,20 +1,56 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
-<suite name="Grouped Test Suite">
+<suite name="Parallel Tests Suite" parallel="methods" thread-count="5">
     <listeners>
         <listener class-name="utilities.ExtentReportManager"/>
-        <listener class-name="utilities.AllureListener"/>
         <listener class-name="io.qameta.allure.testng.AllureTestNg"/>
     </listeners>
 
-    <test name="Chrome Tests">
+    <test name="All Tests" parallel="methods" thread-count="3">
         <parameter name="browser" value="chrome"/>
         <classes>
-            <class name="testCases.TC001_SuperAdminLogin"/>
-            <class name="testCases.TC002_AddProviderGroup"/>
-            <class name="testCases.TC003_AddStaff"/>
-            <class name="testCases.TC004_AddLocation"/>
-            <class name="testCases.TC005_AddEamataNurse"/>
+            <class name="testCases.TC001_SuperAdminLogin">
+                <methods>
+                    <include name="superAdminLoginWithValidCredentials"/>
+                    <include name="loginWithInvalidUsername"/>
+                    <include name="loginWithInvalidPassword"/>
+                </methods>
+            </class>
+            <class name="testCases.TC002_AddProviderGroup">
+                <methods>
+                    <include name="testAddProviderGroup"/>
+                    <include name="testEmptyNameValidation"/>
+                    <include name="testInvalidEmailValidation"/>
+                    <include name="testInvalidPhoneValidation"/>
+                    <include name="testInvalidNPIValidation"/>
+                    <include name="testInvalidSubdomainValidation"/>
+                </methods>
+            </class>
+            <class name="testCases.TC003_AddStaff">
+                <methods>
+                    <include name="testAddStaffWithValidDetails"/>
+                    <include name="testAddStaffWithEmptyFirstName"/>
+                    <include name="testAddStaffWithEmptyLastName"/>
+                    <include name="testAddStaffWithEmptyEmail"/>
+                    <include name="testAddStaffWithEmptyPhoneNumber"/>
+                    <include name="testAddStaffWithInvalidPhoneNumber"/>
+                </methods>
+            </class>
+           <!-- <class name="testCases.TC004_AddLocation">
+                <methods>
+                    <include name="testAddLocation"/>
+                    <include name="testEmptyNameValidation"/>
+                    <include name="testInvalidPhoneValidation"/>
+                    <include name="testEmptyEmailValidation"/>
+                    <include name="testInvalidEmailValidation"/>
+                    <include name="testEmptyZipCodeValidation"/>
+                </methods>
+            </class>
+            <class name="testCases.TC005_AddEamataNurse">
+                <methods>
+                    <include name="addEamataNurse"/>
+                </methods>
+            </class>-->
         </classes>
     </test>
-</suite>
+</suite> 

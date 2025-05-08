@@ -90,8 +90,7 @@ public class DatePicker {
             throw new DateTimeParseException("Invalid date format for string: " + targetDateString,
                     targetDateString, 0, e);
         }
-
-        LoggerUtils.debug("Initialized DatePicker with date: " + targetDateString);
+        selectDate();
     }
 
     /**

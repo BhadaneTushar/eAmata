@@ -64,3 +64,29 @@ jobs:
             exit 1
           }
           exit 0
+
+      - name: Send Allure Report to Google Chat
+        if: always()
+        shell: pwsh
+        run: |
+          # Read the webhook URL from GitHub Secrets
+          $webhookUrl = "${{ secrets.GOOGLE_CHAT_WEBHOOK_URL }}"
+          
+          # Get test summary from Allure results
+          $passed = (Get-Content "allure-results/summary.json" | ConvertFrom-Json).statistic.passed
+          $failed = (Get-Content "allure-results/summary.json" | ConvertFrom-Json).statistic.failed
+          $broken = (Get-Content "allure-results/summary.json" | ConvertFrom-Json).statistic.broken
+          $skipped = (Get-Content "allure-results/summary.json" | ConvertFrom-Json).statistic.skipped
+          
+          # Create message payload
+          $message = @{
+            text = "Test Execution Summary:`n" +
+                  "✅ Passed: $passed`n" +
+                  "❌ Failed: $failed`n" +
+                  "⚠️ Broken: $broken`n" +
+                  "⏭️ Skipped: $skipped`n" +
+                  "`nView full report: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
+          } | ConvertTo-Json
+          
+          # Send to Google Chat
+          Invoke-RestMethod -Uri $webhookUrl -Method Post -Body $message -ContentType "application/json"

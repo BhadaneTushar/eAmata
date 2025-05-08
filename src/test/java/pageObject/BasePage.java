@@ -18,28 +18,24 @@ public class BasePage {
     private static final Duration DEFAULT_TIMEOUT = Duration.ofSeconds(30);
     private static final Duration PROGRESS_BAR_TIMEOUT = Duration.ofSeconds(60);
     private static final Duration POLLING_INTERVAL = Duration.ofMillis(500);
-    private static final Duration UI_LOAD_WAIT = Duration.ofMillis(1000); // Increased to 1 second
-    private static final Duration LOCATION_LOAD_WAIT = Duration.ofSeconds(5); // Specific wait for location loading
+    private static final Duration UI_LOAD_WAIT = Duration.ofMillis(1000);
+    
 
     public BasePage() {
         PageFactory.initElements(BaseClass.getDriver(), this);
     }
 
     @Step("Waiting for UI to load")
-    protected void waitForUILoad() {
+    protected void  waitForUILoad() {
         try {
-            LoggerUtils.debug("Waiting for UI to load");
             Thread.sleep(UI_LOAD_WAIT.toMillis());
-            // Wait for document ready state
-            new WebDriverWait(getDriver(), DEFAULT_TIMEOUT).until(
-                    webDriver -> ((JavascriptExecutor) webDriver)
-                            .executeScript("return document.readyState").equals("complete"));
         } catch (InterruptedException e) {
-            LoggerUtils.error("UI load wait interrupted: " + e.getMessage());
             Thread.currentThread().interrupt();
         }
+        new WebDriverWait(getDriver(), DEFAULT_TIMEOUT).until(
+                webDriver -> ((JavascriptExecutor) webDriver)
+                        .executeScript("return document.readyState").equals("complete"));
     }
-
 
     protected WebDriver getDriver() {
         return BaseClass.getDriver();
@@ -47,90 +43,63 @@ public class BasePage {
 
     @Step("Waiting for element to be clickable")
     protected WebElement waitForElementToBeClickable(WebElement element) {
-        try {
-            LoggerUtils.debug("Waiting for element to be clickable");
-            waitForUILoad();
-            FluentWait<WebDriver> wait = new FluentWait<>(getDriver())
-                    .withTimeout(DEFAULT_TIMEOUT)
-                    .pollingEvery(POLLING_INTERVAL)
-                    .ignoring(StaleElementReferenceException.class, ElementClickInterceptedException.class);
+        LoggerUtils.debug("Waiting for element to be clickable");
+        waitForUILoad();
+        FluentWait<WebDriver> wait = new FluentWait<>(getDriver())
+                .withTimeout(DEFAULT_TIMEOUT)
+                .pollingEvery(POLLING_INTERVAL)
+                .ignoring(StaleElementReferenceException.class, ElementClickInterceptedException.class);
 
-            return wait.until(ExpectedConditions.elementToBeClickable(element));
-        } catch (Exception e) {
-            LoggerUtils.error("Failed to wait for element to be clickable: " + e.getMessage());
-            throw new RuntimeException("Failed to wait for element to be clickable", e);
-        }
+        return wait.until(ExpectedConditions.elementToBeClickable(element));
     }
 
     @Step("Waiting for element to be visible")
     protected WebElement waitForElementToBeVisible(WebElement element) {
-        try {
-            LoggerUtils.debug("Waiting for element to be visible");
-            waitForUILoad();
-            FluentWait<WebDriver> wait = new FluentWait<>(getDriver())
-                    .withTimeout(DEFAULT_TIMEOUT)
-                    .pollingEvery(POLLING_INTERVAL)
-                    .ignoring(StaleElementReferenceException.class);
+        LoggerUtils.debug("Waiting for element to be visible");
+        waitForUILoad();
+        FluentWait<WebDriver> wait = new FluentWait<>(getDriver())
+                .withTimeout(DEFAULT_TIMEOUT)
+                .pollingEvery(POLLING_INTERVAL)
+                .ignoring(StaleElementReferenceException.class);
 
-            return wait.until(ExpectedConditions.visibilityOf(element));
-        } catch (Exception e) {
-            LoggerUtils.error("Failed to wait for element to be visible: " + e.getMessage());
-            throw new RuntimeException("Failed to wait for element to be visible", e);
-        }
+        return wait.until(ExpectedConditions.visibilityOf(element));
     }
 
     @Step("Setting input field value: {1}")
     protected void setInputField(WebElement element, String value) {
-        try {
-            LoggerUtils.debug("Setting input field value: " + value);
-            WebElement inputField = waitForElementToBeVisible(element);
-            // Clear the field using JavaScript for better reliability
-            ((JavascriptExecutor) getDriver()).executeScript("arguments[0].value = '';", inputField);
-            inputField.sendKeys(value);
-            // Wait for the value to be set
-            new WebDriverWait(getDriver(), DEFAULT_TIMEOUT)
-                    .until(ExpectedConditions.attributeToBe(inputField, "value", value));
-        } catch (Exception e) {
-            LoggerUtils.error("Failed to set input field value: " + e.getMessage());
-            throw new RuntimeException("Failed to set input field value", e);
-        }
+        LoggerUtils.debug("Setting input field value: " + value);
+        WebElement inputField = waitForElementToBeVisible(element);
+        ((JavascriptExecutor) getDriver()).executeScript("arguments[0].value = '';", inputField);
+        inputField.sendKeys(value);
+        new WebDriverWait(getDriver(), DEFAULT_TIMEOUT)
+                .until(ExpectedConditions.attributeToBe(inputField, "value", value));
     }
 
     @Step("Clicking element")
     protected void clickButton(WebElement element) {
+        LoggerUtils.debug("Attempting to click element");
         try {
-            LoggerUtils.debug("Attempting to click element");
+            waitForUILoad();
             waitForElementToBeClickable(element).click();
         } catch (Exception e) {
             LoggerUtils.warn("Regular click failed, attempting JavaScript click");
-            try {
-                JavascriptExecutor js = (JavascriptExecutor) getDriver();
-                js.executeScript("arguments[0].click();", element);
-            } catch (Exception ex) {
-                LoggerUtils.error("Failed to click element: " + ex.getMessage());
-                throw new RuntimeException("Failed to click element", ex);
-            }
+            JavascriptExecutor js = (JavascriptExecutor) getDriver();
+            js.executeScript("arguments[0].click();", element);
         }
     }
 
-
     @Step("Selecting dropdown option: {1}")
     protected void selectDropdownByVisibleText(WebElement dropdownElement, String visibleText, String listItemsXPath) {
-        try {
-            LoggerUtils.debug("Selecting dropdown option: " + visibleText);
-            dropdownElement.click();
-            List<WebElement> dropdownItems = getDriver().findElements(By.xpath(listItemsXPath));
-            for (WebElement item : dropdownItems) {
-                if (item.getText().equalsIgnoreCase(visibleText)) {
-                    item.click();
-                    return;
-                }
+        LoggerUtils.debug("Selecting dropdown option: " + visibleText);
+        dropdownElement.click();
+        List<WebElement> dropdownItems = getDriver().findElements(By.xpath(listItemsXPath));
+        for (WebElement item : dropdownItems) {
+            if (item.getText().equalsIgnoreCase(visibleText)) {
+                item.click();
+                return;
             }
-            throw new RuntimeException("Dropdown item not found: " + visibleText);
-        } catch (Exception e) {
-            LoggerUtils.error("Failed to select dropdown option: " + e.getMessage());
-            throw new RuntimeException("Failed to select dropdown option", e);
         }
+        throw new RuntimeException("Dropdown item not found: " + visibleText);
     }
 
     @Step("Waiting for progress bar to disappear")
@@ -140,13 +109,8 @@ public class BasePage {
                 .pollingEvery(POLLING_INTERVAL)
                 .ignoring(NoSuchElementException.class, StaleElementReferenceException.class);
 
-        // Wait for progress bar to disappear
-        wait.until(d -> {
-            return isProgressBarDisplayed();
-        });
-
+        wait.until(d -> isProgressBarDisplayed());
         LoggerUtils.debug("Progress bar operation completed");
-
     }
 
     public boolean isProgressBarDisplayed() {
@@ -166,58 +130,38 @@ public class BasePage {
 
     @Step("Using fluent wait for element")
     protected WebElement fluentWait(By locator, Duration timeout, Duration polling) {
-        try {
-            LoggerUtils.debug("Using fluent wait for element: " + locator);
-            return new FluentWait<>(getDriver())
-                    .withTimeout(timeout)
-                    .pollingEvery(polling)
-                    .ignoring(StaleElementReferenceException.class)
-                    .until(d -> d.findElement(locator));
-        } catch (Exception e) {
-            LoggerUtils.error("Failed to find element using fluent wait: " + e.getMessage());
-            throw new RuntimeException("Failed to find element using fluent wait", e);
-        }
+        LoggerUtils.debug("Using fluent wait for element: " + locator);
+        return new FluentWait<>(getDriver())
+                .withTimeout(timeout)
+                .pollingEvery(polling)
+                .ignoring(StaleElementReferenceException.class)
+                .until(d -> d.findElement(locator));
     }
 
     @Step("Uploading file: {1}")
     protected void uploadFile(WebElement element, String filePath) {
-        try {
-            LoggerUtils.debug("Uploading file: " + filePath);
-            element.sendKeys(new File(filePath).getAbsolutePath());
-        } catch (Exception e) {
-            LoggerUtils.error("Failed to upload file: " + e.getMessage());
-            throw new RuntimeException("Failed to upload file", e);
-        }
+        LoggerUtils.debug("Uploading file: " + filePath);
+        element.sendKeys(new File(filePath).getAbsolutePath());
     }
 
     @Step("Switching to new window")
     protected void switchToNewWindow() {
-        try {
-            LoggerUtils.debug("Switching to new window");
-            String originalWindow = getDriver().getWindowHandle();
-            new WebDriverWait(getDriver(), DEFAULT_TIMEOUT)
-                    .until(ExpectedConditions.numberOfWindowsToBe(2));
-            for (String windowHandle : getDriver().getWindowHandles()) {
-                if (!windowHandle.equals(originalWindow)) {
-                    getDriver().switchTo().window(windowHandle);
-                    break;
-                }
+        LoggerUtils.debug("Switching to new window");
+        String originalWindow = getDriver().getWindowHandle();
+        new WebDriverWait(getDriver(), DEFAULT_TIMEOUT)
+                .until(ExpectedConditions.numberOfWindowsToBe(2));
+        for (String windowHandle : getDriver().getWindowHandles()) {
+            if (!windowHandle.equals(originalWindow)) {
+                getDriver().switchTo().window(windowHandle);
+                break;
             }
-        } catch (Exception e) {
-            LoggerUtils.error("Failed to switch to new window: " + e.getMessage());
-            throw new RuntimeException("Failed to switch to new window", e);
         }
     }
 
     @Step("Accepting alert")
     protected void acceptAlert() {
-        try {
-            LoggerUtils.debug("Accepting alert");
-            new WebDriverWait(getDriver(), DEFAULT_TIMEOUT)
-                    .until(ExpectedConditions.alertIsPresent()).accept();
-        } catch (Exception e) {
-            LoggerUtils.error("Failed to accept alert: " + e.getMessage());
-            throw new RuntimeException("Failed to accept alert", e);
-        }
+        LoggerUtils.debug("Accepting alert");
+        new WebDriverWait(getDriver(), DEFAULT_TIMEOUT)
+                .until(ExpectedConditions.alertIsPresent()).accept();
     }
 }

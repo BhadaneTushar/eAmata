@@ -9,7 +9,6 @@ import testBase.BaseClass;
 import utilities.DatePicker;
 import utilities.LoggerUtils;
 
-
 public class eAmataNursePage extends BasePage {
 
     private static final String GENDER_LIST_XPATH = "//ul[@role='listbox']/li";
@@ -66,6 +65,25 @@ public class eAmataNursePage extends BasePage {
     @FindBy(xpath = "//ul[@role='listbox']//li[contains(text(), 'Arizona (AZ)')]")
     private WebElement stateName;
 
+    // Address Fields
+    @FindBy(xpath = "//input[@placeholder='Enter Address Line 1']")
+    private WebElement addressLine1Field;
+
+    @FindBy(xpath = "//input[@placeholder='Enter Address Line 2']")
+    private WebElement addressLine2Field;
+
+    @FindBy(xpath = "//input[@placeholder='Enter City']")
+    private WebElement cityField;
+
+    @FindBy(xpath = "//input[@placeholder='Enter Zip Code']")
+    private WebElement zipCodeField;
+
+    @FindBy(xpath = "(//input[@placeholder='Select State'])[1]")
+    private WebElement addressStateDropdown;
+
+    @FindBy(xpath = "//ul[@role='listbox']//li[contains(text(), 'Arizona (AZ)')]")
+    private WebElement addressStateName;
+
     // Error message locators
     @FindBy(xpath = "//input[@placeholder='Enter First Name']/following-sibling::div[contains(@class, 'error')]")
     private WebElement firstNameError;
@@ -91,16 +109,12 @@ public class eAmataNursePage extends BasePage {
         LoggerUtils.debug("Initialized eAmataNursePage");
     }
 
-
     @Step("Navigating to Add Nurse form")
     public void navigateToAddNurseForm() {
-           // waitForProgressBarToAppear();
-            clickButton(settingsLink);
-           // waitForProgressBarToAppear();
-            clickButton(adminUsersTab);
-          //  waitForProgressBarToAppear();
-            clickButton(nurseButton);
-            clickButton(addNurseButton);
+        clickButton(settingsLink);
+        clickButton(adminUsersTab);
+        clickButton(nurseButton);
+        clickButton(addNurseButton);
 
     }
 
@@ -122,19 +136,46 @@ public class eAmataNursePage extends BasePage {
         }
     }
 
-
     @Step("Entering license details")
     public void enterLicenseDetails(String licenseNumber, String licensedState, String expiryDate) {
+        try {
             setInputField(licensedNumberField, licenseNumber);
             WebElement stateList = licensedStateDropdown;
             stateList.click();
             stateList.sendKeys(licensedState);
             waitForElementToBeVisible(stateName).click();
-            new DatePicker(BaseClass.getDriver(), expiryDate);
-            LoggerUtils.info("Successfully entered license details");
 
+            // Create DatePicker instance and select the date
+            DatePicker datePicker = new DatePicker(BaseClass.getDriver(), expiryDate, "MM/dd/yyyy");
+            datePicker.selectDate();
+
+            LoggerUtils.info("Successfully entered license details");
+        } catch (Exception e) {
+            LoggerUtils.error("Failed to enter license details: " + e.getMessage());
+            throw new RuntimeException("Failed to enter license details", e);
+        }
     }
 
+    @Step("Entering address details")
+    public void enterAddressDetails(String addressLine1, String addressLine2, String city, String zipCode,
+            String state) {
+        try {
+            setInputField(addressLine1Field, addressLine1);
+            setInputField(addressLine2Field, addressLine2);
+            setInputField(cityField, city);
+            setInputField(zipCodeField, zipCode);
+
+            WebElement stateList = addressStateDropdown;
+            stateList.click();
+            stateList.sendKeys(state);
+            waitForElementToBeVisible(addressStateName).click();
+
+            LoggerUtils.info("Successfully entered address details");
+        } catch (Exception e) {
+            LoggerUtils.error("Failed to enter address details: " + e.getMessage());
+            throw new RuntimeException("Failed to enter address details", e);
+        }
+    }
 
     @Step("Saving nurse details")
     public void saveNurse() {
@@ -147,17 +188,16 @@ public class eAmataNursePage extends BasePage {
         }
     }
 
-
     @Step("Verifying nurse creation")
     public String verifyNurseCreation() {
         try {
+            waitForProgressBarToAppear(); // Wait for any loading operations
             return waitForElementToBeVisible(nurseVerification).getText();
         } catch (Exception e) {
             LoggerUtils.error("Failed to verify nurse creation: " + e.getMessage());
             throw new RuntimeException("Failed to verify nurse creation", e);
         }
     }
-
 
     @Step("Getting first name error message")
     public String getFirstNameError() {
@@ -169,7 +209,6 @@ public class eAmataNursePage extends BasePage {
         }
     }
 
-
     @Step("Getting last name error message")
     public String getLastNameError() {
         try {
@@ -179,7 +218,6 @@ public class eAmataNursePage extends BasePage {
             throw new RuntimeException("Failed to get last name error message", e);
         }
     }
-
 
     @Step("Getting email error message")
     public String getEmailError() {
@@ -191,7 +229,6 @@ public class eAmataNursePage extends BasePage {
         }
     }
 
-
     @Step("Getting phone number error message")
     public String getPhoneNumberError() {
         try {
@@ -202,7 +239,6 @@ public class eAmataNursePage extends BasePage {
         }
     }
 
-
     @Step("Getting NPI error message")
     public String getNPIError() {
         try {
@@ -212,7 +248,6 @@ public class eAmataNursePage extends BasePage {
             throw new RuntimeException("Failed to get NPI error message", e);
         }
     }
-
 
     @Step("Getting license error message")
     public String getLicenseError() {

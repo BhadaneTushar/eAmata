@@ -9,7 +9,6 @@ import org.testng.annotations.Test;
 import pageObject.SuperAdminLogin;
 import testBase.BaseClass;
 import utilities.ErrorMessages;
-import utilities.LoginUtils;
 
 public class TC001_SuperAdminLogin extends BaseClass {
 
@@ -32,7 +31,6 @@ public class TC001_SuperAdminLogin extends BaseClass {
     @Description("Verify SuperAdmin can log in with valid credentials")
     public void superAdminLoginWithValidCredentials() {
         loginPage.get().login(validUsername.get(), validPassword.get());
-        
         String expectedText = "Provider Groups";
         Assert.assertEquals(loginPage.get().getProviderGroupsText(), expectedText,
                 "Login failed: Expected text does not match.");

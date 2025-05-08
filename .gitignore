@@ -42,3 +42,6 @@ build/
 /reports
 /bin/
 /.metadata
+
+# Webhook secrets
+.webhook_secret

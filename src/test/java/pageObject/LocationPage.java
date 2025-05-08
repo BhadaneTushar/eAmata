@@ -89,7 +89,8 @@ public class LocationPage extends BasePage {
     // Navigation Methods
     public void navigateToProviderGroup() {
         waitForProgressBarToAppear();
-        clickButton(waitForElementToBeVisible(providerGroupLink));
+        ProviderGroupPage providerGroupPage = new ProviderGroupPage(getDriver());
+        providerGroupPage.clickProviderGroupName(providerGroupLink);
     }
 
     public void navigateToLocationTab() {
