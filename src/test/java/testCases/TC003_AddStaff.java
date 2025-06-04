@@ -8,6 +8,7 @@ import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 import pageObject.StaffPage;
 import testBase.BaseClass;
+import utilities.ErrorMessages;
 import utilities.TestDataGenerator;
 import utilities.LoginUtils;
 
@@ -69,12 +70,7 @@ public class TC003_AddStaff extends BaseClass {
                 staffPage.addStaff("", lastName, email, phoneNumber, role, gender,
                                 addressLine1, addressLine2, city, zipCode, state);
 
-                String expectedError = "First Name is required";
-                String actualError = staffPage.getFirstNameRequiredError();
-
-                Assert.assertEquals(actualError, expectedError,
-                                "Validation failed! Expected: '" + expectedError +
-                                                "', Actual: '" + actualError + "'");
+                Assert.assertEquals(staffPage.getFirstNameRequiredError(), ErrorMessages.FIRST_NAME_REQUIRED);
 
         }
 
@@ -86,12 +82,7 @@ public class TC003_AddStaff extends BaseClass {
                 staffPage.addStaff(firstName, "", email, phoneNumber, role, gender,
                                 addressLine1, addressLine2, city, zipCode, state);
 
-                String expectedError = "Last Name is required";
-                String actualError = staffPage.getLastNameRequiredError();
-
-                Assert.assertEquals(actualError, expectedError,
-                                "Validation failed! Expected: '" + expectedError +
-                                                "', Actual: '" + actualError + "'");
+                Assert.assertEquals(staffPage.getLastNameRequiredError(), ErrorMessages.LAST_NAME_REQUIRED);
 
         }
 
