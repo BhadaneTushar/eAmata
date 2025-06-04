@@ -138,22 +138,17 @@ public class eAmataNursePage extends BasePage {
 
     @Step("Entering license details")
     public void enterLicenseDetails(String licenseNumber, String licensedState, String expiryDate) {
-        try {
-            setInputField(licensedNumberField, licenseNumber);
+
+        setInputField(licensedNumberField, licenseNumber);
             WebElement stateList = licensedStateDropdown;
             stateList.click();
             stateList.sendKeys(licensedState);
             waitForElementToBeVisible(stateName).click();
 
             // Create DatePicker instance and select the date
-            DatePicker datePicker = new DatePicker(BaseClass.getDriver(), expiryDate, "MM/dd/yyyy");
-            datePicker.selectDate();
+            new DatePicker(BaseClass.getDriver(), expiryDate, "MM/dd/yyyy");
 
             LoggerUtils.info("Successfully entered license details");
-        } catch (Exception e) {
-            LoggerUtils.error("Failed to enter license details: " + e.getMessage());
-            throw new RuntimeException("Failed to enter license details", e);
-        }
     }
 
     @Step("Entering address details")

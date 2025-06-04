@@ -23,10 +23,10 @@ public class SuperAdminLogin extends BasePage {
     private WebElement providerGroupsText;
 
     // Validation Messages
-    @FindBy(xpath = "//span[text()='Invalid email address']")
+    @FindBy(xpath = "//label[text()='Invalid email address']")
     private WebElement invalidEmailErrorMessage;
 
-    @FindBy(xpath = "//span[contains(text(),'Password must be 8+ characters, with at least one ')]")
+    @FindBy(xpath = "//label[contains(text(),'Password must be 8+ characters, with at least one ')]")
     private WebElement invalidPasswordErrorMessage;
 
     public SuperAdminLogin() {

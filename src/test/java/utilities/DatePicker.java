@@ -65,6 +65,7 @@ public class DatePicker {
      */
     public DatePicker(WebDriver driver, String targetDateString) {
         this(driver, targetDateString, "dd/MM/yyyy");
+        selectDate();
     }
 
     /**
