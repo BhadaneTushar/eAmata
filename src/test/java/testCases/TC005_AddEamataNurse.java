@@ -28,15 +28,15 @@ public class TC005_AddEamataNurse extends BaseClass {
     @Severity(SeverityLevel.CRITICAL)
     @Description("Verify adding a new eAmata nurse")
     public void addEamataNurse() {
-        String firstName = "Test";
-        String lastName = "Nurse";
-        String email = "testnurse@example.com";
-        String phone = "1234567890";
-        String npi = "1234567890";
+        String firstName = dataGenerator.generateRandomFirstName();
+        String lastName = dataGenerator.generateRandomLastName();
+        String email = dataGenerator.generateEmail("nurse");
+        String phone = dataGenerator.generatePhoneNumber();
+        String npi = dataGenerator.generateRandomNPI();
         String gender = "Male";
-        String licenseNumber = "RN123456";
+        String licenseNumber = dataGenerator.generatePhoneNumber();
         String licenseState = "Arizona";
-        String licenseExpiryDate = "12/31/2025";
+        String licenseExpiryDate = "12/12/2025";
 
         // Generate address details
         String addressLine1 = dataGenerator.generateAddressLine1();

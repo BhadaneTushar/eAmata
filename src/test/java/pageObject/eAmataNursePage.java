@@ -186,7 +186,6 @@ public class eAmataNursePage extends BasePage {
     @Step("Verifying nurse creation")
     public String verifyNurseCreation() {
         try {
-            waitForProgressBarToAppear(); // Wait for any loading operations
             return waitForElementToBeVisible(nurseVerification).getText();
         } catch (Exception e) {
             LoggerUtils.error("Failed to verify nurse creation: " + e.getMessage());
