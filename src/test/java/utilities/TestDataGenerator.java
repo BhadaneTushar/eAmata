@@ -1,7 +1,6 @@
 package utilities;
 
 import com.github.javafaker.Faker;
-import utilities.LoggerUtils;
 
 import java.util.*;
 import java.util.regex.Pattern;
@@ -14,7 +13,7 @@ import java.util.stream.IntStream;
  * enhanced validation.
  */
 public class TestDataGenerator {
-    private static final String EMAIL_PATTERN = "^[A-Za-z0-9+_.-]+@(.+)$";
+    private static final String EMAIL_PATTERN = "^[A-Za-z0-99+_.-]+@(.+)$";
     private static final String PHONE_PATTERN = "^\\d{10}$";
     private static final String NPI_PATTERN = "^\\d{10}$";
     private static final String SUBDOMAIN_PATTERN = "^[a-z0-9-]+$";
@@ -220,7 +219,7 @@ public class TestDataGenerator {
      * @return Generated email
      */
     public String generateEmail(String prefix) {
-        String email = "tushar.bhadane+" + prefix + faker.number().digits(2) + "@thinkitive.com";
+        String email = "tushar.bhadane+" + prefix + faker.number().digits(3) + "@thinkitive.com";
         LoggerUtils.debug("Generated prefixed email: " + email);
         return email;
     }

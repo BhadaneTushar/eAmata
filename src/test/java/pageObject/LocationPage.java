@@ -104,7 +104,7 @@ public class LocationPage extends BasePage {
 
     // Input Field Methods
     private void fillLocationDetails(String name, String phoneNumber, String email,
-            String addressLine1, String addressLine2, String city, String zipCode, String state) {
+                                     String addressLine1, String addressLine2, String city, String zipCode, String state) {
         setInputField(nameInputField, name);
         setInputField(phoneNumberInputField, phoneNumber);
         setInputField(emailInputField, email);
@@ -117,7 +117,7 @@ public class LocationPage extends BasePage {
 
     // Combined Action Methods
     public void addLocation(String name, String phoneNumber, String email,
-            String addressLine1, String addressLine2, String city, String zipCode, String state) {
+                            String addressLine1, String addressLine2, String city, String zipCode, String state) {
         navigateToProviderGroup();
         navigateToLocationTab();
         clickAddLocation();

@@ -1,12 +1,14 @@
 package utilities;
 
 import org.testng.annotations.DataProvider;
+
 import java.io.IOException;
 
 public class DataProviders {
 
     /**
      * Provides login data for testing from an Excel file.
+     *
      * @return A 2D array containing login data (e.g., username, password).
      * @throws IOException If there is an issue reading the Excel file.
      */

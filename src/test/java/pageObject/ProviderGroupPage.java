@@ -118,7 +118,7 @@ public class ProviderGroupPage extends BasePage {
 
     // Combined Action Methods
     public void addProviderGroup(String name, String email, String phone, String npi, String subDomain,
-            String addressLine1, String addressLine2, String city, String zipCode, String state) {
+                                 String addressLine1, String addressLine2, String city, String zipCode, String state) {
         clickNewProviderGroup();
         selectManualEntry();
         fillProviderGroupDetails(name, email, phone, npi, subDomain);

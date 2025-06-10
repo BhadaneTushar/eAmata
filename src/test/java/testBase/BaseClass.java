@@ -70,6 +70,10 @@ public class BaseClass {
                     ChromeOptions chromeOpts = new ChromeOptions();
                     if (Boolean.parseBoolean(properties.getProperty("Headless"))) {
                         chromeOpts.addArguments("--headless=new");
+                        chromeOpts.addArguments("--window-size=1920,1080");
+                        chromeOpts.addArguments("--disable-gpu");
+                        chromeOpts.addArguments("--no-sandbox");
+                        chromeOpts.addArguments("--disable-dev-shm-usage");
                     }
                     driver = new ChromeDriver(chromeOpts);
                     break;

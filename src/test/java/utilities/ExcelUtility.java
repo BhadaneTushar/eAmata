@@ -1,12 +1,16 @@
 package utilities;
 
+import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
-import org.apache.poi.hssf.usermodel.HSSFWorkbook;
-import utilities.LoggerUtils;
 
-import java.io.*;
-import java.util.*;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Utility class for handling Excel file operations.
@@ -21,7 +25,7 @@ public class ExcelUtility {
 
     /**
      * Constructor for ExcelUtility.
-     * 
+     *
      * @param filePath The path to the Excel file
      * @throws IOException              if file cannot be opened
      * @throws IllegalArgumentException if file format is not supported
@@ -34,7 +38,7 @@ public class ExcelUtility {
 
     /**
      * Initializes the workbook based on file extension.
-     * 
+     *
      * @throws IOException              if file cannot be opened
      * @throws IllegalArgumentException if file format is not supported
      */
@@ -69,7 +73,7 @@ public class ExcelUtility {
 
     /**
      * Gets the number of rows in the sheet.
-     * 
+     *
      * @return The number of rows
      */
     public int getRowCount() {
@@ -78,7 +82,7 @@ public class ExcelUtility {
 
     /**
      * Gets the number of columns in the sheet.
-     * 
+     *
      * @return The number of columns
      */
     public int getColumnCount() {
@@ -87,7 +91,7 @@ public class ExcelUtility {
 
     /**
      * Gets the number of rows in the specified sheet.
-     * 
+     *
      * @param sheetName The name of the sheet
      * @return The number of rows
      */
@@ -101,7 +105,7 @@ public class ExcelUtility {
 
     /**
      * Gets the number of columns in the specified sheet and row.
-     * 
+     *
      * @param sheetName The name of the sheet
      * @param rowNum    The row number (0-based)
      * @return The number of columns
@@ -120,7 +124,7 @@ public class ExcelUtility {
 
     /**
      * Gets the data from a specific cell in the specified sheet.
-     * 
+     *
      * @param sheetName The name of the sheet
      * @param rowNum    The row number (0-based)
      * @param colNum    The column number (0-based)
@@ -136,7 +140,7 @@ public class ExcelUtility {
 
     /**
      * Gets the data from a specific cell.
-     * 
+     *
      * @param rowNum The row number (0-based)
      * @param colNum The column number (0-based)
      * @return The cell data as a string
@@ -160,7 +164,7 @@ public class ExcelUtility {
 
     /**
      * Gets the data from a specific cell using column name.
-     * 
+     *
      * @param rowNum     The row number (0-based)
      * @param columnName The column name
      * @return The cell data as a string
@@ -180,7 +184,7 @@ public class ExcelUtility {
 
     /**
      * Sets data in a specific cell.
-     * 
+     *
      * @param rowNum The row number (0-based)
      * @param colNum The column number (0-based)
      * @param data   The data to set
@@ -201,7 +205,7 @@ public class ExcelUtility {
 
     /**
      * Sets data in a specific cell using column name.
-     * 
+     *
      * @param rowNum     The row number (0-based)
      * @param columnName The column name
      * @param data       The data to set
@@ -220,7 +224,7 @@ public class ExcelUtility {
 
     /**
      * Gets all data from the sheet as a list of maps.
-     * 
+     *
      * @return List of maps containing row data
      */
     public List<Map<String, String>> getAllData() {
@@ -251,7 +255,7 @@ public class ExcelUtility {
 
     /**
      * Writes data to the Excel file.
-     * 
+     *
      * @throws IOException if file cannot be written
      */
     public void writeData() throws IOException {
@@ -266,7 +270,7 @@ public class ExcelUtility {
 
     /**
      * Gets the cell value as a string.
-     * 
+     *
      * @param cell The cell to get the value from
      * @return The cell value as a string
      */

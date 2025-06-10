@@ -94,7 +94,7 @@ public class StaffPage extends BasePage {
 
     // Input Field Methods
     private void fillStaffInformation(String firstName, String lastName, String email, String phoneNumber, String role,
-            String gender) {
+                                      String gender) {
         setInputField(firstNameInputField, firstName);
         setInputField(lastNameInputField, lastName);
         setInputField(emailInputField, email);
@@ -105,7 +105,7 @@ public class StaffPage extends BasePage {
 
     // Combined Action Methods
     public void addStaff(String firstName, String lastName, String email, String phoneNumber, String role,
-            String gender, String addressLine1, String addressLine2, String city, String zipCode, String state) {
+                         String gender, String addressLine1, String addressLine2, String city, String zipCode, String state) {
         navigateToProviderGroup();
         navigateToStaffTab();
         clickAddStaff();

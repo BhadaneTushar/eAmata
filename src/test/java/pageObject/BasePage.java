@@ -19,14 +19,14 @@ public class BasePage {
     private static final Duration PROGRESS_BAR_TIMEOUT = Duration.ofSeconds(60);
     private static final Duration POLLING_INTERVAL = Duration.ofMillis(500);
     private static final Duration UI_LOAD_WAIT = Duration.ofMillis(1000);
-    
+
 
     public BasePage() {
         PageFactory.initElements(BaseClass.getDriver(), this);
     }
 
     @Step("Waiting for UI to load")
-    protected void  waitForUILoad() {
+    protected void waitForUILoad() {
         try {
             Thread.sleep(UI_LOAD_WAIT.toMillis());
         } catch (InterruptedException e) {
