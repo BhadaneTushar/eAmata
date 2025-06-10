@@ -1,7 +1,6 @@
 package utilities;
 
 import com.github.javafaker.Faker;
-import utilities.LoggerUtils;
 
 import java.util.*;
 import java.util.regex.Pattern;

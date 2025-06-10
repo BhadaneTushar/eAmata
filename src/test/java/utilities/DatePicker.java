@@ -1,7 +1,6 @@
 package utilities;
 
 import org.openqa.selenium.*;
-import utilities.LoggerUtils;
 
 import java.time.LocalDate;
 import java.time.Month;
@@ -57,7 +56,7 @@ public class DatePicker {
 
     /**
      * Constructor for DatePicker with default date format (dd/MM/yyyy).
-     * 
+     *
      * @param driver           The WebDriver instance
      * @param targetDateString The date string to select
      * @throws IllegalArgumentException if date format is invalid
@@ -70,7 +69,7 @@ public class DatePicker {
 
     /**
      * Constructor for DatePicker.
-     * 
+     *
      * @param driver           The WebDriver instance
      * @param targetDateString The date string to select
      * @param dateFormat       The format of the date string
@@ -96,7 +95,7 @@ public class DatePicker {
 
     /**
      * Selects the date in the calendar widget.
-     * 
+     *
      * @throws RuntimeException if date selection fails
      */
     public void selectDate() {
@@ -121,7 +120,7 @@ public class DatePicker {
 
     /**
      * Opens the calendar widget.
-     * 
+     *
      * @throws RuntimeException if calendar widget cannot be opened
      */
     private void openCalendarWidget() {
@@ -138,7 +137,7 @@ public class DatePicker {
 
     /**
      * Navigates to the specified year in the calendar.
-     * 
+     *
      * @param targetYear The year to navigate to
      * @throws RuntimeException if year navigation fails
      */
@@ -161,7 +160,7 @@ public class DatePicker {
 
     /**
      * Navigates to the specified month in the calendar.
-     * 
+     *
      * @param targetMonthStr The month to navigate to
      * @throws RuntimeException if month navigation fails
      */
@@ -199,12 +198,13 @@ public class DatePicker {
 
     /**
      * Selects the specified day in the calendar.
-     * 
+     *
      * @param targetDay The day to select
      * @throws RuntimeException if day selection fails
      */
     private void selectDay(int targetDay) {
         try {
+            Thread.sleep(1000);
             for (int i = 1; i <= 6; i++) {
                 String dayElementXPath = "//div[@role='row' and @aria-rowindex='" + i + "']//button[text()='"
                         + targetDay + "']";
@@ -228,7 +228,7 @@ public class DatePicker {
 
     /**
      * Parses a month name to a Month enum.
-     * 
+     *
      * @param monthName The name of the month
      * @return The corresponding Month enum
      * @throws IllegalArgumentException if month name is invalid

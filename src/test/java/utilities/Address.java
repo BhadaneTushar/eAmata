@@ -6,7 +6,6 @@ import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import pageObject.BasePage;
-import utilities.LoggerUtils;
 
 import java.time.Duration;
 import java.util.HashMap;
@@ -20,6 +19,7 @@ import java.util.regex.Pattern;
  */
 public class Address extends BasePage {
     private static final Map<String, String> COUNTRY_ZIP_PATTERNS = new HashMap<>();
+
     static {
         COUNTRY_ZIP_PATTERNS.put("US", "^\\d{5}(-\\d{4})?$");
         COUNTRY_ZIP_PATTERNS.put("CA", "^[A-Z]\\d[A-Z] \\d[A-Z]\\d$");
@@ -62,7 +62,7 @@ public class Address extends BasePage {
 
     /**
      * Sets the country for address validation.
-     * 
+     *
      * @param country The country code (e.g., "US", "CA", "UK")
      */
     public void setCountry(String country) {
@@ -76,7 +76,7 @@ public class Address extends BasePage {
 
     /**
      * Enters address details with validation, defaulting to US as the country.
-     * 
+     *
      * @param addressLine1 The first line of the address
      * @param addressLine2 The second line of the address
      * @param city         The city name
@@ -90,7 +90,7 @@ public class Address extends BasePage {
 
     /**
      * Enters address details with validation.
-     * 
+     *
      * @param addressLine1 The first line of the address
      * @param addressLine2 The second line of the address
      * @param city         The city name
@@ -100,7 +100,7 @@ public class Address extends BasePage {
      * @throws IllegalArgumentException if any input is invalid
      */
     public void enterAddressDetails(String addressLine1, String addressLine2, String city, String zip, String state,
-            String country) {
+                                    String country) {
         LoggerUtils.info("Entering address details");
         validateAddressInputs(addressLine1, city, zip, state, country);
 
@@ -135,7 +135,7 @@ public class Address extends BasePage {
 
     /**
      * Validates address inputs.
-     * 
+     *
      * @param addressLine1 The first line of the address
      * @param city         The city name
      * @param zip          The ZIP code
@@ -163,7 +163,7 @@ public class Address extends BasePage {
 
     /**
      * Validates a ZIP code for the current country.
-     * 
+     *
      * @param zipCode The ZIP code to validate
      * @param country The country code
      * @return true if the ZIP code is valid
@@ -175,7 +175,7 @@ public class Address extends BasePage {
 
     /**
      * Selects a country from the dropdown.
-     * 
+     *
      * @param country The country name to select
      * @throws RuntimeException if country selection fails
      */
@@ -212,7 +212,7 @@ public class Address extends BasePage {
 
     /**
      * Selects a state from the dropdown.
-     * 
+     *
      * @param state The state name to select
      * @throws RuntimeException if state selection fails
      */

@@ -26,7 +26,7 @@ public class TC001_SuperAdminLogin extends BaseClass {
         Assert.assertNotNull(validPassword.get(), "Password is not set in the properties file.");
     }
 
-    @Test(priority = 1, groups = { "smoke", "regression" })
+    @Test(priority = 1, groups = {"smoke", "regression"})
     @Severity(SeverityLevel.CRITICAL)
     @Description("Verify SuperAdmin can log in with valid credentials")
     public void superAdminLoginWithValidCredentials() {
@@ -36,7 +36,7 @@ public class TC001_SuperAdminLogin extends BaseClass {
                 "Login failed: Expected text does not match.");
     }
 
-    @Test(priority = 2, groups = { "regression" })
+    @Test(priority = 2, groups = {"regression"})
     @Severity(SeverityLevel.NORMAL)
     @Description("Verify login fails with an incorrect username")
     public void loginWithInvalidUsername() {
@@ -46,7 +46,7 @@ public class TC001_SuperAdminLogin extends BaseClass {
                 "Error message does not match for invalid username.");
     }
 
-    @Test(priority = 3, groups = { "regression" })
+    @Test(priority = 3, groups = {"regression"})
     @Severity(SeverityLevel.NORMAL)
     @Description("Verify login fails with an incorrect password")
     public void loginWithInvalidPassword() {

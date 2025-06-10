@@ -120,7 +120,7 @@ public class eAmataNursePage extends BasePage {
 
     @Step("Entering nurse details")
     public void enterNurseDetails(String firstName, String lastName, String email, String phoneNumber, String NPI,
-            String gender) {
+                                  String gender) {
         try {
             Thread.sleep(1000);
             setInputField(firstNameField, firstName);
@@ -140,20 +140,20 @@ public class eAmataNursePage extends BasePage {
     public void enterLicenseDetails(String licenseNumber, String licensedState, String expiryDate) {
 
         setInputField(licensedNumberField, licenseNumber);
-            WebElement stateList = licensedStateDropdown;
-            stateList.click();
-            stateList.sendKeys(licensedState);
-            waitForElementToBeVisible(stateName).click();
+        WebElement stateList = licensedStateDropdown;
+        stateList.click();
+        stateList.sendKeys(licensedState);
+        waitForElementToBeVisible(stateName).click();
 
-            // Create DatePicker instance and select the date
-            new DatePicker(BaseClass.getDriver(), expiryDate, "MM/dd/yyyy");
+        // Create DatePicker instance and select the date
+        new DatePicker(BaseClass.getDriver(), expiryDate, "MM/dd/yyyy");
 
-            LoggerUtils.info("Successfully entered license details");
+        LoggerUtils.info("Successfully entered license details");
     }
 
     @Step("Entering address details")
     public void enterAddressDetails(String addressLine1, String addressLine2, String city, String zipCode,
-            String state) {
+                                    String state) {
         try {
             setInputField(addressLine1Field, addressLine1);
             setInputField(addressLine2Field, addressLine2);

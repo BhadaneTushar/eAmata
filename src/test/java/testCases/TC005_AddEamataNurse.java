@@ -24,7 +24,7 @@ public class TC005_AddEamataNurse extends BaseClass {
         dataGenerator = new TestDataGenerator();
     }
 
-    @Test(priority = 1, groups = { "smoke", "regression" })
+    @Test(priority = 1, groups = {"smoke", "regression"})
     @Severity(SeverityLevel.CRITICAL)
     @Description("Verify adding a new eAmata nurse")
     public void addEamataNurse() {
