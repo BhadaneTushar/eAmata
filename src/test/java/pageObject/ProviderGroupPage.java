@@ -145,22 +145,27 @@ public class ProviderGroupPage extends BasePage {
 
     // Validation Message Methods
     public String getNameRequiredError() {
+        waitForUILoad();
         return waitForElementToBeVisible(nameRequiredError).getText();
     }
 
     public String getInvalidEmailError() {
+        waitForUILoad();
         return waitForElementToBeVisible(invalidEmailError).getText();
     }
 
     public String getInvalidPhoneNumberError() {
+        waitForUILoad();
         return waitForElementToBeVisible(invalidPhoneNumberError).getText();
     }
 
     public String getInvalidNpiNumberError() {
+        waitForUILoad();
         return waitForElementToBeVisible(invalidNpiNumberError).getText();
     }
 
     public String getInvalidSubDomainError() {
+        waitForUILoad();
         return waitForElementToBeVisible(invalidSubDomainError).getText();
     }
 

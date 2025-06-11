@@ -126,22 +126,27 @@ public class StaffPage extends BasePage {
 
     // Validation Message Methods
     public String getFirstNameRequiredError() {
+        waitForUILoad();
         return waitForElementToBeVisible(firstNameRequiredError).getText();
     }
 
     public String getLastNameRequiredError() {
+        waitForUILoad();
         return waitForElementToBeVisible(lastNameRequiredError).getText();
     }
 
     public String getInvalidPhoneNumberError() {
+        waitForUILoad();
         return waitForElementToBeVisible(invalidPhoneNumberError).getText();
     }
 
     public String getPhoneRequiredError() {
+        waitForUILoad();
         return waitForElementToBeVisible(phoneRequiredError).getText();
     }
 
     public String getEmailRequiredError() {
+        waitForUILoad();
         return waitForElementToBeVisible(emailRequiredError).getText();
     }
 
