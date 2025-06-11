@@ -204,7 +204,7 @@ public class DatePicker {
      */
     private void selectDay(int targetDay) {
         try {
-            Thread.sleep(1000);
+            Thread.sleep(3000);
             for (int i = 1; i <= 6; i++) {
                 String dayElementXPath = "//div[@role='row' and @aria-rowindex='" + i + "']//button[text()='"
                         + targetDay + "']";
