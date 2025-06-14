@@ -45,3 +45,40 @@ build/
 
 # Webhook secrets
 .webhook_secret
+
+# Test output and reports
+test-output/
+allure-report/
+extent-reports/
+
+# IDE specific files
+.idea/
+*.iml
+.project
+.classpath
+
+# Logs and temporary files
+*.log
+*.tmp
+*.temp
+
+# Excel temporary files
+~$*.xlsx
+~$*.xls
+
+# Driver executables
+*.exe
+driver/
+
+# Local configuration
+application.properties
+application-local.properties
+
+# Package files
+*.jar
+*.war
+*.nar
+*.ear
+*.zip
+*.tar.gz
+*.rar
