@@ -103,9 +103,11 @@ public class eAmataNursePage extends BasePage {
     @FindBy(xpath = "//input[@placeholder='Enter License Number']/following-sibling::div[contains(@class, 'error')]")
     private WebElement licenseError;
 
-    public eAmataNursePage(WebDriver driver) {
+    /**
+     * Constructor for eAmataNursePage
+     */
+    public eAmataNursePage() {
         super();
-        PageFactory.initElements(driver, this);
         LoggerUtils.debug("Initialized eAmataNursePage");
     }
 

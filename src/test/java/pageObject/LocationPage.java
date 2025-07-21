@@ -1,18 +1,21 @@
 package pageObject;
 
 import io.qameta.allure.Step;
-import org.openqa.selenium.JavascriptExecutor;
-import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
-import org.openqa.selenium.support.PageFactory;
-import testBase.BaseClass;
+import utilities.Constants;
+import utilities.ElementActions;
 import utilities.LoggerUtils;
 
+/**
+ * Page object for the Location management page
+ * Handles all interactions with the Location UI elements
+ */
 public class LocationPage extends BasePage {
 
     // Constants
-    private static final String STATE_LIST_XPATH = "//ul[@role='listbox']/li";
+    private static final String STATE_LIST_XPATH = Constants.DROPDOWN_OPTIONS_XPATH;
 
     // Navigation Elements
     @FindBy(xpath = "//tbody/tr[1]/td[1]/div[1]/a[1]")
@@ -50,9 +53,6 @@ public class LocationPage extends BasePage {
     @FindBy(xpath = "//input[@placeholder='Select State']")
     private WebElement stateDropdownButton;
 
-    @FindBy(xpath = "//li[text()='Arizona']")
-    private WebElement stateName;
-
     // Action Buttons
     @FindBy(xpath = "(//span[text()='Add Location'])[2]")
     private WebElement saveButton;
@@ -80,31 +80,59 @@ public class LocationPage extends BasePage {
     @FindBy(xpath = "//label[text()='Zip code is required']")
     private WebElement zipCodeRequiredError;
 
-    public LocationPage(WebDriver driver) {
+    /**
+     * Constructor for LocationPage
+     */
+    public LocationPage() {
         super();
-        PageFactory.initElements(driver, this);
         LoggerUtils.debug("Initialized LocationPage");
     }
 
-    // Navigation Methods
+    /**
+     * Navigate to the provider group details page
+     */
+    @Step("Navigating to Provider Group details")
     public void navigateToProviderGroup() {
+        LoggerUtils.info("Navigating to Provider Group details");
         waitForProgressBarToAppear();
-        ProviderGroupPage providerGroupPage = new ProviderGroupPage(getDriver());
-        providerGroupPage.clickProviderGroupName(providerGroupLink);
+        clickButton(providerGroupLink);
     }
 
+    /**
+     * Navigate to the location tab
+     */
+    @Step("Navigating to Location tab")
     public void navigateToLocationTab() {
+        LoggerUtils.info("Navigating to Location tab");
         waitForProgressBarToAppear();
-        ((JavascriptExecutor) BaseClass.getDriver()).executeScript("arguments[0].click();", locationTabButton);
+        clickButton(locationTabButton);
     }
 
+    /**
+     * Click the Add Location button
+     */
+    @Step("Clicking Add Location button")
     public void clickAddLocation() {
-        ((JavascriptExecutor) BaseClass.getDriver()).executeScript("arguments[0].click();", addLocationButton);
+        LoggerUtils.info("Clicking Add Location button");
+        clickButton(addLocationButton);
     }
 
-    // Input Field Methods
+    /**
+     * Fill in all location details
+     * 
+     * @param name         Location name
+     * @param phoneNumber  Location phone number
+     * @param email        Location email
+     * @param addressLine1 Address line 1
+     * @param addressLine2 Address line 2
+     * @param city         City
+     * @param zipCode      Zip code
+     * @param state        State
+     */
+    @Step("Filling location details: {0}")
     private void fillLocationDetails(String name, String phoneNumber, String email,
-                                     String addressLine1, String addressLine2, String city, String zipCode, String state) {
+                                    String addressLine1, String addressLine2, String city, String zipCode, String state) {
+        LoggerUtils.info("Filling location details for: " + name);
         setInputField(nameInputField, name);
         setInputField(phoneNumberInputField, phoneNumber);
         setInputField(emailInputField, email);
@@ -115,9 +143,22 @@ public class LocationPage extends BasePage {
         selectDropdownByVisibleText(stateDropdownButton, state, STATE_LIST_XPATH);
     }
 
-    // Combined Action Methods
+    /**
+     * Add a new location with all details
+     * 
+     * @param name         Location name
+     * @param phoneNumber  Location phone number
+     * @param email        Location email
+     * @param addressLine1 Address line 1
+     * @param addressLine2 Address line 2
+     * @param city         City
+     * @param zipCode      Zip code
+     * @param state        State
+     */
+    @Step("Adding new location: {0}")
     public void addLocation(String name, String phoneNumber, String email,
-                            String addressLine1, String addressLine2, String city, String zipCode, String state) {
+                           String addressLine1, String addressLine2, String city, String zipCode, String state) {
+        LoggerUtils.info("Adding new location: " + name);
         navigateToProviderGroup();
         navigateToLocationTab();
         clickAddLocation();
@@ -125,44 +166,104 @@ public class LocationPage extends BasePage {
         saveLocation();
     }
 
-    // Form Submission Methods
+    /**
+     * Save the location by clicking the save button
+     */
+    @Step("Saving location")
     public void saveLocation() {
-        ((JavascriptExecutor) BaseClass.getDriver()).executeScript("arguments[0].click();", saveButton);
+        LoggerUtils.info("Saving location");
+        clickButton(saveButton);
     }
 
-    // Success Message Methods
+    /**
+     * Get the success message text
+     * 
+     * @return Success message text
+     */
+    @Step("Getting success message")
     public String getSuccessMessage() {
-        return successMessage.getText();
+        LoggerUtils.info("Getting success message");
+        return getText(waitForElementToBeVisible(successMessage));
     }
 
-    // Validation Message Methods
+    /**
+     * Get the name required error message
+     * 
+     * @return Name required error message
+     */
+    @Step("Getting name required error message")
     public String getNameRequiredError() {
-        return nameRequiredError.getText();
+        LoggerUtils.info("Getting name required error message");
+        return getText(waitForElementToBeVisible(nameRequiredError));
     }
 
+    /**
+     * Get the invalid phone number error message
+     * 
+     * @return Invalid phone number error message
+     */
     @Step("Getting invalid phone number error message")
     public String getInvalidPhoneNumberError() {
+        LoggerUtils.info("Getting invalid phone number error message");
         try {
-            return invalidPhoneNumberError.getText();
+            return getText(waitForElementToBeVisible(invalidPhoneNumberError));
         } catch (Exception e) {
             LoggerUtils.error("Failed to get invalid phone number error message: " + e.getMessage());
             throw new RuntimeException("Failed to get invalid phone number error message", e);
         }
     }
 
+    /**
+     * Get the invalid phone number format error message
+     * 
+     * @return Invalid phone number format error message
+     */
+    @Step("Getting invalid phone number format error message")
     public String getInvalidPhoneNumberFormatError() {
-        return invalidPhoneNumberFormatError.getText();
+        LoggerUtils.info("Getting invalid phone number format error message");
+        return getText(waitForElementToBeVisible(invalidPhoneNumberFormatError));
     }
 
+    /**
+     * Get the email required error message
+     * 
+     * @return Email required error message
+     */
+    @Step("Getting email required error message")
     public String getEmailRequiredError() {
-        return emailRequiredError.getText();
+        LoggerUtils.info("Getting email required error message");
+        return getText(waitForElementToBeVisible(emailRequiredError));
     }
 
+    /**
+     * Get the invalid email format error message
+     * 
+     * @return Invalid email format error message
+     */
+    @Step("Getting invalid email format error message")
     public String getInvalidEmailFormatError() {
-        return invalidEmailFormatError.getText();
+        LoggerUtils.info("Getting invalid email format error message");
+        return getText(waitForElementToBeVisible(invalidEmailFormatError));
     }
 
+    /**
+     * Get the zip code required error message
+     * 
+     * @return Zip code required error message
+     */
+    @Step("Getting zip code required error message")
     public String getZipCodeRequiredError() {
-        return zipCodeRequiredError.getText();
+        LoggerUtils.info("Getting zip code required error message");
+        return getText(waitForElementToBeVisible(zipCodeRequiredError));
+    }
+    
+    /**
+     * Check if location was added successfully
+     * 
+     * @return True if success message is displayed
+     */
+    @Step("Checking if location was added successfully")
+    public boolean isLocationAddedSuccessfully() {
+        return isElementDisplayed(successMessage);
     }
 }

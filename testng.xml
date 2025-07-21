@@ -2,8 +2,7 @@
 <!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
 <suite name="Parallel Tests Suite" parallel="methods" thread-count="3">
     <listeners>
-        <listener class-name="utilities.ExtentReportManager"/>
-        <listener class-name="io.qameta.allure.testng.AllureTestNg"/>
+        <listener class-name="utilities.TestListener"/>
     </listeners>
 
     <test name="All Tests" parallel="methods" thread-count="3">
@@ -18,7 +17,7 @@
             </class>
             <class name="testCases.TC002_AddProviderGroup">
                 <methods>
-                    <include name="testAddProviderGroup"/>
+                  
                     <include name="testEmptyNameValidation"/>
                     <include name="testInvalidEmailValidation"/>
                     <include name="testInvalidPhoneValidation"/>

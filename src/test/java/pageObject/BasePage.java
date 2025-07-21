@@ -1,155 +1,167 @@
 package pageObject;
 
 import io.qameta.allure.Step;
-import org.openqa.selenium.*;
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.PageFactory;
-import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.openqa.selenium.support.ui.FluentWait;
-import org.openqa.selenium.support.ui.WebDriverWait;
 import testBase.BaseClass;
+import utilities.ElementActions;
 import utilities.LoggerUtils;
 
-import java.io.File;
-import java.time.Duration;
 import java.util.List;
 
+/**
+ * Base class for all page objects
+ * Provides common functionality for page interactions
+ */
 public class BasePage {
-    private static final String PROGRESS_BAR_XPATH = "//div[span[@role='progressbar']]";
-    private static final Duration DEFAULT_TIMEOUT = Duration.ofSeconds(30);
-    private static final Duration PROGRESS_BAR_TIMEOUT = Duration.ofSeconds(60);
-    private static final Duration POLLING_INTERVAL = Duration.ofMillis(500);
-    private static final Duration UI_LOAD_WAIT = Duration.ofMillis(1000);
-
-
+    
+    /**
+     * Constructor to initialize page elements
+     */
     public BasePage() {
         PageFactory.initElements(BaseClass.getDriver(), this);
+        LoggerUtils.debug("Initialized " + this.getClass().getSimpleName());
     }
 
-    @Step("Waiting for UI to load")
-    protected void waitForUILoad() {
-        try {
-            Thread.sleep(UI_LOAD_WAIT.toMillis());
-        } catch (InterruptedException e) {
-            Thread.currentThread().interrupt();
-        }
-        new WebDriverWait(getDriver(), DEFAULT_TIMEOUT).until(
-                webDriver -> ((JavascriptExecutor) webDriver)
-                        .executeScript("return document.readyState").equals("complete"));
-    }
-
+    /**
+     * Get the WebDriver instance
+     * @return WebDriver instance
+     */
     protected WebDriver getDriver() {
         return BaseClass.getDriver();
     }
 
+    /**
+     * Wait for UI to load
+     */
+    @Step("Waiting for UI to load")
+    protected void waitForUILoad() {
+        ElementActions.waitForPageLoad();
+    }
+
+    /**
+     * Wait for element to be clickable
+     * @param element WebElement to wait for
+     * @return The clickable WebElement
+     */
     @Step("Waiting for element to be clickable")
     protected WebElement waitForElementToBeClickable(WebElement element) {
-        LoggerUtils.debug("Waiting for element to be clickable");
-        waitForUILoad();
-        FluentWait<WebDriver> wait = new FluentWait<>(getDriver())
-                .withTimeout(DEFAULT_TIMEOUT)
-                .pollingEvery(POLLING_INTERVAL)
-                .ignoring(StaleElementReferenceException.class, ElementClickInterceptedException.class);
-
-        return wait.until(ExpectedConditions.elementToBeClickable(element));
+        return ElementActions.waitForElementToBeClickable(element);
     }
 
+    /**
+     * Wait for element to be visible
+     * @param element WebElement to wait for
+     * @return The visible WebElement
+     */
     @Step("Waiting for element to be visible")
     protected WebElement waitForElementToBeVisible(WebElement element) {
-        LoggerUtils.debug("Waiting for element to be visible");
-        waitForUILoad();
-        FluentWait<WebDriver> wait = new FluentWait<>(getDriver())
-                .withTimeout(DEFAULT_TIMEOUT)
-                .pollingEvery(POLLING_INTERVAL)
-                .ignoring(StaleElementReferenceException.class);
-
-        return wait.until(ExpectedConditions.visibilityOf(element));
+        return ElementActions.waitForElementToBeVisible(element);
     }
 
+    /**
+     * Set input field value
+     * @param element WebElement to set value for
+     * @param value Value to set
+     */
     @Step("Setting input field value: {1}")
     protected void setInputField(WebElement element, String value) {
-        LoggerUtils.debug("Setting input field value: " + value);
-        WebElement inputField = waitForElementToBeVisible(element);
-        ((JavascriptExecutor) getDriver()).executeScript("arguments[0].value = '';", inputField);
-        inputField.sendKeys(value);
-        new WebDriverWait(getDriver(), DEFAULT_TIMEOUT)
-                .until(ExpectedConditions.attributeToBe(inputField, "value", value));
+        ElementActions.type(element, value);
     }
 
+    /**
+     * Click a button
+     * @param element WebElement to click
+     */
     @Step("Clicking element")
     protected void clickButton(WebElement element) {
-        LoggerUtils.debug("Attempting to click element");
-        try {
-            waitForUILoad();
-            waitForElementToBeClickable(element).click();
-        } catch (Exception e) {
-            LoggerUtils.warn("Regular click failed, attempting JavaScript click");
-            JavascriptExecutor js = (JavascriptExecutor) getDriver();
-            js.executeScript("arguments[0].click();", element);
-        }
+        ElementActions.click(element);
     }
 
+    /**
+     * Select dropdown option by visible text
+     * @param dropdownElement Dropdown WebElement
+     * @param visibleText Text to select
+     * @param listItemsXPath XPath to find dropdown items
+     */
     @Step("Selecting dropdown option: {1}")
     protected void selectDropdownByVisibleText(WebElement dropdownElement, String visibleText, String listItemsXPath) {
-        LoggerUtils.debug("Selecting dropdown option: " + visibleText);
-        dropdownElement.click();
+        ElementActions.click(dropdownElement);
         List<WebElement> dropdownItems = getDriver().findElements(By.xpath(listItemsXPath));
         for (WebElement item : dropdownItems) {
             if (item.getText().equalsIgnoreCase(visibleText)) {
-                item.click();
+                ElementActions.click(item);
                 return;
             }
         }
         throw new RuntimeException("Dropdown item not found: " + visibleText);
     }
 
-    @Step("Waiting for progress bar to disappear")
+    /**
+     * Wait for progress bar to appear
+     */
+    @Step("Waiting for progress bar to appear")
     protected void waitForProgressBarToAppear() {
-        FluentWait<WebDriver> wait = new FluentWait<>(getDriver())
-                .withTimeout(PROGRESS_BAR_TIMEOUT)
-                .pollingEvery(POLLING_INTERVAL)
-                .ignoring(NoSuchElementException.class, StaleElementReferenceException.class);
-
-        wait.until(d -> isProgressBarDisplayed());
+        By progressBarLocator = By.xpath("//div[span[@role='progressbar']]");
+        ElementActions.waitForElementToBeVisible(progressBarLocator);
         LoggerUtils.debug("Progress bar operation completed");
     }
 
-    public boolean isProgressBarDisplayed() {
-        WebElement progressBar = getDriver().findElement(By.xpath(PROGRESS_BAR_XPATH));
-        return progressBar.isDisplayed();
-    }
-
-    @Step("Checking if element is displayed")
-    protected boolean isElementDisplayed(WebElement element) {
+    /**
+     * Wait for progress bar to appear with a custom timeout
+     * 
+     * @param timeoutInSeconds Custom timeout in seconds
+     */
+    @Step("Waiting for progress bar with custom timeout: {0}s")
+    protected void waitForProgressBarWithTimeout(int timeoutInSeconds) {
+        By progressBarLocator = By.xpath("//div[span[@role='progressbar']]");
         try {
-            waitForElementToBeVisible(element);
-            return element.isDisplayed();
-        } catch (NoSuchElementException | StaleElementReferenceException e) {
-            return false;
+            ElementActions.waitForElementToBeVisibleWithTimeout(progressBarLocator, timeoutInSeconds);
+            LoggerUtils.debug("Progress bar operation completed within custom timeout");
+        } catch (Exception e) {
+            LoggerUtils.debug("Progress bar not found within custom timeout: " + timeoutInSeconds + "s");
+            // Don't rethrow, this is an optional wait
         }
     }
 
-    @Step("Using fluent wait for element")
-    protected WebElement fluentWait(By locator, Duration timeout, Duration polling) {
-        LoggerUtils.debug("Using fluent wait for element: " + locator);
-        return new FluentWait<>(getDriver())
-                .withTimeout(timeout)
-                .pollingEvery(polling)
-                .ignoring(StaleElementReferenceException.class)
-                .until(d -> d.findElement(locator));
+    /**
+     * Check if progress bar is displayed
+     * @return true if progress bar is displayed, false otherwise
+     */
+    @Step("Checking if progress bar is displayed")
+    public boolean isProgressBarDisplayed() {
+        By progressBarLocator = By.xpath("//div[span[@role='progressbar']]");
+        return ElementActions.isDisplayed(progressBarLocator);
     }
 
+    /**
+     * Check if element is displayed
+     * @param element WebElement to check
+     * @return true if element is displayed, false otherwise
+     */
+    @Step("Checking if element is displayed")
+    protected boolean isElementDisplayed(WebElement element) {
+        return ElementActions.isDisplayed(element);
+    }
+
+    /**
+     * Upload a file
+     * @param element File input WebElement
+     * @param filePath Path to the file to upload
+     */
     @Step("Uploading file: {1}")
     protected void uploadFile(WebElement element, String filePath) {
-        LoggerUtils.debug("Uploading file: " + filePath);
-        element.sendKeys(new File(filePath).getAbsolutePath());
+        ElementActions.uploadFile(element, filePath);
     }
 
+    /**
+     * Switch to a new window
+     */
     @Step("Switching to new window")
     protected void switchToNewWindow() {
-        LoggerUtils.debug("Switching to new window");
         String originalWindow = getDriver().getWindowHandle();
-        new WebDriverWait(getDriver(), DEFAULT_TIMEOUT)
-                .until(ExpectedConditions.numberOfWindowsToBe(2));
         for (String windowHandle : getDriver().getWindowHandles()) {
             if (!windowHandle.equals(originalWindow)) {
                 getDriver().switchTo().window(windowHandle);
@@ -158,10 +170,39 @@ public class BasePage {
         }
     }
 
+    /**
+     * Accept an alert
+     */
     @Step("Accepting alert")
     protected void acceptAlert() {
-        LoggerUtils.debug("Accepting alert");
-        new WebDriverWait(getDriver(), DEFAULT_TIMEOUT)
-                .until(ExpectedConditions.alertIsPresent()).accept();
+        ElementActions.acceptAlert();
+    }
+    
+    /**
+     * Get text from an element
+     * @param element WebElement to get text from
+     * @return Text content of the element
+     */
+    @Step("Getting text from element")
+    protected String getText(WebElement element) {
+        return ElementActions.getText(element);
+    }
+    
+    /**
+     * Hover over an element
+     * @param element WebElement to hover over
+     */
+    @Step("Hovering over element")
+    protected void hoverOverElement(WebElement element) {
+        ElementActions.hover(element);
+    }
+    
+    /**
+     * Scroll to an element
+     * @param element WebElement to scroll to
+     */
+    @Step("Scrolling to element")
+    protected void scrollToElement(WebElement element) {
+        ElementActions.scrollToElement(element);
     }
 }

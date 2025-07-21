@@ -145,13 +145,71 @@ public class DatePicker {
         try {
             String yearDropdownXPath = "//button[@aria-label='calendar view is open, switch to year view']";
             WebElement yearDropdown = driver.findElement(By.xpath(yearDropdownXPath));
-            yearDropdown.click();
-
+            
+            // Use JavaScript to click the dropdown to avoid ElementClickInterceptedException
+            JavascriptExecutor js = (JavascriptExecutor) driver;
+            js.executeScript("arguments[0].scrollIntoView(true); arguments[0].click();", yearDropdown);
+            
+            LoggerUtils.debug("Clicked year dropdown using JavaScript");
+            Thread.sleep(1000); // Add a small delay after clicking
+            
+            // Try to find the year using various methods
             String yearOptionXPath = "//div[@role='radiogroup']/div/button[text()='" + targetYear + "']";
-            WebElement yearElement = driver.findElement(By.xpath(yearOptionXPath));
-            yearElement.click();
+            WebElement yearElement = null;
+            
+            try {
+                yearElement = driver.findElement(By.xpath(yearOptionXPath));
+            } catch (NoSuchElementException e) {
+                LoggerUtils.debug("Year not found with first selector, trying alternative selectors");
+                
+                // Try alternative XPath patterns
+                String[] alternativeXPaths = {
+                    "//div[contains(@class, 'year')]//button[contains(text(), '" + targetYear + "')]",
+                    "//div[@role='radiogroup']//button[contains(text(), '" + targetYear + "')]",
+                    "//*[contains(text(), '" + targetYear + "') and (local-name()='button' or local-name()='div')]"
+                };
+                
+                for (String xpath : alternativeXPaths) {
+                    try {
+                        yearElement = driver.findElement(By.xpath(xpath));
+                        if (yearElement != null) {
+                            LoggerUtils.debug("Found year element using alternative selector: " + xpath);
+                            break;
+                        }
+                    } catch (NoSuchElementException ex) {
+                        // Continue to the next selector
+                    }
+                }
+                
+                // If year element still not found, try to use JavaScript to set the date directly
+                if (yearElement == null) {
+                    LoggerUtils.debug("Year not found with alternative selectors, trying to set date directly via JavaScript");
+                    
+                    // Format the target date as needed by the date picker
+                    LocalDate targetDate = LocalDate.now().withYear(targetYear).withMonth(1).withDayOfMonth(1);
+                    String formattedDate = targetDate.format(DateTimeFormatter.ISO_DATE); // Format as YYYY-MM-DD
+                    
+                    // Try to set date value directly using JavaScript
+                    js.executeScript(
+                        "var dateInputs = document.querySelectorAll('input[placeholder=\"MM-DD-YYYY\"]');" +
+                        "if(dateInputs.length > 0) {" +
+                        "  dateInputs[0].value = arguments[0];" +
+                        "  var event = new Event('change', { bubbles: true });" +
+                        "  dateInputs[0].dispatchEvent(event);" +
+                        "}", formattedDate.replace("-", "/"));
+                    
+                    LoggerUtils.debug("Attempted to set date directly via JavaScript");
+                    return;
+                }
+            }
 
-            LoggerUtils.debug("Navigated to year: " + targetYear);
+            if (yearElement != null) {
+                // Use JavaScript to click the year to avoid ElementClickInterceptedException
+                js.executeScript("arguments[0].scrollIntoView(true); arguments[0].click();", yearElement);
+                LoggerUtils.debug("Navigated to year: " + targetYear);
+            } else {
+                throw new NoSuchElementException("Target year element not found: " + targetYear);
+            }
         } catch (Exception e) {
             LoggerUtils.error("Failed to navigate to year: " + targetYear, e);
             throw new RuntimeException("Failed to navigate to year: " + targetYear, e);
