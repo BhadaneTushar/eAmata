@@ -127,7 +127,8 @@ public class StaffPage extends BasePage {
      * 
      * @param timeoutInSeconds Timeout in seconds
      */
-    private void waitForProgressBarWithTimeout(int timeoutInSeconds) {
+    @Override
+    protected void waitForProgressBarWithTimeout(int timeoutInSeconds) {
         try {
             // Wait for progress bar with shorter timeout
             new WebDriverWait(getDriver(), java.time.Duration.ofSeconds(timeoutInSeconds))

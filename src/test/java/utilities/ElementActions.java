@@ -35,21 +35,61 @@ public class ElementActions {
     }
 
     /**
-     * Wait for the page to load completely
+     * Optimized wait for page to load completely with smart detection
      */
     @Step("Waiting for page to load completely")
     public static void waitForPageLoad() {
-        try {
-            Thread.sleep(UI_LOAD_WAIT.toMillis());
-        } catch (InterruptedException e) {
-            Thread.currentThread().interrupt();
-            LoggerUtils.error("Thread interrupted while waiting for UI load: " + e.getMessage());
+        long startTime = System.currentTimeMillis();
+        
+        // First check if page is already loaded
+        if (isPageLoaded()) {
+            LoggerUtils.debug("Page already loaded, skipping wait");
+            return;
         }
         
-        new WebDriverWait(getDriver(), DEFAULT_TIMEOUT).until(
-                webDriver -> ((JavascriptExecutor) webDriver)
-                        .executeScript("return document.readyState").equals("complete"));
-        LoggerUtils.debug("Page loaded completely");
+        // Smart wait with multiple conditions
+        WebDriverWait wait = new WebDriverWait(getDriver(), DEFAULT_TIMEOUT);
+        wait.until(webDriver -> {
+            JavascriptExecutor js = (JavascriptExecutor) webDriver;
+            
+            // Check document ready state
+            boolean documentReady = js.executeScript("return document.readyState").equals("complete");
+            
+            // Check jQuery if present
+            boolean jQueryReady = true;
+            try {
+                jQueryReady = (Boolean) js.executeScript("return typeof jQuery === 'undefined' || jQuery.active === 0");
+            } catch (Exception e) {
+                // jQuery not present, ignore
+            }
+            
+            // Check for common loading indicators
+            boolean noLoadingIndicators = true;
+            try {
+                noLoadingIndicators = ((Long) js.executeScript(
+                    "return document.querySelectorAll('.loading, .spinner, [class*=\"load\"]').length")).equals(0L);
+            } catch (Exception e) {
+                // Ignore if script fails
+            }
+            
+            return documentReady && jQueryReady && noLoadingIndicators;
+        });
+        
+        long endTime = System.currentTimeMillis();
+        LoggerUtils.debug("Page loaded completely in " + (endTime - startTime) + "ms");
+    }
+    
+    /**
+     * Quick check if page is already loaded
+     * @return true if page is loaded
+     */
+    private static boolean isPageLoaded() {
+        try {
+            JavascriptExecutor js = (JavascriptExecutor) getDriver();
+            return js.executeScript("return document.readyState").equals("complete");
+        } catch (Exception e) {
+            return false;
+        }
     }
 
     /**

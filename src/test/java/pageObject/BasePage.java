@@ -12,17 +12,29 @@ import utilities.LoggerUtils;
 import java.util.List;
 
 /**
- * Base class for all page objects
- * Provides common functionality for page interactions
+ * Optimized Base class for all page objects
+ * Provides common functionality for page interactions with performance enhancements
  */
 public class BasePage {
     
+    private final long pageInitStartTime;
+    
     /**
-     * Constructor to initialize page elements
+     * Constructor to initialize page elements with performance tracking
      */
     public BasePage() {
+        pageInitStartTime = System.currentTimeMillis();
         PageFactory.initElements(BaseClass.getDriver(), this);
-        LoggerUtils.debug("Initialized " + this.getClass().getSimpleName());
+        long initTime = System.currentTimeMillis() - pageInitStartTime;
+        LoggerUtils.debug("Initialized " + this.getClass().getSimpleName() + " in " + initTime + "ms");
+    }
+    
+    /**
+     * Get page initialization time
+     * @return Initialization time in milliseconds
+     */
+    protected long getPageInitTime() {
+        return System.currentTimeMillis() - pageInitStartTime;
     }
 
     /**

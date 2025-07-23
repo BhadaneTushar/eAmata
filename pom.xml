@@ -109,7 +109,7 @@
 
     <build>
         <plugins>
-            <!-- Maven Surefire Plugin for Running TestNG Tests -->
+            <!-- Maven Surefire Plugin for Running TestNG Tests with Performance Optimizations -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-plugin</artifactId>
@@ -118,6 +118,32 @@
                     <suiteXmlFiles>
                         <suiteXmlFile>testng.xml</suiteXmlFile>
                     </suiteXmlFiles>
+                    <!-- Performance optimizations -->
+                    <parallel>methods</parallel>
+                    <threadCount>4</threadCount>
+                    <forkCount>2</forkCount>
+                    <reuseForks>true</reuseForks>
+                    <argLine>
+                        -Xmx2048m
+                        -XX:+UseG1GC
+                        -XX:+UseStringDeduplication
+                        -XX:MaxGCPauseMillis=200
+                        -Djava.awt.headless=true
+                        -Dfile.encoding=UTF-8
+                    </argLine>
+                    <!-- Retry failed tests -->
+                    <retryFailedTestsCount>1</retryFailedTestsCount>
+                    <!-- Skip tests if no tests found -->
+                    <failIfNoTests>false</failIfNoTests>
+                    <!-- Generate detailed reports -->
+                    <reportFormat>xml</reportFormat>
+                    <useFile>true</useFile>
+                    <!-- System properties -->
+                    <systemPropertyVariables>
+                        <webdriver.chrome.driver>${webdriver.chrome.driver}</webdriver.chrome.driver>
+                        <webdriver.gecko.driver>${webdriver.gecko.driver}</webdriver.gecko.driver>
+                        <allure.results.directory>${project.build.directory}/allure-results</allure.results.directory>
+                    </systemPropertyVariables>
                 </configuration>
             </plugin>
 

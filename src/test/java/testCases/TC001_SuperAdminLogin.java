@@ -42,13 +42,15 @@ public class TC001_SuperAdminLogin extends BaseClass {
     }
 
     /**
-     * Test valid login scenario
+     * Test valid login scenario - Critical smoke test
      */
-    @Test(priority = 1, groups = {"smoke", "regression"})
+    @Test(priority = 1, groups = {"smoke", "regression", "authentication", "critical"}, retryAnalyzer = utilities.RetryAnalyzer.class)
     @Severity(SeverityLevel.CRITICAL)
     @Description("Verify SuperAdmin can log in with valid credentials")
     @Step("Testing login with valid credentials")
     public void superAdminLoginWithValidCredentials() {
+        String testName = "TC001_SuperAdminLogin.superAdminLoginWithValidCredentials";
+        PerformanceMonitor.startTest(testName);
         LoggerUtils.info("Testing login with valid credentials");
         
         // Log step to both Allure and Extent reports
@@ -92,7 +94,7 @@ public class TC001_SuperAdminLogin extends BaseClass {
     /**
      * Test invalid username scenario
      */
-    @Test(priority = 2, groups = {"regression"})
+    @Test(priority = 2, groups = {"regression", "authentication", "negative"})
     @Severity(SeverityLevel.NORMAL)
     @Description("Verify login fails with an incorrect username")
     @Step("Testing login with invalid username")
@@ -134,7 +136,7 @@ public class TC001_SuperAdminLogin extends BaseClass {
     /**
      * Test invalid password scenario
      */
-    @Test(priority = 3, groups = {"regression"})
+    @Test(priority = 3, groups = {"regression", "authentication", "negative"})
     @Severity(SeverityLevel.NORMAL)
     @Description("Verify login fails with an incorrect password")
     @Step("Testing login with invalid password")

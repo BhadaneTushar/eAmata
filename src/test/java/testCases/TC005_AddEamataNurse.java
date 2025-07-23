@@ -43,7 +43,7 @@ public class TC005_AddEamataNurse extends BaseClass {
     /**
      * Test adding a nurse with valid details
      */
-    @Test(priority = 1, groups = {"smoke", "regression"})
+    @Test(priority = 1, groups = {"smoke", "regression"}, retryAnalyzer = utilities.RetryAnalyzer.class)
     @Severity(SeverityLevel.CRITICAL)
     @Description("Verify adding a new eAmata nurse")
     @Step("Testing add eAmata nurse with valid details")

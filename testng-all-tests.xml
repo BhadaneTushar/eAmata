@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
+<suite name="Enhanced eAmata Test Suite" verbose="1">
+    <listeners>
+        <listener class-name="utilities.EnhancedTestListener"/>
+    </listeners>
+
+    <!-- All Tests Execution -->
+    <test name="All eAmata Tests">
+        <parameter name="browser" value="chrome"/>
+        
+        <classes>
+            <!-- TC001: Super Admin Login Tests -->
+            <class name="testCases.TC001_SuperAdminLogin">
+                <methods>
+                    <include name="superAdminLoginWithValidCredentials"/>
+                    <include name="loginWithInvalidUsername"/>
+                    <include name="loginWithInvalidPassword"/>
+                </methods>
+            </class>
+            
+            <!-- TC002: Provider Group Tests -->
+            <class name="testCases.TC002_AddProviderGroup">
+                <methods>
+                    <include name="testAddProviderGroup"/>
+                    <include name="testAddProviderGroupWithInvalidEmail"/>
+                    <include name="testAddProviderGroupWithInvalidPhone"/>
+                    <include name="testAddProviderGroupWithEmptyFields"/>
+                </methods>
+            </class>
+            
+            <!-- TC003: Staff Management Tests -->
+            <class name="testCases.TC003_AddStaff">
+                <methods>
+                    <include name="testAddStaffWithValidDetails"/>
+                    <include name="testAddStaffWithInvalidEmail"/>
+                    <include name="testAddStaffWithInvalidPhone"/>
+                    <include name="testAddStaffWithEmptyFirstName"/>
+                    <include name="testAddStaffWithEmptyLastName"/>
+                    <include name="testAddStaffWithEmptyEmail"/>
+                </methods>
+            </class>
+            
+            <!-- TC004: Location Management Tests -->
+            <class name="testCases.TC004_AddLocation">
+                <methods>
+                    <include name="testAddLocation"/>
+                    <include name="testAddLocationWithInvalidEmail"/>
+                    <include name="testAddLocationWithInvalidPhone"/>
+                    <include name="testAddLocationWithEmptyName"/>
+                    <include name="testAddLocationWithEmptyAddress"/>
+                    <include name="testAddLocationWithEmptyCity"/>
+                </methods>
+            </class>
+            
+            <!-- TC005: eAmata Nurse Tests -->
+            <class name="testCases.TC005_AddEamataNurse">
+                <methods>
+                    <include name="addEamataNurse"/>
+                </methods>
+            </class>
+        </classes>
+    </test>
+</suite>

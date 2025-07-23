@@ -213,6 +213,9 @@ public class TestListener implements ITestListener, ISuiteListener, IInvokedMeth
         // Record start time
         testMethodStartTime.put(testName, System.currentTimeMillis());
         
+        // Start performance monitoring
+        PerformanceMonitor.startTest(testName);
+        
         // Create ExtentTest and store in ThreadLocal
         ExtentTest test = initializeExtentReports().createTest(testName);
         test.assignCategory(result.getMethod().getGroups());
@@ -234,28 +237,34 @@ public class TestListener implements ITestListener, ISuiteListener, IInvokedMeth
         
         LoggerUtils.info("Test passed: " + testName);
         
+        // End performance monitoring
+        long executionTime = PerformanceMonitor.endTest(testName);
+        
         // Log execution time
         logExecutionTime(testName);
         
         // Log to ExtentReports
         ExtentTest test = extentTestThreadLocal.get();
         if (test != null) {
-            test.log(Status.PASS, "Test passed successfully");
+            test.log(Status.PASS, "Test passed successfully in " + executionTime + "ms");
             
-            // Capture screenshot on success too
-            try {
-                WebDriver driver = BaseClass.getDriver();
-                if (driver != null) {
-                    String screenshotPath = ReportUtils.captureScreenshot(driver, methodName + "_success");
-                    test.addScreenCaptureFromPath(screenshotPath);
+            // Capture screenshot on success too (only for critical tests to save time)
+            if (result.getMethod().getGroups() != null && 
+                java.util.Arrays.asList(result.getMethod().getGroups()).contains("smoke")) {
+                try {
+                    WebDriver driver = BaseClass.getDriver();
+                    if (driver != null) {
+                        String screenshotPath = ReportUtils.captureScreenshot(driver, methodName + "_success");
+                        test.addScreenCaptureFromPath(screenshotPath);
+                    }
+                } catch (Exception e) {
+                    LoggerUtils.error("Failed to capture success screenshot: " + e.getMessage(), e);
                 }
-            } catch (Exception e) {
-                LoggerUtils.error("Failed to capture success screenshot: " + e.getMessage(), e);
             }
         }
         
         // Log to Allure
-        Allure.step("Test passed successfully");
+        Allure.step("Test passed successfully in " + executionTime + "ms");
         
         // Force flush reports after each test
         if (extentReports != null) {
@@ -272,12 +281,16 @@ public class TestListener implements ITestListener, ISuiteListener, IInvokedMeth
         LoggerUtils.error("Test failed: " + testName);
         LoggerUtils.error("Failure cause: " + result.getThrowable());
         
+        // End performance monitoring
+        long executionTime = PerformanceMonitor.endTest(testName);
+        
         // Log execution time
         logExecutionTime(testName);
         
         // Get ExtentTest for the current thread
         ExtentTest test = extentTestThreadLocal.get();
         if (test != null) {
+            test.log(Status.FAIL, "Test failed after " + executionTime + "ms");
             // Log failure details using the utility method
             ReportUtils.logFailureDetails(result, test);
         }

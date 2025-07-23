@@ -18,12 +18,15 @@ public final class Constants {
     public static final String REPORTS_DIR = "reports";
     public static final String TESTDATA_DIR = "testdata";
     
-    // Timeouts
-    public static final Duration IMPLICIT_WAIT = Duration.ofSeconds(10);
-    public static final Duration EXPLICIT_WAIT = Duration.ofSeconds(20);
-    public static final Duration POLLING_INTERVAL = Duration.ofMillis(500);
-    public static final Duration PAGE_LOAD_TIMEOUT = Duration.ofSeconds(30);
-    public static final Duration SCRIPT_TIMEOUT = Duration.ofSeconds(30);
+    // Optimized Timeouts for better performance
+    public static final Duration IMPLICIT_WAIT = Duration.ofSeconds(5);
+    public static final Duration EXPLICIT_WAIT = Duration.ofSeconds(15);
+    public static final Duration POLLING_INTERVAL = Duration.ofMillis(250);
+    public static final Duration PAGE_LOAD_TIMEOUT = Duration.ofSeconds(20);
+    public static final Duration SCRIPT_TIMEOUT = Duration.ofSeconds(15);
+    public static final Duration FAST_WAIT = Duration.ofSeconds(5);
+    public static final Duration MEDIUM_WAIT = Duration.ofSeconds(10);
+    public static final Duration SLOW_WAIT = Duration.ofSeconds(30);
     
     // Common XPaths
     public static final String PROGRESS_BAR_XPATH = "//div[span[@role='progressbar']]";

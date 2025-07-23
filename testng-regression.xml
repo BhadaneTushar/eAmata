@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
+<suite name="Regression Test Suite" parallel="tests" thread-count="4" verbose="1">
+    <listeners>
+        <listener class-name="utilities.TestListener"/>
+    </listeners>
+
+    <test name="Authentication Regression" parallel="methods" thread-count="2">
+        <parameter name="browser" value="chrome"/>
+        <groups>
+            <run>
+                <include name="regression"/>
+                <include name="authentication"/>
+            </run>
+        </groups>
+        <classes>
+            <class name="testCases.TC001_SuperAdminLogin"/>
+        </classes>
+    </test>
+
+    <test name="Provider Group Regression" parallel="methods" thread-count="2">
+        <parameter name="browser" value="chrome"/>
+        <groups>
+            <run>
+                <include name="regression"/>
+                <include name="providergroup"/>
+            </run>
+        </groups>
+        <classes>
+            <class name="testCases.TC002_AddProviderGroup"/>
+        </classes>
+    </test>
+
+    <test name="Staff Management Regression" parallel="methods" thread-count="2">
+        <parameter name="browser" value="chrome"/>
+        <groups>
+            <run>
+                <include name="regression"/>
+                <include name="staff"/>
+            </run>
+        </groups>
+        <classes>
+            <class name="testCases.TC003_AddStaff"/>
+        </classes>
+    </test>
+
+    <test name="Location Management Regression" parallel="methods" thread-count="2">
+        <parameter name="browser" value="chrome"/>
+        <groups>
+            <run>
+                <include name="regression"/>
+                <include name="location"/>
+            </run>
+        </groups>
+        <classes>
+            <class name="testCases.TC004_AddLocation"/>
+        </classes>
+    </test>
+
+    <test name="Nurse Management Regression" parallel="methods" thread-count="2">
+        <parameter name="browser" value="chrome"/>
+        <groups>
+            <run>
+                <include name="regression"/>
+                <include name="nurse"/>
+            </run>
+        </groups>
+        <classes>
+            <class name="testCases.TC005_AddEamataNurse"/>
+        </classes>
+    </test>
+</suite>

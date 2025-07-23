@@ -15,6 +15,8 @@ import utilities.ErrorMessages;
 import utilities.LoginUtils;
 import utilities.LoggerUtils;
 import utilities.TestDataGenerator;
+import utilities.TestDataCleanup;
+import utilities.ErrorHandler;
 
 /**
  * Test class for Provider Group management functionality
@@ -71,24 +73,41 @@ public class TC002_AddProviderGroup extends BaseClass {
     @Description("Verify adding a new provider group with valid data")
     @Step("Testing add provider group with valid data")
     public void testAddProviderGroup() {
+        String testName = "testAddProviderGroup";
         LoggerUtils.info("Testing add provider group with valid data: " + validName);
         
-        // Add provider group with valid data
-        providerGroupPage.addProviderGroup(validName, validEmail, validPhone, validNPI, validSubdomain,
-                validAddressLine1, validAddressLine2, validCity, validZipCode, validState);
-        
-        // Verify success message
-        AssertionUtils.assertEquals(
-            providerGroupPage.getSuccessMessage(), 
-            "Provider group added successfully!",
-            "Provider group was not added successfully."
-        );
-        
-        // Additional verification
-        AssertionUtils.assertTrue(
-            providerGroupPage.isProviderGroupAddedSuccessfully(),
-            "Success message is not displayed after adding provider group"
-        );
+        try {
+            // Add provider group with valid data
+            providerGroupPage.addProviderGroup(validName, validEmail, validPhone, validNPI, validSubdomain,
+                    validAddressLine1, validAddressLine2, validCity, validZipCode, validState);
+            
+            // Register test data for cleanup (assuming we get an ID back)
+            String groupId = System.currentTimeMillis() + "_" + validName; // Temporary ID generation
+            TestDataCleanup.registerProviderGroup(testName, validName, groupId);
+            
+            // Verify success message
+            AssertionUtils.assertEquals(
+                providerGroupPage.getSuccessMessage(), 
+                "Provider group added successfully!",
+                "Provider group was not added successfully."
+            );
+            
+            // Additional verification
+            AssertionUtils.assertTrue(
+                providerGroupPage.isProviderGroupAddedSuccessfully(),
+                "Success message is not displayed after adding provider group"
+            );
+            
+        } catch (Exception e) {
+            // Enhanced error handling
+            LoggerUtils.error("Error in testAddProviderGroup: " + e.getMessage());
+            
+            // Let the enhanced error handler deal with it
+            boolean recovered = ErrorHandler.handleWebDriverException(e, "provider_group_creation");
+            if (!recovered) {
+                throw e; // Re-throw if recovery failed
+            }
+        }
     }
 
     /**

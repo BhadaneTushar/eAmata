@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
+<suite name="Smoke Test Suite" verbose="1">
+    <listeners>
+        <listener class-name="utilities.TestListener"/>
+    </listeners>
+
+    <test name="Critical Smoke Tests">
+        <parameter name="browser" value="chrome"/>
+        <groups>
+            <run>
+                <include name="smoke"/>
+            </run>
+        </groups>
+        <classes>
+            <class name="testCases.TC001_SuperAdminLogin">
+                <methods>
+                    <include name="superAdminLoginWithValidCredentials"/>
+                </methods>
+            </class>
+        </classes>
+    </test>
+</suite>

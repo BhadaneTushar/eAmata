@@ -55,11 +55,12 @@ public class BaseClass {
     }
 
     /**
-     * Initialize the WebDriver before each test method
+     * Initialize the WebDriver before each test method with performance monitoring
      */
     @BeforeMethod(alwaysRun = true)
     @Step("Initializing WebDriver")
     public void initializeDriver() {
+        long startTime = System.currentTimeMillis();
         try {
             // Create WebDriver instance
             String browser = configManager.getBrowser();
@@ -70,8 +71,10 @@ public class BaseClass {
             // Create WebDriverWait instance
             threadLocalWait.set(new WebDriverWait(driver, Constants.EXPLICIT_WAIT));
             
-            // Configure browser window
-            driver.manage().window().maximize();
+            // Configure browser window with optimized timeouts
+            if (!headless) {
+                driver.manage().window().maximize();
+            }
             driver.manage().timeouts().implicitlyWait(Constants.IMPLICIT_WAIT);
             driver.manage().timeouts().pageLoadTimeout(Constants.PAGE_LOAD_TIMEOUT);
             driver.manage().timeouts().scriptTimeout(Constants.SCRIPT_TIMEOUT);
@@ -80,7 +83,8 @@ public class BaseClass {
             driver.get(configManager.getUrl());
             ElementActions.waitForPageLoad();
             
-            LoggerUtils.info("WebDriver initialized successfully");
+            long endTime = System.currentTimeMillis();
+            LoggerUtils.info("WebDriver initialized successfully in " + (endTime - startTime) + "ms");
         } catch (Exception e) {
             LoggerUtils.error(Constants.DRIVER_INIT_ERROR + ": " + e.getMessage());
             throw new RuntimeException(Constants.DRIVER_INIT_ERROR, e);

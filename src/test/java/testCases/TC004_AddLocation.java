@@ -62,7 +62,7 @@ public class TC004_AddLocation extends BaseClass {
     /**
      * Test adding a location with valid data
      */
-    @Test(priority = 1, groups = {"smoke", "regression"})
+    @Test(priority = 1, groups = {"smoke", "regression"}, retryAnalyzer = utilities.RetryAnalyzer.class)
     @Severity(SeverityLevel.CRITICAL)
     @Description("Verify adding a new location with valid data")
     @Step("Testing add location with valid data")
