@@ -1,6 +1,7 @@
 package testBase;
 
 import io.qameta.allure.Step;
+import lombok.Getter;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.annotations.AfterMethod;
@@ -18,6 +19,12 @@ import java.time.Duration;
 public class BaseClass {
     private static final ThreadLocal<WebDriverWait> threadLocalWait = new ThreadLocal<>();
     private static final ThreadLocal<WebDriver> threadLocalDriver = new ThreadLocal<>();
+    /**
+     * -- GETTER --
+     *  Get the ConfigManager instance
+     * @return ConfigManager instance
+     */
+    @Getter
     private static ConfigManager configManager;
 
     /**
@@ -34,14 +41,6 @@ public class BaseClass {
      */
     public static WebDriverWait getWait() {
         return threadLocalWait.get();
-    }
-
-    /**
-     * Get the ConfigManager instance
-     * @return ConfigManager instance
-     */
-    public static ConfigManager getConfigManager() {
-        return configManager;
     }
 
     /**

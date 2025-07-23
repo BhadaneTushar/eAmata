@@ -50,29 +50,51 @@ build/
 test-output/
 allure-report/
 extent-reports/
+.allure/
+surefire-reports/
+failsafe-reports/
+testng-results.xml
+emailable-report.html
+index.html
 
 # IDE specific files
 .idea/
 *.iml
 .project
 .classpath
+.settings/
+*.launch
+*.sublime-workspace
 
 # Logs and temporary files
 *.log
 *.tmp
 *.temp
+log/
+logs/
 
 # Excel temporary files
 ~$*.xlsx
 ~$*.xls
+~$*.xlsm
+~$*.xlsb
+~$*.ppt
+~$*.pptx
+~$*.doc
+~$*.docx
 
 # Driver executables
 *.exe
 driver/
+drivers/
+webdriver/
+webdrivers/
 
 # Local configuration
 application.properties
 application-local.properties
+config.local.properties
+*.local.properties
 
 # Package files
 *.jar
@@ -82,3 +104,55 @@ application-local.properties
 *.zip
 *.tar.gz
 *.rar
+
+# Maven specific
+.mvn/timing.properties
+.mvn/wrapper/maven-wrapper.jar
+pom.xml.tag
+pom.xml.releaseBackup
+pom.xml.versionsBackup
+pom.xml.next
+release.properties
+dependency-reduced-pom.xml
+buildNumber.properties
+
+# Gradle specific
+.gradle/
+gradle/
+gradlew
+gradlew.bat
+
+# Node modules (if using any JS tools)
+node_modules/
+package-lock.json
+
+# Environment variables
+.env
+.env.local
+.env.*.local
+
+# Temporary screenshots and videos
+screenshots/
+videos/
+
+# Performance test results
+jmeter.log
+jmeter-results/
+
+# Security
+*.pem
+*.key
+*.p12
+*.pfx
+*.keystore
+*.jks
+
+# Temporary files created during test runs
+.attach_pid*
+hs_err_pid*
+replay_pid*
+
+# Allure specific
+.allure/
+allure-results/
+allure-report/
