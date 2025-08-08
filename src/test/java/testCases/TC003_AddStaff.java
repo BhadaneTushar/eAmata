@@ -17,6 +17,17 @@ import utilities.TestDataGenerator;
 
 /**
  * Test class for Staff management functionality
+ *
+ * Flow:
+ * - Inherits WebDriver lifecycle from `testBase.BaseClass`.
+ * - @BeforeMethod setup():
+ *   - Logs in via `LoginUtils.loginAsSuperAdmin()` which internally uses `SuperAdminLogin` page and `ConfigManager` credentials.
+ *   - Initializes `StaffPage` and generates test data via `TestDataGenerator` and defaults from `ConfigManager`.
+ * - Each @Test calls `staffPage.addStaff(...)` and then reads UI messages for assertions.
+ *
+ * Data:
+ * - Inputs: names/emails/phones/role/gender/address from `TestDataGenerator` and config defaults.
+ * - Outputs: success/error messages returned from page methods for validation.
  */
 public class TC003_AddStaff extends BaseClass {
 

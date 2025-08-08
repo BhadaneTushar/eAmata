@@ -14,6 +14,15 @@ import java.util.List;
 /**
  * Optimized Base class for all page objects
  * Provides common functionality for page interactions with performance enhancements
+ *
+ * Flow:
+ * - Page objects extend BasePage. The constructor calls PageFactory.initElements using BaseClass.getDriver().
+ * - All interaction helpers delegate to utilities.ElementActions, which in turn pulls the ThreadLocal WebDriver from BaseClass.
+ * - Tests call page object methods; those methods call BasePage helpers; helpers route to ElementActions; ElementActions acts on the WebDriver.
+ *
+ * Data:
+ * - Inputs: WebElement locators in child pages; any method parameters passed from tests (e.g., text values).
+ * - Outputs: Returns WebElement states/strings/booleans back to tests or higher-level page actions.
  */
 public class BasePage {
     
@@ -40,6 +49,7 @@ public class BasePage {
     /**
      * Get the WebDriver instance
      * @return WebDriver instance
+     * Note: Backed by BaseClass ThreadLocal; safe for parallel tests.
      */
     protected WebDriver getDriver() {
         return BaseClass.getDriver();
@@ -97,6 +107,7 @@ public class BasePage {
      * @param dropdownElement Dropdown WebElement
      * @param visibleText Text to select
      * @param listItemsXPath XPath to find dropdown items
+     * Data flow: visibleText comes from test -> page method -> this helper; selection is performed via ElementActions.
      */
     @Step("Selecting dropdown option: {1}")
     protected void selectDropdownByVisibleText(WebElement dropdownElement, String visibleText, String listItemsXPath) {

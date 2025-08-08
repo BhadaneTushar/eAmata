@@ -13,6 +13,19 @@ import utilities.*;
 
 /**
  * Test class for Super Admin login functionality
+ *
+ * Flow:
+ * - Inherits WebDriver lifecycle from `testBase.BaseClass` (@BeforeSuite config, @BeforeMethod driver init, @AfterMethod teardown).
+ * - @BeforeMethod setUp():
+ *   - Instantiates page object `SuperAdminLogin` (which initializes elements via BasePage/PageFactory using BaseClass.getDriver()).
+ *   - Reads credentials from `ConfigManager` via `BaseClass.getConfigManager()` and stores in ThreadLocal fields.
+ * - Each @Test:
+ *   - Calls page object methods (`login`, getters) to perform actions/validations.
+ *   - Uses `AssertionUtils` for assertions and `ReportUtils`/`TestListener` for reporting hooks.
+ *
+ * Data:
+ * - Inputs: username/password from configuration; negative tests use inline invalid values.
+ * - Outputs: UI text/booleans from page object methods feed assertions and reports.
  */
 public class TC001_SuperAdminLogin extends BaseClass {
 
@@ -43,6 +56,8 @@ public class TC001_SuperAdminLogin extends BaseClass {
 
     /**
      * Test valid login scenario - Critical smoke test
+     * Caller -> This test method; Callee -> `SuperAdminLogin.login()`, then `getProviderGroupsText()` and `isLoginSuccessful()`.
+     * Data -> Inputs: validUsername/validPassword; Outputs: provider groups text and boolean for assertions.
      */
     @Test(priority = 1, groups = {"smoke", "regression", "authentication", "critical"}, retryAnalyzer = utilities.RetryAnalyzer.class)
     @Severity(SeverityLevel.CRITICAL)
@@ -93,6 +108,8 @@ public class TC001_SuperAdminLogin extends BaseClass {
 
     /**
      * Test invalid username scenario
+     * Caller -> This test; Callee -> `SuperAdminLogin.login()` and `getInvalidEmailErrorMessage()`.
+     * Data -> Inputs: hardcoded invalid username and valid password; Output: error text.
      */
     @Test(priority = 2, groups = {"regression", "authentication", "negative"})
     @Severity(SeverityLevel.NORMAL)
@@ -135,6 +152,8 @@ public class TC001_SuperAdminLogin extends BaseClass {
 
     /**
      * Test invalid password scenario
+     * Caller -> This test; Callee -> `SuperAdminLogin.login()` and `getInvalidPasswordErrorMessage()`.
+     * Data -> Inputs: valid username and hardcoded invalid password; Output: error text.
      */
     @Test(priority = 3, groups = {"regression", "authentication", "negative"})
     @Severity(SeverityLevel.NORMAL)

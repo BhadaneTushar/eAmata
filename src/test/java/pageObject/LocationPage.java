@@ -11,6 +11,14 @@ import utilities.LoggerUtils;
 /**
  * Page object for the Location management page
  * Handles all interactions with the Location UI elements
+ *
+ * Flow:
+ * - Called by `TC004_AddLocation` tests.
+ * - High-level actions (`addLocation`) call BasePage helpers -> ElementActions -> WebDriver; getters return values to tests.
+ *
+ * Data:
+ * - Inputs: location name/phone/email/address/city/zip/state provided by tests/data generator.
+ * - Outputs: success/error message strings and boolean flags consumed by tests.
  */
 public class LocationPage extends BasePage {
 
@@ -154,6 +162,7 @@ public class LocationPage extends BasePage {
      * @param city         City
      * @param zipCode      Zip code
      * @param state        State
+     * Caller: `TC004_AddLocation` tests; Callee chain: this -> BasePage helpers -> ElementActions -> WebDriver.
      */
     @Step("Adding new location: {0}")
     public void addLocation(String name, String phoneNumber, String email,

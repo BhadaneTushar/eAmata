@@ -14,6 +14,14 @@ import org.openqa.selenium.JavascriptExecutor;
 /**
  * Page object for the Staff management page
  * Handles all interactions with Staff UI elements
+ *
+ * Flow:
+ * - Called by `TC003_AddStaff` tests.
+ * - High-level actions (`addStaff`) call BasePage helpers -> ElementActions -> WebDriver; success/error getters return values to tests.
+ *
+ * Data:
+ * - Inputs: staff details (names, email, phone, role, gender, address) provided by tests/data generator.
+ * - Outputs: success/error message strings consumed by tests.
  */
 public class StaffPage extends BasePage {
 
@@ -200,6 +208,7 @@ public class StaffPage extends BasePage {
      * @param city         City
      * @param zipCode      Zip code
      * @param state        State
+     * Caller: `TC003_AddStaff` tests; Callee chain: this -> BasePage helpers -> ElementActions -> WebDriver.
      */
     @Step("Adding new staff: {0} {1}")
     public void addStaff(String firstName, String lastName, String email, String phoneNumber, String role,

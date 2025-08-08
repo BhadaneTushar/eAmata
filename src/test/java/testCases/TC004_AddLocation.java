@@ -17,6 +17,18 @@ import utilities.TestDataGenerator;
 
 /**
  * Test class for Location management functionality
+ *
+ * Flow:
+ * - Inherits WebDriver lifecycle from `testBase.BaseClass`.
+ * - @BeforeMethod setUp():
+ *   - Logs in via `LoginUtils.loginAsSuperAdmin()` which uses `SuperAdminLogin` and `ConfigManager` credentials.
+ *   - Initializes `LocationPage` and generates test data via `TestDataGenerator` with defaults from `ConfigManager`.
+ * - Each @Test:
+ *   - Calls `locationPage.addLocation(...)` to perform the flow, then reads UI messages for assertions.
+ *
+ * Data:
+ * - Inputs: name/phone/email/address/city/zip/state from `TestDataGenerator` and config defaults.
+ * - Outputs: success/error messages used by assertions.
  */
 public class TC004_AddLocation extends BaseClass {
 

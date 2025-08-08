@@ -20,6 +20,16 @@ import java.util.*;
 
 /**
  * Advanced TestNG listener for both Allure and Extent reporting
+ *
+ * Flow:
+ * - TestNG triggers these callbacks during suite/class/method lifecycle.
+ * - On test start: creates an ExtentTest and stores it in ThreadLocal for retrieval by tests (via TestListener.getExtentTest()).
+ * - On success/failure/skip: logs status, attaches screenshots/logs, ends performance timers, and flushes reports.
+ * - Suite/Class start/finish: initializes and flushes ExtentReports; publishes Allure attachments.
+ *
+ * Data:
+ * - Inputs: ITestResult/ITestContext from TestNG, current WebDriver via BaseClass when taking screenshots.
+ * - Outputs: Artifacts in `reports/` and Allure attachments; ThreadLocal ExtentTest for use by tests/utilities.
  */
 public class TestListener implements ITestListener, ISuiteListener, IInvokedMethodListener {
     private static final String REPORTS_DIR = "reports";

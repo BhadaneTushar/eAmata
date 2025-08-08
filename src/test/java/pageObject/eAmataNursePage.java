@@ -9,6 +9,18 @@ import testBase.BaseClass;
 import utilities.DatePicker;
 import utilities.LoggerUtils;
 
+/**
+ * Page object for eAmata Nurse management
+ *
+ * Flow:
+ * - Called by `TC005_AddEamataNurse` tests to navigate and create nurses.
+ * - Methods delegate to BasePage helpers -> ElementActions -> WebDriver.
+ * - Success/error getters return values to tests for assertions.
+ *
+ * Data:
+ * - Inputs: nurse details (first/last/email/phone/NPI/gender), license details, and address from tests.
+ * - Outputs: success/error messages consumed by tests.
+ */
 public class eAmataNursePage extends BasePage {
 
     private static final String GENDER_LIST_XPATH = "//ul[@role='listbox']/li";
@@ -113,6 +125,7 @@ public class eAmataNursePage extends BasePage {
 
     @Step("Navigating to Add Nurse form")
     public void navigateToAddNurseForm() {
+        // Caller: `TC005_AddEamataNurse.addEamataNurse()`
         clickButton(settingsLink);
         clickButton(adminUsersTab);
         clickButton(nurseButton);
@@ -123,6 +136,7 @@ public class eAmataNursePage extends BasePage {
     @Step("Entering nurse details")
     public void enterNurseDetails(String firstName, String lastName, String email, String phoneNumber, String NPI,
                                   String gender) {
+        // Caller: `TC005_AddEamataNurse.addEamataNurse()`
         try {
             Thread.sleep(1000);
             setInputField(firstNameField, firstName);

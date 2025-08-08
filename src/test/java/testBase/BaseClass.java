@@ -13,8 +13,21 @@ import java.io.IOException;
 import java.time.Duration;
 
 /**
- * Base class for all test classes
- * Handles WebDriver initialization and cleanup
+ * Base for all TestNG test classes.
+ *
+ * Flow:
+ * - @BeforeSuite loadConfig(): Initializes the singleton ConfigManager (reads properties file) so tests/utilities can fetch config and credentials.
+ * - @BeforeMethod initializeDriver():
+ *   - Reads browser/headless/url from ConfigManager
+ *   - Creates WebDriver via utilities.WebDriverFactory
+ *   - Stores WebDriver and WebDriverWait in ThreadLocal for the current test thread
+ *   - Maximizes window (non-headless), sets timeouts, navigates to URL, and waits for initial load
+ * - Tests and page objects fetch the driver using BaseClass.getDriver(); utilities like ElementActions also use it internally.
+ * - @AfterMethod tearDown(): Quits WebDriver and cleans ThreadLocal state per test method.
+ *
+ * Data:
+ * - Inputs (from ConfigManager): url, browser, headless, and credentials (used by LoginUtils/tests).
+ * - Outputs: Thread-local WebDriver/WebDriverWait exposed via getters for page objects and utilities.
  */
 public class BaseClass {
     private static final ThreadLocal<WebDriverWait> threadLocalWait = new ThreadLocal<>();

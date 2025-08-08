@@ -7,11 +7,20 @@ import testBase.BaseClass;
 
 /**
  * Utility class for handling login operations
+ *
+ * Flow:
+ * - Callers: Test setup methods (e.g., in `TC002_AddProviderGroup`, `TC003_AddStaff`) call `loginAsSuperAdmin()`.
+ * - Callees: Instantiates `pageObject.SuperAdminLogin` and calls its `login()` using credentials from `ConfigManager`.
+ *
+ * Data:
+ * - Inputs: username/password fetched via `BaseClass.getConfigManager()`.
+ * - Outputs: side effect of an authenticated browser session for subsequent page interactions.
  */
 public class LoginUtils {
 
     /**
      * Login as super admin using credentials from configuration
+     * Caller: Test classes' @BeforeMethod; Callee: `SuperAdminLogin.login(username, password)`.
      */
     @Step("Logging in as Super Admin")
     public static void loginAsSuperAdmin() {

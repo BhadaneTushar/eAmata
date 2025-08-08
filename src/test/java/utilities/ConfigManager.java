@@ -7,6 +7,14 @@ import java.util.Properties;
 /**
  * Manages configuration properties for the framework
  * Provides type-safe access to configuration values
+ *
+ * Flow:
+ * - Caller: `testBase.BaseClass.loadConfig()` initializes the singleton early (@BeforeSuite).
+ * - Consumers: tests (via `BaseClass.getConfigManager()`), utilities (e.g., `LoginUtils`), and listeners may query properties.
+ *
+ * Data:
+ * - Inputs: properties file at `Constants.CONFIG_FILE_PATH` (URL, browser, headless, credentials, defaults).
+ * - Outputs: getters return typed values to callers; no mutation during runtime.
  */
 public class ConfigManager {
     private static final Properties properties = new Properties();

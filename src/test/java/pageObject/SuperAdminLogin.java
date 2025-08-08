@@ -7,6 +7,15 @@ import utilities.LoggerUtils;
 
 /**
  * Page object for the Super Admin Login page
+ *
+ * Flow:
+ * - Tests (e.g., `TC001_SuperAdminLogin`) and utilities (`LoginUtils`) instantiate this class and call `login(email, password)`.
+ * - `login()` delegates to `enterEmail()`, `enterPassword()`, then clicks the button via BasePage helpers -> ElementActions -> WebDriver.
+ * - Verification methods (`getProviderGroupsText`, `isLoginSuccessful`, error getters) are called by tests to assert outcomes.
+ *
+ * Data:
+ * - Inputs: email/password provided by tests or `ConfigManager` via `LoginUtils`.
+ * - Outputs: text or boolean values returned to calling tests for assertions.
  */
 public class SuperAdminLogin extends BasePage {
 
@@ -73,6 +82,7 @@ public class SuperAdminLogin extends BasePage {
      * Login with email and password
      * @param email Email to enter
      * @param password Password to enter
+     * Caller: Tests or `LoginUtils.loginAsSuperAdmin()`.
      */
     @Step("Logging in with email: {0} and password: {1}")
     public void login(String email, String password) {

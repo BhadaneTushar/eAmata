@@ -20,6 +20,19 @@ import utilities.ErrorHandler;
 
 /**
  * Test class for Provider Group management functionality
+ *
+ * Flow:
+ * - Inherits WebDriver lifecycle from `testBase.BaseClass`.
+ * - @BeforeMethod setUp():
+ *   - Logs in via `LoginUtils.loginAsSuperAdmin()` which uses `SuperAdminLogin` and `ConfigManager` credentials.
+ *   - Initializes `ProviderGroupPage`.
+ *   - Generates input data via `TestDataGenerator` and reads defaults from `ConfigManager`.
+ * - Each @Test:
+ *   - Calls `providerGroupPage.addProviderGroup(...)` or leaves certain fields invalid/blank, then retrieves UI messages through page methods for assertions.
+ *
+ * Data:
+ * - Inputs: provider group details from generator and config defaults.
+ * - Outputs: success/error messages and flags returned by page methods for assertions.
  */
 public class TC002_AddProviderGroup extends BaseClass {
 

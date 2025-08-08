@@ -16,6 +16,15 @@ import java.util.concurrent.locks.ReentrantLock;
 /**
  * Optimized Factory class for creating WebDriver instances
  * Centralizes browser initialization logic with performance optimizations
+ *
+ * Flow:
+ * - Caller: `testBase.BaseClass.initializeDriver()` reads browser/headless from `ConfigManager` and calls `createDriver(browser, headless)`.
+ * - Callee: This class sets up the proper WebDriverManager once and returns a concrete WebDriver (Chrome/Firefox/Edge/Safari).
+ * - The returned driver is stored in `BaseClass` ThreadLocal and consumed by page objects and utilities.
+ *
+ * Data:
+ * - Inputs: browser name, headless flag.
+ * - Output: a configured `WebDriver` instance.
  */
 public class WebDriverFactory {
     

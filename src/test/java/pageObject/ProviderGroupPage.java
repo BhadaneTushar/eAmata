@@ -13,6 +13,15 @@ import org.openqa.selenium.JavascriptExecutor;
 /**
  * Page object for the Provider Group management page
  * Handles all interactions with Provider Group UI elements
+ *
+ * Flow:
+ * - Tests like `TC002_AddProviderGroup` instantiate and call methods such as `addProviderGroup()`.
+ * - Those methods in turn call BasePage helpers -> ElementActions -> WebDriver.
+ * - Success/error getters return UI values back to tests for assertions.
+ *
+ * Data:
+ * - Inputs: provider group details (name, email, phone, npi, subdomain, address) passed from tests/data generators.
+ * - Outputs: success/error message strings and booleans consumed by tests.
  */
 public class ProviderGroupPage extends BasePage {
 
@@ -172,6 +181,7 @@ public class ProviderGroupPage extends BasePage {
      * @param city         City
      * @param zipCode      Zip code
      * @param state        State
+     * Caller: `TC002_AddProviderGroup` tests; Callee chain: this -> BasePage helpers -> ElementActions -> WebDriver.
      */
     @Step("Adding new provider group: {0}")
     public void addProviderGroup(String name, String email, String phone, String npi, String subDomain,

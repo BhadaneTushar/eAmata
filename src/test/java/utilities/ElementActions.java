@@ -16,6 +16,15 @@ import java.util.List;
 /**
  * Utility class that centralizes all element interactions
  * Implements the DRY principle by providing reusable methods for common Selenium actions
+ *
+ * Flow:
+ * - Callers: Page object base/helpers and concrete page classes call these static methods.
+ * - This class fetches the ThreadLocal WebDriver via `BaseClass.getDriver()` and performs waits and actions.
+ * - Return values (text, booleans, WebElements) are passed back up to page objects -> tests.
+ *
+ * Data:
+ * - Inputs: WebElements/locators and values (text to type, option labels) passed from page objects/tests.
+ * - Outputs: Element states, text content, or side-effects (clicks, typing) in the browser session.
  */
 public class ElementActions {
     private static final Duration DEFAULT_TIMEOUT = Duration.ofSeconds(30);
@@ -226,6 +235,7 @@ public class ElementActions {
      * Type text into an input field with proper waits and clearing
      * @param element WebElement to type into
      * @param value Text to type
+     * Data flow: value originates in tests/test data -> page object -> ElementActions; the typed value goes to the browser DOM via WebDriver.
      */
     @Step("Setting input field value: {1}")
     public static void type(WebElement element, String value) {
@@ -252,6 +262,7 @@ public class ElementActions {
      * Get text from an element with proper waits
      * @param element WebElement to get text from
      * @return The text content of the element
+     * Data flow: text read from DOM -> returned to page object -> asserted in tests.
      */
     @Step("Getting text from element")
     public static String getText(WebElement element) {

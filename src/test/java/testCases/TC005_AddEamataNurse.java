@@ -17,6 +17,20 @@ import utilities.TestDataGenerator;
 
 /**
  * Test class for eAmata Nurse management functionality
+ *
+ * Flow:
+ * - Inherits WebDriver lifecycle from `testBase.BaseClass`.
+ * - @BeforeMethod setUp():
+ *   - Logs in via `LoginUtils.loginAsSuperAdmin()` (uses `SuperAdminLogin` + `ConfigManager`).
+ *   - Initializes `eAmataNursePage` and prepares `TestDataGenerator`.
+ * - @Test addEamataNurse():
+ *   - Generates nurse details, then calls page methods `navigateToAddNurseForm()`, `enterNurseDetails()`, `enterLicenseDetails()`, `saveNurse()`.
+ *   - Uses `Address` utility to fill address details.
+ *   - Verifies success via `verifyNurseCreation()`.
+ *
+ * Data:
+ * - Inputs: nurse personal/license/address data from generator and config defaults.
+ * - Outputs: success message asserted in test.
  */
 public class TC005_AddEamataNurse extends BaseClass {
     private final ThreadLocal<eAmataNursePage> nursePage = new ThreadLocal<>();
