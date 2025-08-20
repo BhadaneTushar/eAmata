@@ -60,6 +60,7 @@ public class BasePage {
      */
     @Step("Waiting for UI to load")
     protected void waitForUILoad() {
+        LoggerUtils.info("Step: Waiting for UI to load");
         ElementActions.waitForPageLoad();
     }
 
@@ -70,6 +71,7 @@ public class BasePage {
      */
     @Step("Waiting for element to be clickable")
     protected WebElement waitForElementToBeClickable(WebElement element) {
+        LoggerUtils.info("Step: Waiting for element to be clickable: " + safeLocator(element));
         return ElementActions.waitForElementToBeClickable(element);
     }
 
@@ -80,6 +82,7 @@ public class BasePage {
      */
     @Step("Waiting for element to be visible")
     protected WebElement waitForElementToBeVisible(WebElement element) {
+        LoggerUtils.info("Step: Waiting for element to be visible: " + safeLocator(element));
         return ElementActions.waitForElementToBeVisible(element);
     }
 
@@ -90,6 +93,7 @@ public class BasePage {
      */
     @Step("Setting input field value: {1}")
     protected void setInputField(WebElement element, String value) {
+        LoggerUtils.info("Step: Setting input value '" + value + "' to element: " + safeLocator(element));
         ElementActions.type(element, value);
     }
 
@@ -99,6 +103,7 @@ public class BasePage {
      */
     @Step("Clicking element")
     protected void clickButton(WebElement element) {
+        LoggerUtils.info("Step: Clicking element: " + safeLocator(element));
         ElementActions.click(element);
     }
 
@@ -111,6 +116,7 @@ public class BasePage {
      */
     @Step("Selecting dropdown option: {1}")
     protected void selectDropdownByVisibleText(WebElement dropdownElement, String visibleText, String listItemsXPath) {
+        LoggerUtils.info("Step: Selecting dropdown option '" + visibleText + "' from element: " + safeLocator(dropdownElement));
         ElementActions.click(dropdownElement);
         List<WebElement> dropdownItems = getDriver().findElements(By.xpath(listItemsXPath));
         for (WebElement item : dropdownItems) {
@@ -127,6 +133,7 @@ public class BasePage {
      */
     @Step("Waiting for progress bar to appear")
     protected void waitForProgressBarToAppear() {
+        LoggerUtils.info("Step: Waiting for progress bar to appear");
         By progressBarLocator = By.xpath("//div[span[@role='progressbar']]");
         ElementActions.waitForElementToBeVisible(progressBarLocator);
         LoggerUtils.debug("Progress bar operation completed");
@@ -139,6 +146,7 @@ public class BasePage {
      */
     @Step("Waiting for progress bar with custom timeout: {0}s")
     protected void waitForProgressBarWithTimeout(int timeoutInSeconds) {
+        LoggerUtils.info("Step: Waiting for progress bar with custom timeout: " + timeoutInSeconds + "s");
         By progressBarLocator = By.xpath("//div[span[@role='progressbar']]");
         try {
             ElementActions.waitForElementToBeVisibleWithTimeout(progressBarLocator, timeoutInSeconds);
@@ -155,6 +163,7 @@ public class BasePage {
      */
     @Step("Checking if progress bar is displayed")
     public boolean isProgressBarDisplayed() {
+        LoggerUtils.info("Step: Checking if progress bar is displayed");
         By progressBarLocator = By.xpath("//div[span[@role='progressbar']]");
         return ElementActions.isDisplayed(progressBarLocator);
     }
@@ -166,6 +175,7 @@ public class BasePage {
      */
     @Step("Checking if element is displayed")
     protected boolean isElementDisplayed(WebElement element) {
+        LoggerUtils.info("Step: Checking if element is displayed: " + safeLocator(element));
         return ElementActions.isDisplayed(element);
     }
 
@@ -176,6 +186,7 @@ public class BasePage {
      */
     @Step("Uploading file: {1}")
     protected void uploadFile(WebElement element, String filePath) {
+        LoggerUtils.info("Step: Uploading file '" + filePath + "' to element: " + safeLocator(element));
         ElementActions.uploadFile(element, filePath);
     }
 
@@ -184,6 +195,7 @@ public class BasePage {
      */
     @Step("Switching to new window")
     protected void switchToNewWindow() {
+        LoggerUtils.info("Step: Switching to new window");
         String originalWindow = getDriver().getWindowHandle();
         for (String windowHandle : getDriver().getWindowHandles()) {
             if (!windowHandle.equals(originalWindow)) {
@@ -198,6 +210,7 @@ public class BasePage {
      */
     @Step("Accepting alert")
     protected void acceptAlert() {
+        LoggerUtils.info("Step: Accepting alert");
         ElementActions.acceptAlert();
     }
     
@@ -208,6 +221,7 @@ public class BasePage {
      */
     @Step("Getting text from element")
     protected String getText(WebElement element) {
+        LoggerUtils.info("Step: Getting text from element: " + safeLocator(element));
         return ElementActions.getText(element);
     }
     
@@ -217,6 +231,7 @@ public class BasePage {
      */
     @Step("Hovering over element")
     protected void hoverOverElement(WebElement element) {
+        LoggerUtils.info("Step: Hovering over element: " + safeLocator(element));
         ElementActions.hover(element);
     }
     
@@ -226,6 +241,15 @@ public class BasePage {
      */
     @Step("Scrolling to element")
     protected void scrollToElement(WebElement element) {
+        LoggerUtils.info("Step: Scrolling to element: " + safeLocator(element));
         ElementActions.scrollToElement(element);
+    }
+
+    private String safeLocator(WebElement element) {
+        try {
+            return element.toString();
+        } catch (Exception e) {
+            return "[element]";
+        }
     }
 }

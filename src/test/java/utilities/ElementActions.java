@@ -48,6 +48,7 @@ public class ElementActions {
      */
     @Step("Waiting for page to load completely")
     public static void waitForPageLoad() {
+        LoggerUtils.info("Step: Waiting for page to load completely");
         long startTime = System.currentTimeMillis();
         
         // First check if page is already loaded
@@ -108,6 +109,7 @@ public class ElementActions {
      */
     @Step("Waiting for element to be clickable")
     public static WebElement waitForElementToBeClickable(WebElement element) {
+        LoggerUtils.info("Step: Waiting for element to be clickable: " + safeLocator(element));
         LoggerUtils.debug("Waiting for element to be clickable");
         waitForPageLoad();
         FluentWait<WebDriver> wait = new FluentWait<>(getDriver())
@@ -125,6 +127,7 @@ public class ElementActions {
      */
     @Step("Waiting for element to be clickable by locator")
     public static WebElement waitForElementToBeClickable(By locator) {
+        LoggerUtils.info("Step: Waiting for element to be clickable by locator: " + locator);
         LoggerUtils.debug("Waiting for element to be clickable: " + locator);
         waitForPageLoad();
         FluentWait<WebDriver> wait = new FluentWait<>(getDriver())
@@ -142,6 +145,7 @@ public class ElementActions {
      */
     @Step("Waiting for element to be visible")
     public static WebElement waitForElementToBeVisible(WebElement element) {
+        LoggerUtils.info("Step: Waiting for element to be visible: " + safeLocator(element));
         LoggerUtils.debug("Waiting for element to be visible");
         waitForPageLoad();
         FluentWait<WebDriver> wait = new FluentWait<>(getDriver())
@@ -159,6 +163,7 @@ public class ElementActions {
      */
     @Step("Waiting for element to be visible by locator")
     public static WebElement waitForElementToBeVisible(By locator) {
+        LoggerUtils.info("Step: Waiting for element to be visible by locator: " + locator);
         LoggerUtils.debug("Waiting for element to be visible: " + locator);
         waitForPageLoad();
         FluentWait<WebDriver> wait = new FluentWait<>(getDriver())
@@ -177,6 +182,7 @@ public class ElementActions {
      */
     @Step("Waiting for element to be visible by locator with custom timeout: {1}s")
     public static WebElement waitForElementToBeVisibleWithTimeout(By locator, int timeoutInSeconds) {
+        LoggerUtils.info("Step: Waiting for element to be visible with custom timeout " + timeoutInSeconds + "s: " + locator);
         LoggerUtils.debug("Waiting for element to be visible with custom timeout " + timeoutInSeconds + "s: " + locator);
         waitForPageLoad();
         FluentWait<WebDriver> wait = new FluentWait<>(getDriver())
@@ -194,6 +200,7 @@ public class ElementActions {
      */
     @Step("Waiting for element to be present")
     public static WebElement waitForElementToBePresent(By locator) {
+        LoggerUtils.info("Step: Waiting for element to be present: " + locator);
         LoggerUtils.debug("Waiting for element to be present: " + locator);
         FluentWait<WebDriver> wait = new FluentWait<>(getDriver())
                 .withTimeout(DEFAULT_TIMEOUT)
@@ -209,6 +216,7 @@ public class ElementActions {
      */
     @Step("Clicking element")
     public static void click(WebElement element) {
+        LoggerUtils.info("Step: Clicking element: " + safeLocator(element));
         LoggerUtils.debug("Attempting to click element");
         try {
             waitForPageLoad();
@@ -226,6 +234,7 @@ public class ElementActions {
      */
     @Step("Clicking element by locator")
     public static void click(By locator) {
+        LoggerUtils.info("Step: Clicking element by locator: " + locator);
         LoggerUtils.debug("Attempting to click element: " + locator);
         WebElement element = waitForElementToBeClickable(locator);
         click(element);
@@ -239,6 +248,7 @@ public class ElementActions {
      */
     @Step("Setting input field value: {1}")
     public static void type(WebElement element, String value) {
+        LoggerUtils.info("Step: Typing value '" + value + "' into element: " + safeLocator(element));
         LoggerUtils.debug("Setting input field value: " + value);
         WebElement inputField = waitForElementToBeVisible(element);
         inputField.clear();
@@ -253,6 +263,7 @@ public class ElementActions {
      */
     @Step("Setting input field value by locator: {1}")
     public static void type(By locator, String value) {
+        LoggerUtils.info("Step: Typing value by locator '" + value + "' into: " + locator);
         LoggerUtils.debug("Setting input field value: " + value);
         WebElement inputField = waitForElementToBeVisible(locator);
         type(inputField, value);
@@ -266,6 +277,7 @@ public class ElementActions {
      */
     @Step("Getting text from element")
     public static String getText(WebElement element) {
+        LoggerUtils.info("Step: Getting text from element: " + safeLocator(element));
         LoggerUtils.debug("Getting text from element");
         return waitForElementToBeVisible(element).getText();
     }
@@ -277,6 +289,7 @@ public class ElementActions {
      */
     @Step("Getting text from element by locator")
     public static String getText(By locator) {
+        LoggerUtils.info("Step: Getting text from element by locator: " + locator);
         LoggerUtils.debug("Getting text from element: " + locator);
         return waitForElementToBeVisible(locator).getText();
     }
@@ -288,6 +301,7 @@ public class ElementActions {
      */
     @Step("Checking if element is displayed")
     public static boolean isDisplayed(WebElement element) {
+        LoggerUtils.info("Step: Checking if element is displayed: " + safeLocator(element));
         try {
             return waitForElementToBeVisible(element).isDisplayed();
         } catch (NoSuchElementException | StaleElementReferenceException | TimeoutException e) {
@@ -303,6 +317,7 @@ public class ElementActions {
      */
     @Step("Checking if element is displayed by locator")
     public static boolean isDisplayed(By locator) {
+        LoggerUtils.info("Step: Checking if element is displayed by locator: " + locator);
         try {
             return waitForElementToBeVisible(locator).isDisplayed();
         } catch (NoSuchElementException | StaleElementReferenceException | TimeoutException e) {
@@ -318,6 +333,7 @@ public class ElementActions {
      */
     @Step("Selecting dropdown option: {1}")
     public static void selectByVisibleText(WebElement element, String visibleText) {
+        LoggerUtils.info("Step: Selecting dropdown option by visible text '" + visibleText + "' on element: " + safeLocator(element));
         LoggerUtils.debug("Selecting dropdown option: " + visibleText);
         Select select = new Select(waitForElementToBeVisible(element));
         select.selectByVisibleText(visibleText);
@@ -330,6 +346,7 @@ public class ElementActions {
      */
     @Step("Selecting dropdown option by value: {1}")
     public static void selectByValue(WebElement element, String value) {
+        LoggerUtils.info("Step: Selecting dropdown option by value '" + value + "' on element: " + safeLocator(element));
         LoggerUtils.debug("Selecting dropdown option by value: " + value);
         Select select = new Select(waitForElementToBeVisible(element));
         select.selectByValue(value);
@@ -342,6 +359,7 @@ public class ElementActions {
      */
     @Step("Selecting custom dropdown option")
     public static void selectCustomDropdownOption(WebElement dropdownElement, By optionLocator) {
+        LoggerUtils.info("Step: Selecting custom dropdown option '" + optionLocator + "' from element: " + safeLocator(dropdownElement));
         click(dropdownElement);
         click(optionLocator);
     }
@@ -353,6 +371,7 @@ public class ElementActions {
      */
     @Step("Uploading file: {1}")
     public static void uploadFile(WebElement element, String filePath) {
+        LoggerUtils.info("Step: Uploading file '" + filePath + "' via element: " + safeLocator(element));
         LoggerUtils.debug("Uploading file: " + filePath);
         waitForElementToBePresent(By.xpath("//input[@type='file']"));
         element.sendKeys(new File(filePath).getAbsolutePath());
@@ -364,6 +383,7 @@ public class ElementActions {
      */
     @Step("Hovering over element")
     public static void hover(WebElement element) {
+        LoggerUtils.info("Step: Hovering over element: " + safeLocator(element));
         LoggerUtils.debug("Hovering over element");
         Actions actions = new Actions(getDriver());
         actions.moveToElement(waitForElementToBeVisible(element)).perform();
@@ -376,6 +396,7 @@ public class ElementActions {
      */
     @Step("Performing drag and drop")
     public static void dragAndDrop(WebElement sourceElement, WebElement targetElement) {
+        LoggerUtils.info("Step: Dragging from source: " + safeLocator(sourceElement) + " to target: " + safeLocator(targetElement));
         LoggerUtils.debug("Performing drag and drop operation");
         Actions actions = new Actions(getDriver());
         actions.dragAndDrop(
@@ -390,6 +411,7 @@ public class ElementActions {
      */
     @Step("Switching to iframe")
     public static void switchToFrame(WebElement frameElement) {
+        LoggerUtils.info("Step: Switching to iframe: " + safeLocator(frameElement));
         LoggerUtils.debug("Switching to iframe");
         getDriver().switchTo().frame(waitForElementToBeVisible(frameElement));
     }
@@ -399,6 +421,7 @@ public class ElementActions {
      */
     @Step("Switching back to default content")
     public static void switchToDefaultContent() {
+        LoggerUtils.info("Step: Switching back to default content");
         LoggerUtils.debug("Switching back to default content");
         getDriver().switchTo().defaultContent();
     }
@@ -408,6 +431,7 @@ public class ElementActions {
      */
     @Step("Accepting alert")
     public static void acceptAlert() {
+        LoggerUtils.info("Step: Accepting alert");
         LoggerUtils.debug("Accepting alert");
         WebDriverWait wait = new WebDriverWait(getDriver(), DEFAULT_TIMEOUT);
         wait.until(ExpectedConditions.alertIsPresent());
@@ -419,6 +443,7 @@ public class ElementActions {
      */
     @Step("Dismissing alert")
     public static void dismissAlert() {
+        LoggerUtils.info("Step: Dismissing alert");
         LoggerUtils.debug("Dismissing alert");
         WebDriverWait wait = new WebDriverWait(getDriver(), DEFAULT_TIMEOUT);
         wait.until(ExpectedConditions.alertIsPresent());
@@ -433,6 +458,7 @@ public class ElementActions {
      */
     @Step("Executing JavaScript")
     public static Object executeJavaScript(String script, Object... args) {
+        LoggerUtils.info("Step: Executing JavaScript: " + truncate(script));
         LoggerUtils.debug("Executing JavaScript: " + script);
         JavascriptExecutor js = (JavascriptExecutor) getDriver();
         return js.executeScript(script, args);
@@ -444,6 +470,7 @@ public class ElementActions {
      */
     @Step("Scrolling to element")
     public static void scrollToElement(WebElement element) {
+        LoggerUtils.info("Step: Scrolling to element: " + safeLocator(element));
         LoggerUtils.debug("Scrolling to element");
         executeJavaScript("arguments[0].scrollIntoView({behavior: 'smooth', block: 'center'});", element);
     }
@@ -457,11 +484,25 @@ public class ElementActions {
      */
     @Step("Using custom wait for element")
     public static WebElement customWait(By locator, Duration timeout, Duration polling) {
+        LoggerUtils.info("Step: Using custom wait for element: " + locator + ", timeout: " + timeout + ", polling: " + polling);
         LoggerUtils.debug("Using custom wait for element: " + locator);
         return new FluentWait<>(getDriver())
                 .withTimeout(timeout)
                 .pollingEvery(polling)
                 .ignoring(StaleElementReferenceException.class)
                 .until(d -> d.findElement(locator));
+    }
+
+    private static String safeLocator(WebElement element) {
+        try {
+            return element.toString();
+        } catch (Exception e) {
+            return "[element]";
+        }
+    }
+
+    private static String truncate(String script) {
+        if (script == null) return "null";
+        return script.length() > 100 ? script.substring(0, 100) + "..." : script;
     }
 } 
