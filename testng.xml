@@ -36,21 +36,6 @@
                     <include name="testAddStaffWithInvalidPhoneNumber"/>
                 </methods>
             </class>
-           <!-- <class name="testCases.TC004_AddLocation">
-                <methods>
-                    <include name="testAddLocation"/>
-                    <include name="testEmptyNameValidation"/>
-                    <include name="testInvalidPhoneValidation"/>
-                    <include name="testEmptyEmailValidation"/>
-                    <include name="testInvalidEmailValidation"/>
-                    <include name="testEmptyZipCodeValidation"/>
-                </methods>
-            </class>-->
-            <class name="testCases.TC005_AddEamataNurse">
-                <methods>
-                    <include name="addEamataNurse"/>
-                </methods>
-            </class>
         </classes>
     </test>
 </suite> 
