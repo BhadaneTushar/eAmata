@@ -1,20 +1,13 @@
 package testBase;
 
-import io.github.bonigarcia.wdm.WebDriverManager;
 import io.qameta.allure.Step;
 import org.openqa.selenium.*;
-import org.openqa.selenium.chrome.ChromeDriver;
-import org.openqa.selenium.chrome.ChromeOptions;
-import org.openqa.selenium.edge.EdgeDriver;
-import org.openqa.selenium.edge.EdgeOptions;
-import org.openqa.selenium.firefox.FirefoxDriver;
-import org.openqa.selenium.firefox.FirefoxOptions;
-import org.openqa.selenium.safari.SafariDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.BeforeSuite;
+import utilities.DriverManager;
 import utilities.LoggerUtils;
 
 import java.io.File;
@@ -30,7 +23,6 @@ import java.util.Properties;
 public class BaseClass {
     private static final String CONFIG_FILE_PATH = "./src/test/resources/config.properties";
     private static final String SCREENSHOTS_DIR = "screenshots";
-    private static final Duration IMPLICIT_WAIT = Duration.ofSeconds(10);
     private static final Duration EXPLICIT_WAIT = Duration.ofSeconds(20);
     private static final ThreadLocal<WebDriverWait> threadLocalWait = new ThreadLocal<>();
     private static final ThreadLocal<WebDriver> threadLocalDriver = new ThreadLocal<>();
@@ -62,48 +54,10 @@ public class BaseClass {
     @BeforeMethod(alwaysRun = true)
     public void initializeDriver() {
         try {
-            WebDriver driver;
-            String browser = properties.getProperty("browser", "chrome").toLowerCase();
-            switch (browser) {
-                case "chrome":
-                    WebDriverManager.chromedriver().setup();
-                    ChromeOptions chromeOpts = new ChromeOptions();
-                    if (Boolean.parseBoolean(properties.getProperty("Headless"))) {
-                        chromeOpts.addArguments("--headless=new");
-                        chromeOpts      .addArguments("--window-size=1920,1080");
-                        chromeOpts.addArguments("--disable-gpu");
-                        chromeOpts.addArguments("--no-sandbox");
-                        chromeOpts.addArguments("--disable-dev-shm-usage");
-                    }
-                    driver = new ChromeDriver(chromeOpts);
-                    break;
-                case "firefox":
-                    WebDriverManager.firefoxdriver().setup();
-                    FirefoxOptions firefoxOpts = new FirefoxOptions();
-                    if (Boolean.parseBoolean(properties.getProperty("Headless"))) {
-                        firefoxOpts.addArguments("--headless");
-                    }
-                    driver = new FirefoxDriver(firefoxOpts);
-                    break;
-                case "edge":
-                    WebDriverManager.edgedriver().setup();
-                    EdgeOptions edgeOpts = new EdgeOptions();
-                    if (Boolean.parseBoolean(properties.getProperty("Headless"))) {
-                        edgeOpts.addArguments("--headless=new");
-                    }
-                    driver = new EdgeDriver(edgeOpts);
-                    break;
-                case "safari":
-                    driver = new SafariDriver();
-                    break;
-                default:
-                    throw new IllegalArgumentException("Invalid Browser: " + browser);
-            }
-            threadLocalDriver.set(driver);
-            threadLocalWait.set(new WebDriverWait(driver, EXPLICIT_WAIT));
+            DriverManager.initializeDriver(properties);
+            threadLocalDriver.set(DriverManager.getDriver());
+            threadLocalWait.set(new WebDriverWait(DriverManager.getDriver(), EXPLICIT_WAIT));
 
-            getDriver().manage().window().maximize();
-            getDriver().manage().timeouts().implicitlyWait(IMPLICIT_WAIT);
             getDriver().get(properties.getProperty("url"));
             waitForPageLoad();
         } catch (Exception e) {
@@ -116,13 +70,10 @@ public class BaseClass {
     @Step("Cleaning up WebDriver resources")
     public void tearDown() {
         try {
-            WebDriver driver = getDriver();
-            if (driver != null) {
-                driver.quit();
-                threadLocalDriver.remove();
-                threadLocalWait.remove();
-                LoggerUtils.info("WebDriver resources cleaned up successfully");
-            }
+            DriverManager.quitDriver();
+            threadLocalDriver.remove();
+            threadLocalWait.remove();
+            LoggerUtils.info("WebDriver resources cleaned up successfully");
         } catch (Exception e) {
             LoggerUtils.error("Failed to clean up WebDriver resources: " + e.getMessage());
         }

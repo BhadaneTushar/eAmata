@@ -20,7 +20,6 @@ public class BasePage {
     private static final Duration POLLING_INTERVAL = Duration.ofMillis(500);
     private static final Duration UI_LOAD_WAIT = Duration.ofMillis(1000);
 
-
     public BasePage() {
         PageFactory.initElements(BaseClass.getDriver(), this);
     }
@@ -60,7 +59,7 @@ public class BasePage {
         FluentWait<WebDriver> wait = new FluentWait<>(getDriver())
                 .withTimeout(DEFAULT_TIMEOUT)
                 .pollingEvery(POLLING_INTERVAL)
-                .ignoring(StaleElementReferenceException.class);
+                .ignoring(StaleElementReferenceException.class, NoSuchElementException.class);
 
         return wait.until(ExpectedConditions.visibilityOf(element));
     }

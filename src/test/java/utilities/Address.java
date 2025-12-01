@@ -8,8 +8,6 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 import pageObject.BasePage;
 
 import java.time.Duration;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.regex.Pattern;
 
 /**
@@ -18,15 +16,6 @@ import java.util.regex.Pattern;
  * international support.
  */
 public class Address extends BasePage {
-    private static final Map<String, String> COUNTRY_ZIP_PATTERNS = new HashMap<>();
-
-    static {
-        COUNTRY_ZIP_PATTERNS.put("US", "^\\d{5}(-\\d{4})?$");
-        COUNTRY_ZIP_PATTERNS.put("CA", "^[A-Z]\\d[A-Z] \\d[A-Z]\\d$");
-        COUNTRY_ZIP_PATTERNS.put("UK", "^[A-Z]{1,2}\\d[A-Z\\d]? ?\\d[A-Z]{2}$");
-        COUNTRY_ZIP_PATTERNS.put("AU", "^\\d{4}$");
-        COUNTRY_ZIP_PATTERNS.put("IN", "^\\d{6}$");
-    }
 
     // WebElements for address input fields
     @FindBy(xpath = "//input[@placeholder='Enter Line 1']")
@@ -52,7 +41,7 @@ public class Address extends BasePage {
     private static final String STATE_LIST_XPATH = "//ul[contains(@class, 'css-18lh1r')]";
     private static final String COUNTRY_LIST_XPATH = "//ul[contains(@class, 'css-18lh1r')]";
 
-    private String selectedCountry = "US"; // Default to US
+    private String selectedCountry = Constants.DEFAULT_COUNTRY;
 
     public Address(WebDriver driver) {
         super();
@@ -66,7 +55,7 @@ public class Address extends BasePage {
      * @param country The country code (e.g., "US", "CA", "UK")
      */
     public void setCountry(String country) {
-        if (COUNTRY_ZIP_PATTERNS.containsKey(country)) {
+        if (Constants.COUNTRY_ZIP_PATTERNS.containsKey(country)) {
             this.selectedCountry = country;
             LoggerUtils.debug("Set country to: " + country);
         } else {
@@ -85,7 +74,7 @@ public class Address extends BasePage {
      * @throws IllegalArgumentException if any input is invalid
      */
     public void enterAddressDetails(String addressLine1, String addressLine2, String city, String zip, String state) {
-        enterAddressDetails(addressLine1, addressLine2, city, zip, state, "US");
+        enterAddressDetails(addressLine1, addressLine2, city, zip, state, Constants.DEFAULT_COUNTRY);
     }
 
     /**
@@ -100,7 +89,7 @@ public class Address extends BasePage {
      * @throws IllegalArgumentException if any input is invalid
      */
     public void enterAddressDetails(String addressLine1, String addressLine2, String city, String zip, String state,
-                                    String country) {
+            String country) {
         LoggerUtils.info("Entering address details");
         validateAddressInputs(addressLine1, city, zip, state, country);
 
@@ -156,7 +145,7 @@ public class Address extends BasePage {
         if (state == null || state.trim().isEmpty()) {
             throw new IllegalArgumentException("State is required");
         }
-        if (country == null || !COUNTRY_ZIP_PATTERNS.containsKey(country)) {
+        if (country == null || !Constants.COUNTRY_ZIP_PATTERNS.containsKey(country)) {
             throw new IllegalArgumentException("Unsupported country: " + country);
         }
     }
@@ -169,7 +158,7 @@ public class Address extends BasePage {
      * @return true if the ZIP code is valid
      */
     private boolean isValidZipCode(String zipCode, String country) {
-        String pattern = COUNTRY_ZIP_PATTERNS.get(country);
+        String pattern = Constants.COUNTRY_ZIP_PATTERNS.get(country);
         return pattern != null && Pattern.matches(pattern, zipCode);
     }
 
