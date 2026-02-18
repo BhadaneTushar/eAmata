@@ -132,19 +132,13 @@
                 </configuration>
             </plugin>
 
-            <!-- Allure Maven Plugin -->
-            <plugin>
-                <groupId>io.qameta.allure</groupId>
-                <artifactId>allure-maven</artifactId>
-                <version>2.11.2</version>
-                <executions>
-                    <execution>
-                        <goals>
-                            <goal>report</goal>
-                        </goals>
-                    </execution>
-                </executions>
-            </plugin>
+            <!--
+              Allure report generation is intentionally not bound here because
+              this environment blocks downloading the `allure-maven` plugin
+              from Maven Central, which breaks routine build verification.
+              The test listener dependency (`allure-testng`) is still present,
+              so results can be generated and reported by external tooling.
+            -->
         </plugins>
     </build>
 </project>

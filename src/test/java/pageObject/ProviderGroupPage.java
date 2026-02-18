@@ -84,7 +84,7 @@ public class ProviderGroupPage extends BasePage {
 
     // Navigation Methods
     public void clickNewProviderGroup() {
-        waitForProgressBarToAppear();
+        waitForProgressBarToDisappear();
         waitForUILoad();
         clickButton(waitForElementToBeClickable(newProviderGroupButton));
 
@@ -101,10 +101,10 @@ public class ProviderGroupPage extends BasePage {
     @Step("Clicking provider group name with proper wait")
     public void clickProviderGroupName(WebElement providerGroupElement) {
         LoggerUtils.debug("Clicking provider group name");
-        waitForProgressBarToAppear();
+        waitForProgressBarToDisappear();
         waitForUILoad();
         clickButton(waitForElementToBeClickable(providerGroupElement));
-        waitForProgressBarToAppear(); // Wait for any loading operations to complete
+        waitForProgressBarToDisappear(); // Wait for any loading operations to complete
     }
 
     // Input Field Methods
@@ -139,7 +139,7 @@ public class ProviderGroupPage extends BasePage {
 
     // Success Message Methods
     public String getSuccessMessage() {
-        waitForProgressBarToAppear();
+        waitForProgressBarToDisappear();
         return waitForElementToBeVisible(successMessage).getText();
     }
 

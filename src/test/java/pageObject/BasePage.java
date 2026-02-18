@@ -103,19 +103,27 @@ public class BasePage {
     }
 
     @Step("Waiting for progress bar to disappear")
-    protected void waitForProgressBarToAppear() {
+    protected void waitForProgressBarToDisappear() {
         FluentWait<WebDriver> wait = new FluentWait<>(getDriver())
                 .withTimeout(PROGRESS_BAR_TIMEOUT)
                 .pollingEvery(POLLING_INTERVAL)
-                .ignoring(NoSuchElementException.class, StaleElementReferenceException.class);
+                .ignoring(StaleElementReferenceException.class);
 
-        wait.until(d -> isProgressBarDisplayed());
+        wait.until(d -> d.findElements(By.xpath(PROGRESS_BAR_XPATH)).stream().noneMatch(WebElement::isDisplayed));
         LoggerUtils.debug("Progress bar operation completed");
     }
 
+    /**
+     * Backwards-compatible wrapper retained to avoid breaking existing call sites.
+     * Use {@link #waitForProgressBarToDisappear()} for clarity.
+     */
+    @Deprecated
+    protected void waitForProgressBarToAppear() {
+        waitForProgressBarToDisappear();
+    }
+
     public boolean isProgressBarDisplayed() {
-        WebElement progressBar = getDriver().findElement(By.xpath(PROGRESS_BAR_XPATH));
-        return progressBar.isDisplayed();
+        return getDriver().findElements(By.xpath(PROGRESS_BAR_XPATH)).stream().anyMatch(WebElement::isDisplayed);
     }
 
     @Step("Checking if element is displayed")
