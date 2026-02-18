@@ -78,17 +78,17 @@ public class StaffPage extends BasePage {
 
     // Navigation Methods
     public void navigateToProviderGroup() {
-        waitForProgressBarToAppear();
+        waitForProgressBarToDisappear();
         clickButton(waitForElementToBeVisible(providerGroupLink));
     }
 
     public void navigateToStaffTab() {
-        waitForProgressBarToAppear();
+        waitForProgressBarToDisappear();
         ((JavascriptExecutor) BaseClass.getDriver()).executeScript("arguments[0].click();", staffTabButton);
     }
 
     public void clickAddStaff() {
-        waitForProgressBarToAppear();
+        waitForProgressBarToDisappear();
         clickButton(waitForElementToBeClickable(addStaffButton));
     }
 

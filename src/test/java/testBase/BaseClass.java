@@ -70,7 +70,7 @@ public class BaseClass {
                     ChromeOptions chromeOpts = new ChromeOptions();
                     if (Boolean.parseBoolean(properties.getProperty("Headless"))) {
                         chromeOpts.addArguments("--headless=new");
-                        chromeOpts      .addArguments("--window-size=1920,1080");
+                        chromeOpts.addArguments("--window-size=1920,1080");
                         chromeOpts.addArguments("--disable-gpu");
                         chromeOpts.addArguments("--no-sandbox");
                         chromeOpts.addArguments("--disable-dev-shm-usage");
@@ -171,11 +171,11 @@ public class BaseClass {
 
     public String captureScreen(String testName) throws IOException {
         String timestamp = new SimpleDateFormat("yyyy.MM.dd.hh.mm.ss").format(new Date());
-        String screenshotPath = System.getProperty("user.dir") + "/screenshots/" + testName + "_" + timestamp + ".png";
+        String screenshotPath = System.getProperty("user.dir") + "/" + SCREENSHOTS_DIR + "/" + testName + "_" + timestamp + ".png";
 
-        File screenshotsDir = new File(System.getProperty("user.dir") + "/screenshots");
-        if (!screenshotsDir.exists()) {
-            screenshotsDir.mkdirs();
+        File screenshotsDir = new File(System.getProperty("user.dir") + "/" + SCREENSHOTS_DIR);
+        if (!screenshotsDir.exists() && !screenshotsDir.mkdirs()) {
+            throw new IOException("Failed to create screenshots directory: " + screenshotsDir.getAbsolutePath());
         }
 
         TakesScreenshot takesScreenshot = (TakesScreenshot) getDriver();
