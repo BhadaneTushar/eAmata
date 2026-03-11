@@ -1,141 +1,174 @@
-# eAmata Test Automation Project
+# 👨‍💻 Tushar Bhadane — QA Automation Engineer
 
-This project contains automated tests for the eAmata application, using Selenium WebDriver, TestNG, and Allure for reporting.
+🚀 **QA Automation Engineer specializing in Selenium, Playwright, API Testing, and AI-powered testing workflows.**
 
-## Prerequisites
+I focus on building scalable test automation frameworks, improving software quality, and integrating automation with CI/CD pipelines. I also experiment with AI Agents for automated QA workflows to accelerate testing and improve coverage.
 
-- Java 17 or higher
-- Maven
-- Chrome browser
-- ChromeDriver (compatible with your Chrome version)
+---
 
-## Project Structure
+## 👋 About Me
 
-```
-eAmata/
-├── src/
-│   ├── main/
-│   └── test/
-│       ├── java/
-│       │   └── com/
-│       │       └── eamata/
-│       │           ├── pages/
-│       │           ├── tests/
-│       │           └── utils/
-│       └── resources/
-│           └── testng.xml
-├── .github/
-│   └── workflows/
-│       └── ci.yml
-├── pom.xml
-└── README.md
-```
+I am a QA Automation Engineer with **2+ years of experience** working on enterprise healthcare platforms including **EHR, RPM, and Home Care systems**.
 
-## Setup
+My work focuses on:
 
-1. Clone the repository:
-   ```bash
-   git clone [repository-url]
-   cd eAmata
-   ```
+- Building scalable automation frameworks
+- Automating UI + API testing pipelines
+- Reducing regression testing time through parallel execution
+- Integrating automation with CI/CD pipelines
+- Exploring AI-driven testing using intelligent QA agents
 
-2. Install dependencies:
-   ```bash
-   mvn clean install
-   ```
+I have experience collaborating with **US clients, Agile teams, and cross-functional developers** to deliver reliable and high-quality software.
 
-3. Configure ChromeDriver:
-   - Download ChromeDriver compatible with your Chrome version
-   - Place it in the project root directory or update the path in your configuration
+---
 
-## Running Tests
+## 🧠 AI in Testing (My Current Focus)
 
-### Local Execution
+I am actively working on building **AI-powered QA systems** that automate the entire testing lifecycle.
 
-Run all tests:
-```bash
-mvn clean test
-```
+### 🤖 Multi-Agent QA Testing System
 
-Run specific test class:
-```bash
-mvn test -Dtest=TestClassName
-```
+An intelligent QA system where AI agents collaborate to automate testing.
 
-### Viewing Reports
+Example agents include:
 
-After test execution, generate and view the Allure report:
-```bash
-mvn allure:report
-mvn allure:serve
-```
+- **Test Planning Agent**  
+  Analyzes requirements and generates test strategies.
+- **Test Case Generator Agent**  
+  Automatically generates test scenarios from documentation.
+- **Automation Agent**  
+  Creates automation scripts using frameworks like Playwright or Selenium.
+- **Execution Agent**  
+  Runs automated tests across environments.
+- **Bug Analysis Agent**  
+  Analyzes failures and generates detailed bug reports.
+- **QA Reporting Agent**  
+  Creates test reports and quality insights automatically.
 
-## CI/CD Pipeline
+This approach helps reduce manual work and enables AI-assisted quality engineering.
 
-The project includes a CI/CD pipeline that runs on every push to the development branch. The pipeline:
+---
 
-1. Builds the project
-2. Runs all tests
-3. Generates Allure reports
-4. Sends test results to Google Chat
+## 🧪 Testing Expertise
 
-### Pipeline Features
+### Automation Testing
 
-- Automated test execution
-- Test report generation
-- Artifact uploads
-- Google Chat notifications with test results
+- Selenium WebDriver (Java)
+- Playwright (JavaScript / TypeScript)
+- TestNG
+- POM (Page Object Model)
 
-### Google Chat Integration
+### API Testing
 
-To enable Google Chat notifications:
+- REST Assured
+- Postman
+- Microservices API validation
 
-1. Create a webhook in your Google Chat space
-2. Add the webhook URL as a GitHub secret:
-   - Go to repository Settings > Secrets and variables > Actions
-   - Create a new secret named `GOOGLE_CHAT_WEBHOOK_URL`
-   - Add your webhook URL
+### CI/CD & DevOps
 
-## Test Reports
+- Git
+- GitHub Actions
+- Allure Reports
+- Extent Reports
+- Parallel test execution
 
-Test reports are available in multiple formats:
+### Databases
 
-- Allure Reports: Detailed HTML reports with test results, screenshots, and logs
-- TestNG Reports: XML and HTML reports in the `test-output` directory
-- Screenshots: Captured during test failures in the `screenshots` directory
+- MySQL
+- PostgreSQL
 
-## Contributing
+### Testing Types
 
-1. Create a new branch for your feature
-2. Make your changes
-3. Run tests locally
-4. Submit a pull request
+- Functional Testing
+- Regression Testing
+- Integration Testing
+- API Testing
+- Cross-Browser Testing
+- Mobile Testing
 
-## Best Practices
+---
 
-- Write clear test descriptions
-- Use page object model for better maintainability
-- Take screenshots on test failures
-- Keep test data separate from test logic
-- Use meaningful test names and descriptions
+## 🏥 Domain Experience
 
-## Troubleshooting
+### Healthcare Platforms
 
-Common issues and solutions:
+#### CalMHSA — Government EHR System
 
-1. ChromeDriver version mismatch:
-   - Ensure ChromeDriver version matches your Chrome browser version
-   - Update ChromeDriver path in configuration
+- Automated clinical workflows using Playwright
+- Validated microservice APIs using REST Assured
+- Ensured healthcare compliance and data integrity
 
-2. Test failures:
-   - Check screenshots in the `screenshots` directory
-   - Review Allure reports for detailed failure information
-   - Check test logs in the `logs` directory
+#### eAmata — Remote Patient Monitoring Platform
 
-## License
+- Automated multi-portal workflows (Provider / Nurse / Patient)
+- Executed CI-based regression pipelines
+- Validated integrations across healthcare modules
 
-[Add your license information here]
+---
 
-## Contact
+## 📂 Featured Projects
 
-[Add your contact information here] 
+### 🔹 Selenium Automation Framework
+
+A scalable POM-based automation framework using Java, Selenium, and TestNG.
+
+**Features:**
+
+- Modular framework architecture
+- CI/CD integration
+- Detailed reporting (Allure / Extent)
+- Parallel execution
+
+### 🔹 Playwright Automation Framework
+
+A modern UI automation framework using Playwright + TypeScript.
+
+**Features:**
+
+- Cross-browser testing
+- API + UI testing support
+- Fast execution
+- CI/CD ready
+
+### 🔹 AI QA Multi-Agent Testing System
+
+An experimental project for AI-driven automated QA.
+
+**Features:**
+
+- Requirement analysis using AI
+- Auto-generated test cases
+- Automated test creation
+- AI-powered bug analysis
+- Automated QA reporting
+
+---
+
+## 📈 Achievements
+
+- ✔ Increased automation coverage to 85%
+- ✔ Reduced regression testing time by 40–60%
+- ✔ Built 100+ automated UI and API tests
+- ✔ Authored 200+ test cases
+- ✔ Implemented CI/CD automation pipelines
+
+---
+
+## 🌐 Connect With Me
+
+- 📧 **Email:** [tushar.bhadane19@gmail.com](mailto:tushar.bhadane19@gmail.com)
+- 💼 **LinkedIn:** [linkedin.com/in/tusharbhadane19](https://linkedin.com/in/tusharbhadane19)
+- 📍 **Location:** Pune, India
+
+---
+
+## 🚀 Current Learning
+
+- AI in Software Testing
+- Autonomous QA Agents
+- Advanced Playwright Automation
+- Scalable Test Architecture
+
+---
+
+> 💡 **“Quality is not just testing — it's engineering reliability into software.”**
