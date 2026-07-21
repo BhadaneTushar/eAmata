@@ -134,6 +134,9 @@ public class TC003_AddStaff extends BaseClass {
         Assert.assertEquals(actualError, expectedError,
                 "Validation failed! Expected: '" + expectedError +
                         "', Actual: '" + actualError + "'");
+                        Assert.assertEquals(actualError, expectedError,
+                "Validation failed! Expected: '" + expectedError +
+                        "', Actual: '" + newerror + "'");
 
     }
 }
